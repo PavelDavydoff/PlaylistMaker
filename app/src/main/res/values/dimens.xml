@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="ma_text_size">20sp</dimen>
+    <dimen name="ma_text_size">22sp</dimen>
     <dimen name="ma_icon_padding">4dp</dimen>
     <dimen name="ma_corner_radius">16dp</dimen>
+    <dimen name="ma_icon_size">24dp</dimen>
     <dimen name="s_height">72dp</dimen>
     <dimen name="s_icon_size">32sp</dimen>
+    <dimen name="s_text_size">16sp</dimen>
+    <dimen name="ma_padding">16dp</dimen>
+    <dimen name="ma_button_padding">8dp</dimen>
+
 </resources>
