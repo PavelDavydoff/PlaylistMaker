@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="24dp">
 
         <Button
             android:id="@+id/back"
@@ -38,7 +39,7 @@
         android:layout_height="@dimen/s_height"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/ma_padding"
-                tools:ignore="UseSwitchCompatOrMaterialXml"/>
+        tools:ignore="UseSwitchCompatOrMaterialXml"/>
 
     <Button
         android:layout_width="match_parent"
