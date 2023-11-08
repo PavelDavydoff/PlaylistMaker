@@ -28,7 +28,7 @@
             android:layout_gravity="center"
             android:text="@string/settings"
             android:textColor="@color/black"
-            android:textSize="22sp" />
+            android:textSize="@dimen/ma_text_size" />
     </LinearLayout>
 
     <Switch
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/s_height"
         android:gravity="center_vertical"
-        android:paddingStart="16dp"
+        android:paddingStart="@dimen/ma_padding"
         tools:ignore="UseSwitchCompatOrMaterialXml"/>
 
     <Button
@@ -47,6 +47,7 @@
         android:text="@string/share"
         android:gravity="center_vertical|start"
         android:textColor="@color/black"
+        android:textSize="@dimen/s_text_size"
         app:iconGravity="end"
         app:icon="@drawable/share"
         app:iconTint="@color/black" />
@@ -58,6 +59,7 @@
         android:text="@string/support"
         android:gravity="center_vertical|start"
         android:textColor="@color/black"
+        android:textSize="@dimen/s_text_size"
         app:iconGravity="end"
         app:icon="@drawable/support"
         app:iconTint="@color/black" />
@@ -69,9 +71,10 @@
         android:text="@string/agreement"
         android:gravity="center_vertical|start"
         android:textColor="@color/black"
+        android:textSize="@dimen/s_text_size"
         app:iconGravity="end"
         app:icon="@drawable/arrow_forward"
-        app:iconTint="@color/black" />
+        app:iconTint="@color/black"/>
 
 </LinearLayout>
 
