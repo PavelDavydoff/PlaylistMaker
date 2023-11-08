@@ -1,9 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="#ffffff"
+            app:icon="@drawable/back_arrow"
+            app:iconGravity="textStart"
+            app:iconSize="64sp"
+            app:iconTint="#000000"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/settings"
+            android:textColor="#000000"
+            android:textSize="32sp" />
+    </FrameLayout>
+
+    <Switch
+        android:text="@string/black_theme"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:gravity="center_vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="16dp"
+        tools:ignore="UseSwitchCompatOrMaterialXml"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:backgroundTint="#ffffff"
+        android:text="@string/share"
+        android:gravity="center_vertical|start"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:iconGravity="end"
+        app:icon="@drawable/share"
+        app:iconSize="32sp"
+        app:iconTint="#000000" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="end"
+        android:backgroundTint="#ffffff"
+        android:text="@string/support"
+        android:gravity="center_vertical|start"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:iconGravity="end"
+        app:icon="@drawable/support"
+        app:iconSize="32sp"
+        app:iconTint="#000000" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="end"
+        android:backgroundTint="#ffffff"
+        android:text="@string/agreement"
+        android:gravity="center_vertical|start"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:iconGravity="end"
+        app:icon="@drawable/arrow_forward"
+        app:iconSize="32sp"
+        app:iconTint="#000000" />
+
+</LinearLayout>
+
