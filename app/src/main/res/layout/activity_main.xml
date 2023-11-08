@@ -13,52 +13,52 @@
         android:layout_gravity="start"
         android:text="@string/app_name"
         android:textColor="#ffffff"
-        android:textSize="20sp"
+        android:textSize="@dimen/ma_text_size"
         android:paddingBottom="20dp"/>
 
     <Button
         app:icon="@drawable/search"
         app:iconGravity="textStart"
-        app:iconPadding="4dp"
-        app:cornerRadius="32dp"
-        app:iconTint="#000000"
+        app:iconPadding="@dimen/ma_icon_padding"
+        app:cornerRadius="@dimen/ma_corner_radius"
+        app:iconTint="@color/black"
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:backgroundTint="#ffffff"
         android:text="@string/search"
-        android:textSize="20sp"
-        android:textColor="#1A1B22" />
+        android:textSize="@dimen/ma_text_size"
+        android:textColor="@color/black" />
 
     <Button
         app:icon="@drawable/library"
         app:iconGravity="textStart"
-        app:iconPadding="4dp"
-        app:cornerRadius="32dp"
-        app:iconTint="#000000"
+        app:iconPadding="@dimen/ma_icon_padding"
+        app:cornerRadius="@dimen/ma_corner_radius"
+        app:iconTint="@color/black"
         android:id="@+id/library"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:backgroundTint="#ffffff"
         android:text="@string/library"
-        android:textSize="20sp"
-        android:textColor="#1A1B22" />
+        android:textSize="@dimen/ma_text_size"
+        android:textColor="@color/black" />
 
     <Button
         app:icon="@drawable/settings"
         app:iconGravity="textStart"
-        app:iconPadding="4dp"
-        app:cornerRadius="32dp"
-        app:iconTint="#000000"
+        app:iconPadding="@dimen/ma_icon_padding"
+        app:cornerRadius="@dimen/ma_corner_radius"
+        app:iconTint="@color/black"
         android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:backgroundTint="#ffffff"
         android:text="@string/settings"
-        android:textSize="20sp"
-        android:textColor="#1A1B22" />
+        android:textSize="@dimen/ma_text_size"
+        android:textColor="@color/black" />
 
 </LinearLayout>

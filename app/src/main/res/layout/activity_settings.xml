@@ -16,11 +16,11 @@
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="@color/white"
             app:icon="@drawable/back_arrow"
             app:iconGravity="textStart"
             app:iconSize="64sp"
-            app:iconTint="#000000"
+            app:iconTint="@color/black"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
@@ -28,15 +28,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/settings"
-            android:textColor="#000000"
+            android:textColor="@color/black"
             android:textSize="32sp" />
     </FrameLayout>
 
     <Switch
         android:text="@string/black_theme"
-        android:textSize="20sp"
+        android:textSize="@dimen/ma_text_size"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="@dimen/s_height"
         android:gravity="center_vertical"
         android:paddingStart="24dp"
         android:paddingEnd="16dp"
@@ -44,44 +44,44 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:backgroundTint="#ffffff"
+        android:layout_height="@dimen/s_height"
+        android:backgroundTint="@color/white"
         android:text="@string/share"
         android:gravity="center_vertical|start"
-        android:textColor="#000000"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/ma_text_size"
         app:iconGravity="end"
         app:icon="@drawable/share"
-        app:iconSize="32sp"
-        app:iconTint="#000000" />
+        app:iconSize="@dimen/s_icon_size"
+        app:iconTint="@color/black" />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="@dimen/s_height"
         android:layout_gravity="end"
-        android:backgroundTint="#ffffff"
+        android:backgroundTint="@color/white"
         android:text="@string/support"
         android:gravity="center_vertical|start"
-        android:textColor="#000000"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/ma_text_size"
         app:iconGravity="end"
         app:icon="@drawable/support"
-        app:iconSize="32sp"
-        app:iconTint="#000000" />
+        app:iconSize="@dimen/s_icon_size"
+        app:iconTint="@color/black" />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="@dimen/s_height"
         android:layout_gravity="end"
-        android:backgroundTint="#ffffff"
+        android:backgroundTint="@color/white"
         android:text="@string/agreement"
         android:gravity="center_vertical|start"
-        android:textColor="#000000"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/ma_text_size"
         app:iconGravity="end"
         app:icon="@drawable/arrow_forward"
-        app:iconSize="32sp"
-        app:iconTint="#000000" />
+        app:iconSize="@dimen/s_icon_size"
+        app:iconTint="@color/black" />
 
 </LinearLayout>
 
