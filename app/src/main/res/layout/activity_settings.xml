@@ -20,8 +20,6 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:backgroundTint="@color/white"
-
-
             app:icon="@drawable/back_arrow"
             app:iconGravity="textStart"
             app:iconTint="@color/black"
@@ -39,6 +37,7 @@
     </LinearLayout>
 
     <Switch
+        style="@style/Theme.PlaylistMaker"
         android:layout_width="match_parent"
         android:layout_height="@dimen/s_height"
         android:gravity="center_vertical"
@@ -49,6 +48,7 @@
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
+        style="@style/Theme.PlaylistMaker"
         android:layout_width="match_parent"
         android:layout_height="@dimen/s_height"
         android:backgroundTint="@color/white"
@@ -64,6 +64,7 @@
         app:iconTint="@color/black" />
 
     <Button
+        style="@style/Theme.PlaylistMaker"
         android:layout_width="match_parent"
         android:layout_height="@dimen/s_height"
         android:backgroundTint="@color/white"
@@ -79,6 +80,7 @@
         app:iconTint="@color/black" />
 
     <Button
+        style="@style/Theme.PlaylistMaker"
         android:layout_width="match_parent"
         android:layout_height="@dimen/s_height"
         android:backgroundTint="@color/white"
