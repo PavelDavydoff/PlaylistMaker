@@ -5,9 +5,11 @@
     <dimen name="ma_corner_radius">16dp</dimen>
     <dimen name="ma_icon_size">24dp</dimen>
     <dimen name="s_height">61dp</dimen>
-    <dimen name="s_icon_size">32sp</dimen>
+    <dimen name="s_icon_size">24dp</dimen>
     <dimen name="s_text_size">16sp</dimen>
     <dimen name="ma_padding">16dp</dimen>
     <dimen name="ma_button_padding">8dp</dimen>
+    <dimen name="s_medium_padding">24dp</dimen>
+    <dimen name="s_padding">8dp</dimen>
 
 </resources>
