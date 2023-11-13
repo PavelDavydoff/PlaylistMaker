@@ -37,7 +37,6 @@
     </LinearLayout>
 
     <Switch
-        style="@style/Theme.PlaylistMaker"
         android:layout_width="match_parent"
         android:layout_height="@dimen/s_height"
         android:gravity="center_vertical"
@@ -48,52 +47,22 @@
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
-        style="@style/Theme.PlaylistMaker"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/s_height"
-        android:backgroundTint="@color/white"
+        style="@style/SettingsButton"
         android:text="@string/share"
-        android:gravity="center_vertical|start"
-        android:textColor="@color/black"
-        android:textSize="@dimen/s_text_size"
-        android:paddingStart="@dimen/ma_padding"
-        android:paddingEnd="@dimen/ma_padding"
-        app:iconSize="@dimen/s_icon_size"
-        app:iconGravity="end"
         app:icon="@drawable/share"
-        app:iconTint="@color/black" />
+        />
 
     <Button
-        style="@style/Theme.PlaylistMaker"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/s_height"
-        android:backgroundTint="@color/white"
+        style="@style/SettingsButton"
         android:text="@string/support"
-        android:gravity="center_vertical|start"
-        android:textColor="@color/black"
-        android:textSize="@dimen/s_text_size"
-        android:paddingStart="@dimen/ma_padding"
-        android:paddingEnd="@dimen/ma_padding"
-        app:iconSize="@dimen/s_icon_size"
-        app:iconGravity="end"
         app:icon="@drawable/support"
-        app:iconTint="@color/black" />
+        />
 
     <Button
-        style="@style/Theme.PlaylistMaker"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/s_height"
-        android:backgroundTint="@color/white"
+        style="@style/SettingsButton"
         android:text="@string/agreement"
-        android:gravity="center_vertical|start"
-        android:textColor="@color/black"
-        android:textSize="@dimen/s_text_size"
-        android:paddingStart="@dimen/ma_padding"
-        android:paddingEnd="@dimen/ma_padding"
-        app:iconSize="@dimen/s_icon_size"
-        app:iconGravity="end"
         app:icon="@drawable/arrow_forward"
-        app:iconTint="@color/black"/>
+        />
 
 </LinearLayout>
 
