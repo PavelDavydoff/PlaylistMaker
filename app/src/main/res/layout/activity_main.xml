@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/azure"
+    android:background="@color/YP_Blue"
     android:orientation="vertical"
     android:paddingLeft="@dimen/ma_padding"
     android:paddingRight="@dimen/ma_padding"
-    android:paddingBottom="@dimen/ma_padding">
+    android:paddingBottom="@dimen/ma_padding"
+    >
 
     <TextView
         android:layout_width="wrap_content"
