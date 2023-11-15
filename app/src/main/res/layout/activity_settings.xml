@@ -16,16 +16,12 @@
         android:paddingStart="@dimen/s_padding"
         android:paddingEnd="@dimen/s_padding">
 
-        <Button
+        <ImageView
             android:id="@+id/back"
-            android:layout_width="48dp"
             android:layout_height="48dp"
-            android:backgroundTint="@color/white"
-            app:icon="@drawable/back_arrow"
-            app:iconGravity="textStart"
-            app:iconTint="@color/black"
-            app:iconSize="48dp"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_width="48dp"
+            android:src="@drawable/back_arrow"
+            app:tint="@color/black" />
 
         <TextView
             android:layout_width="wrap_content"
