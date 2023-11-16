@@ -34,6 +34,7 @@
     </LinearLayout>
 
     <Switch
+        android:saveEnabled="false"
         android:id="@+id/switchTheme"
         style="@style/SettingsElement"
         android:gravity="center_vertical"
