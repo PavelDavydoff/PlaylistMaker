@@ -41,6 +41,7 @@
         android:hint="@string/search"
         android:textCursorDrawable="@drawable/edit_text_cursor"
         android:textColorHint="@color/edit_text_icon"
+        android:textColor="@color/DN_Black"
         android:lines="1"
         android:maxLength="30"
         android:background="@drawable/edit_text_background"
