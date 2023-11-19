@@ -7,4 +7,6 @@
     <color name="DN_White">#FFFFFF</color>
     <color name="switch_Thumb">#AEAFB4</color>
     <color name="switch_Track">#E6E8EB</color>
+    <color name="edit_text_background">#E6E8EB</color>
+    <color name="edit_text_icon">#AEAFB4</color>
 </resources>

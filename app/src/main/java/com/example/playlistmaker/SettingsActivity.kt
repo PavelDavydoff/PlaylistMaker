@@ -1,7 +1,6 @@
 package com.example.playlistmaker
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,9 +35,9 @@ class SettingsActivity : AppCompatActivity() {
 
         fun showShareDialog() {//Кнопка "Поделиться"
             val intent = Intent(Intent.ACTION_SEND)
-            intent.type = resources.getString(R.string.text_plain)
-            intent.putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.android_developer))
-            startActivity(Intent.createChooser(intent, resources.getString(R.string.share)))
+            intent.type = getString(R.string.text_plain)
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.android_developer))
+            startActivity(Intent.createChooser(intent, getString(R.string.share)))
         }
 
         val shareButton = findViewById<Button>(R.id.share)
@@ -49,10 +48,10 @@ class SettingsActivity : AppCompatActivity() {
         val supportButton = findViewById<Button>(R.id.support)//Кнопка "Написать в поддержку"
         supportButton.setOnClickListener{
             val supportIntent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse(resources.getString(R.string.mail_to))
-                putExtra(Intent.EXTRA_EMAIL, arrayOf(resources.getString(R.string.my_email)))
-                putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.dev_message))
-                putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.dev_message2))
+                data = Uri.parse(getString(R.string.mail_to))
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.my_email)))
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.dev_message))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.dev_message2))
             }
 
             startActivity(supportIntent)
@@ -61,7 +60,7 @@ class SettingsActivity : AppCompatActivity() {
         val agreementButton = findViewById<Button>(R.id.agreement)//Кнопка "Пользовательское соглашение"
         agreementButton.setOnClickListener {
             val browserIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(R.string.offer)))
+                Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.offer)))
             startActivity(browserIntent)
         }
     }
