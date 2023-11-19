@@ -12,5 +12,7 @@
     <dimen name="s_medium_padding">24dp</dimen>
     <dimen name="s_padding">8dp</dimen>
     <dimen name="padding_12">12dp</dimen>
+    <dimen name="_36dp">36dp</dimen>
+    <dimen name="_8dp">8dp</dimen>
 
 </resources>
