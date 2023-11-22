@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -14,40 +14,50 @@
 
         <ImageView
             android:id="@+id/back"
-            android:layout_height="48dp"
-            android:layout_width="48dp"
-            android:src="@drawable/back_arrow"
-            app:tint="@color/black" />
+            style="@style/backButton" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingStart="@dimen/padding_12"
-            android:text="@string/search"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ma_text_size" />
+            style="@style/title"
+            android:text="@string/search" />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/search_bar"
-        android:drawableStart="@drawable/search"
-        android:drawableTint="@color/edit_text_icon"
-        android:drawablePadding="@dimen/s_padding"
-        app:iconTint="@color/edit_text_icon"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_36dp"
-        android:inputType="text"
-        android:hint="@string/search"
-        android:textCursorDrawable="@drawable/edit_text_cursor"
-        android:textColorHint="@color/edit_text_icon"
-        android:textColor="@color/DN_Black"
-        android:lines="1"
-        android:maxLength="30"
-        android:background="@drawable/edit_text_background"
         android:layout_marginStart="@dimen/padding_16"
         android:layout_marginEnd="@dimen/padding_16"
+        android:background="@drawable/edit_text_background"
+        android:drawableStart="@drawable/search"
+        android:drawablePadding="@dimen/s_padding"
+        android:drawableTint="@color/edit_text_icon"
+        android:hint="@string/search"
+        android:inputType="text"
+        android:lines="1"
+        android:maxLength="30"
         android:paddingStart="@dimen/padding_12"
-        android:paddingEnd="@dimen/padding_12" />
+        android:paddingEnd="@dimen/padding_12"
+        android:textColor="@color/DN_Black"
+        android:textColorHint="@color/edit_text_icon"
+        android:textCursorDrawable="@drawable/edit_text_cursor"
+        app:iconTint="@color/edit_text_icon" />
+
+        <ImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cross"
+            android:layout_gravity="end"
+            android:paddingEnd="24dp"
+            android:paddingTop="10dp"
+            app:tint="@color/edit_text_icon"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
 
 </LinearLayout>

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,28 +15,19 @@
 
         <ImageView
             android:id="@+id/back"
-            android:layout_height="48dp"
-            android:layout_width="48dp"
-            android:src="@drawable/back_arrow"
-            app:tint="@color/black" />
+            style="@style/backButton" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/settings"
-            android:paddingStart="@dimen/padding_12"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ma_text_size"
-            />
+            style="@style/title"
+            android:text="@string/settings" />
     </LinearLayout>
 
     <Switch
-        android:saveEnabled="false"
         android:id="@+id/switchTheme"
         style="@style/SettingsElement"
         android:gravity="center_vertical"
         android:paddingEnd="@dimen/s_padding"
+        android:saveEnabled="false"
         android:text="@string/black_theme"
         android:thumbTint="@color/switch_Thumb"
         android:trackTint="@color/switch_Track"
@@ -47,22 +37,19 @@
         android:id="@+id/share"
         style="@style/SettingsButton"
         android:text="@string/share"
-        app:icon="@drawable/share"
-        />
+        app:icon="@drawable/share" />
 
     <Button
         android:id="@+id/support"
         style="@style/SettingsButton"
         android:text="@string/support"
-        app:icon="@drawable/support"
-        />
+        app:icon="@drawable/support" />
 
     <Button
         android:id="@+id/agreement"
         style="@style/SettingsButton"
         android:text="@string/agreement"
-        app:icon="@drawable/arrow_forward"
-        />
+        app:icon="@drawable/arrow_forward" />
 
 </LinearLayout>
 
