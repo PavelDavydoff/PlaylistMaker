@@ -7,12 +7,15 @@
     <dimen name="s_height">61dp</dimen>
     <dimen name="s_icon_size">24dp</dimen>
     <dimen name="s_text_size">16sp</dimen>
-    <dimen name="padding_16">16dp</dimen>
+    <dimen name="_16dp">16dp</dimen>
     <dimen name="ma_button_padding">8dp</dimen>
     <dimen name="s_medium_padding">24dp</dimen>
     <dimen name="s_padding">8dp</dimen>
     <dimen name="padding_12">12dp</dimen>
     <dimen name="_36dp">36dp</dimen>
     <dimen name="_8dp">8dp</dimen>
+    <dimen name="_28dp">28dp</dimen>
+    <dimen name="_10dp">10dp</dimen>
+    <dimen name="_48dp">48dp</dimen>
 
 </resources>

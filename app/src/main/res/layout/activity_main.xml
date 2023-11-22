@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/YP_Blue"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/padding_16"
-    android:paddingRight="@dimen/padding_16"
-    android:paddingBottom="@dimen/padding_16"
+    android:paddingLeft="@dimen/_16dp"
+    android:paddingRight="@dimen/_16dp"
+    android:paddingBottom="@dimen/_16dp"
     >
 
     <TextView
@@ -17,8 +17,8 @@
         android:text="@string/app_name"
         android:textColor="@color/DN_White"
         android:textSize="@dimen/ma_text_size"
-        android:paddingTop="@dimen/padding_16"
-        android:paddingBottom="@dimen/padding_16"/>
+        android:paddingTop="@dimen/_16dp"
+        android:paddingBottom="@dimen/_16dp"/>
 
     <Button
         android:id="@+id/search"

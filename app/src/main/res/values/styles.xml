@@ -21,7 +21,7 @@
     <style name="SettingsElement" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/s_height</item>
-        <item name="android:paddingStart">@dimen/padding_16</item>
+        <item name="android:paddingStart">@dimen/_16dp</item>
         <item name="android:textSize">@dimen/s_text_size</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="backgroundTint">@color/white</item>
@@ -31,15 +31,15 @@
 
     <style name="SettingsButton" parent="SettingsElement">
         <item name="android:gravity">center_vertical|start</item>
-        <item name="android:paddingEnd">@dimen/padding_16</item>
+        <item name="android:paddingEnd">@dimen/_16dp</item>
         <item name="iconSize">@dimen/s_icon_size</item>
         <item name="iconGravity">end</item>
         <item name="iconTint">@color/black</item>
     </style>
 
     <style name="backButton">
-        <item name="android:layout_height">48dp</item>
-        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">@dimen/_48dp</item>
+        <item name="android:layout_width">@dimen/_48dp</item>
         <item name="tint">@color/black</item>
         <item name="android:src">@drawable/back_arrow</item>
     </style>

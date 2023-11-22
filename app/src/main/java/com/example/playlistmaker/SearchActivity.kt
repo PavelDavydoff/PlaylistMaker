@@ -14,7 +14,7 @@ import android.widget.ImageView
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var editText: EditText
-    private var text: String = ""
+    private var text: String = EMPTY
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
 
         clearButton.setOnClickListener {
-            editText.setText("")
+            editText.setText(EMPTY)
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(editText.windowToken, 0)
@@ -62,13 +62,18 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("text", text)
+        outState.putString(KEY, text)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val restoredText = savedInstanceState.getString("text")
+        val restoredText = savedInstanceState.getString(KEY)
         editText.setText(restoredText)
+    }
+
+    companion object {
+        private const val KEY = "text"
+        private const val EMPTY = ""
     }
 
 

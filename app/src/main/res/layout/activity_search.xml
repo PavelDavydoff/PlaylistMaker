@@ -29,8 +29,8 @@
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_36dp"
-        android:layout_marginStart="@dimen/padding_16"
-        android:layout_marginEnd="@dimen/padding_16"
+        android:layout_marginStart="@dimen/_16dp"
+        android:layout_marginEnd="@dimen/_16dp"
         android:background="@drawable/edit_text_background"
         android:drawableStart="@drawable/search"
         android:drawablePadding="@dimen/s_padding"
@@ -52,8 +52,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/cross"
             android:layout_gravity="end"
-            android:paddingEnd="24dp"
-            android:paddingTop="10dp"
+            android:paddingEnd="@dimen/_28dp"
+            android:paddingTop="@dimen/_10dp"
             app:tint="@color/edit_text_icon"
             android:visibility="gone" />
 
