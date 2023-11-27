@@ -13,11 +13,11 @@
         android:paddingBottom="@dimen/s_medium_padding">
 
         <ImageView
-            android:id="@+id/back"
+            android:id="@+id/backArrowImageView"
             style="@style/backButton" />
 
         <TextView
-            style="@style/title"
+            style="@style/titleTextView"
             android:text="@string/search" />
     </LinearLayout>
 
@@ -26,7 +26,7 @@
         android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/search_bar"
+        android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_36dp"
         android:layout_marginStart="@dimen/_16dp"
@@ -41,13 +41,13 @@
         android:maxLength="30"
         android:paddingStart="@dimen/padding_12"
         android:paddingEnd="@dimen/padding_12"
-        android:textColor="@color/DN_Black"
+        android:textColor="@color/dn_black"
         android:textColorHint="@color/edit_text_icon"
         android:textCursorDrawable="@drawable/edit_text_cursor"
         app:iconTint="@color/edit_text_icon" />
 
         <ImageView
-            android:id="@+id/clearIcon"
+            android:id="@+id/clearImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/cross"

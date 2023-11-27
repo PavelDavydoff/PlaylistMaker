@@ -14,7 +14,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val backButton = findViewById<ImageView>(R.id.back)//Кнопка "Назад"
+        val backButton = findViewById<ImageView>(R.id.backArrowImageView)
         backButton.setOnClickListener{
             val backIntent = Intent(this, MainActivity::class.java)
             startActivity(backIntent)
