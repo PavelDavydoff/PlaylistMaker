@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="azure">#3772E7</color>
-    <color name="YP_Black">#1A1B22</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="yp_blue">#3772E7</color>
+    <color name="yp_black">#1A1B22</color>
+    <color name="dn_white">#FFFFFF</color>
+    <color name="switch_Thumb">#AEAFB4</color>
+    <color name="switch_Track">#E6E8EB</color>
+    <color name="edit_text_background">#E6E8EB</color>
+    <color name="edit_text_icon">#AEAFB4</color>
+    <color name="dn_blue">#3772E7</color>
+    <color name="dn_black">#000000</color>
 </resources>

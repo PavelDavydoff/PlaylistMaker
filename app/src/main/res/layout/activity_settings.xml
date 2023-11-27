@@ -11,89 +11,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingBottom="@dimen/s_medium_padding"
-        android:paddingStart="@dimen/s_padding"
-        android:paddingEnd="@dimen/s_padding">
+        android:paddingBottom="@dimen/s_medium_padding">
 
-        <Button
-            android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:backgroundTint="@color/white"
-            app:icon="@drawable/back_arrow"
-            app:iconGravity="textStart"
-            app:iconTint="@color/black"
-            app:iconSize="48dp"
-            tools:ignore="SpeakableTextPresentCheck" />
+        <ImageView
+            android:id="@+id/backArrowImageView"
+            style="@style/backButton" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/settings"
-            android:textColor="@color/black"
-            android:textSize="@dimen/ma_text_size"
-            />
+            style="@style/titleTextView"
+            android:text="@string/settings" />
     </LinearLayout>
 
     <Switch
-        style="@style/Theme.PlaylistMaker"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/s_height"
+        android:id="@+id/switchTheme"
+        style="@style/SettingsElement"
         android:gravity="center_vertical"
-        android:paddingStart="@dimen/ma_padding"
         android:paddingEnd="@dimen/s_padding"
+        android:saveEnabled="false"
         android:text="@string/black_theme"
-        android:textSize="@dimen/s_text_size"
+        android:thumbTint="@color/switch_Thumb"
+        android:trackTint="@color/switch_Track"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
-        style="@style/Theme.PlaylistMaker"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/s_height"
-        android:backgroundTint="@color/white"
+        android:id="@+id/share"
+        style="@style/SettingsButton"
         android:text="@string/share"
-        android:gravity="center_vertical|start"
-        android:textColor="@color/black"
-        android:textSize="@dimen/s_text_size"
-        android:paddingStart="@dimen/ma_padding"
-        android:paddingEnd="@dimen/ma_padding"
-        app:iconSize="@dimen/s_icon_size"
-        app:iconGravity="end"
-        app:icon="@drawable/share"
-        app:iconTint="@color/black" />
+        app:icon="@drawable/share" />
 
     <Button
-        style="@style/Theme.PlaylistMaker"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/s_height"
-        android:backgroundTint="@color/white"
+        android:id="@+id/support"
+        style="@style/SettingsButton"
         android:text="@string/support"
-        android:gravity="center_vertical|start"
-        android:textColor="@color/black"
-        android:textSize="@dimen/s_text_size"
-        android:paddingStart="@dimen/ma_padding"
-        android:paddingEnd="@dimen/ma_padding"
-        app:iconSize="@dimen/s_icon_size"
-        app:iconGravity="end"
-        app:icon="@drawable/support"
-        app:iconTint="@color/black" />
+        app:icon="@drawable/support" />
 
     <Button
-        style="@style/Theme.PlaylistMaker"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/s_height"
-        android:backgroundTint="@color/white"
+        android:id="@+id/agreement"
+        style="@style/SettingsButton"
         android:text="@string/agreement"
-        android:gravity="center_vertical|start"
-        android:textColor="@color/black"
-        android:textSize="@dimen/s_text_size"
-        android:paddingStart="@dimen/ma_padding"
-        android:paddingEnd="@dimen/ma_padding"
-        app:iconSize="@dimen/s_icon_size"
-        app:iconGravity="end"
-        app:icon="@drawable/arrow_forward"
-        app:iconTint="@color/black"/>
+        app:icon="@drawable/arrow_forward" />
 
 </LinearLayout>
 

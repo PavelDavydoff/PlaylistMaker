@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MainButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="backgroundTint">@color/dn_white</item>
+        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:textSize">@dimen/ma_text_size</item>
+        <item name="android:layout_marginTop">@dimen/ma_button_padding</item>
+        <item name="android:layout_marginBottom">@dimen/ma_button_padding</item>
+        <item name="textAllCaps">false</item>
+        <item name="cornerRadius">@dimen/ma_corner_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/ma_icon_padding</item>
+        <item name="iconSize">@dimen/ma_icon_size</item>
+        <item name="iconTint">@color/yp_black</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="SettingsElement" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/s_height</item>
+        <item name="android:paddingStart">@dimen/_16dp</item>
+        <item name="android:textSize">@dimen/s_text_size</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="SettingsButton" parent="SettingsElement">
+        <item name="android:gravity">center_vertical|start</item>
+        <item name="android:paddingEnd">@dimen/_16dp</item>
+        <item name="iconSize">@dimen/s_icon_size</item>
+        <item name="iconGravity">end</item>
+        <item name="iconTint">@color/black</item>
+    </style>
+
+    <style name="backButton">
+        <item name="android:layout_height">@dimen/_48dp</item>
+        <item name="android:layout_width">@dimen/_48dp</item>
+        <item name="tint">@color/black</item>
+        <item name="android:src">@drawable/back_arrow</item>
+    </style>
+
+    <style name="titleTextView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingStart">@dimen/padding_12</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/ma_text_size</item>
+    </style>
+</resources>
