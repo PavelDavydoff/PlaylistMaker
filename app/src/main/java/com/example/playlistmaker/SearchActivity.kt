@@ -10,6 +10,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
 
@@ -20,6 +22,13 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         editText = findViewById(R.id.editText)
+
+        val trackList: ArrayList<Track> = ArrayList()
+        trackList.add(Track("Smells like a teen spirit", "Nirvana", "5:01", getString(R.string.smells_like)))
+        trackList.add(Track("Billie Jean", "Michael Jackson", "4:35", getString(R.string.billie_jean)))
+        trackList.add(Track("Stayin' Alive", "Bee Gees", "4:10", getString(R.string.stayin_alive)))
+        trackList.add(Track("Whole Lotta Love", "Led Zeppelin", "5:33", getString(R.string.whole_lotta)))
+        trackList.add(Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", getString(R.string.sweet_child)))
 
         val backButton = findViewById<ImageView>(R.id.backArrowImageView)//Кнопка "Назад"
         backButton.setOnClickListener {
@@ -48,6 +57,11 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         editText!!.addTextChangedListener(simpleTextWatcher)
+
+        val tracksRecycler = findViewById<RecyclerView>(R.id.track_recycler)
+
+        tracksRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        tracksRecycler.adapter = TrackAdapter(trackList)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
