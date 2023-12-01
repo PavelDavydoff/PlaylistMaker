@@ -20,8 +20,6 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(backIntent)
         }
 
-
-
         val switchTheme = findViewById<Switch>(R.id.switchTheme)//Переключатель тёмной темы
 
         switchTheme.isChecked = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
@@ -44,7 +42,6 @@ class SettingsActivity : AppCompatActivity() {
         shareButton.setOnClickListener {
             showShareDialog()
         }
-
         val supportButton = findViewById<Button>(R.id.support)//Кнопка "Написать в поддержку"
         supportButton.setOnClickListener{
             val supportIntent = Intent(Intent.ACTION_SENDTO).apply {

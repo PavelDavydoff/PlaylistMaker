@@ -33,7 +33,7 @@
         android:layout_marginEnd="@dimen/_16dp"
         android:background="@drawable/edit_text_background"
         android:drawableStart="@drawable/search"
-        android:drawablePadding="@dimen/s_padding"
+        android:drawablePadding="@dimen/padding_8"
         android:drawableTint="@color/edit_text_icon"
         android:hint="@string/search"
         android:inputType="text"
@@ -58,6 +58,11 @@
             android:visibility="gone" />
 
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/track_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>
