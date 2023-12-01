@@ -17,7 +17,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     //private var forwardArrow = itemView.findViewById<ImageView>(R.id.image_forward_arrow)
 
     fun bind(model: Track){
-        Glide.with(itemView.context)
+        Glide.with(itemView)
             .load(model.artworkUrl100)
             .transform(RoundedCorners(2))
             .centerCrop()
