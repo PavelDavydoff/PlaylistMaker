@@ -46,7 +46,10 @@
                     android:textColor="@color/gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Artist"
+                    android:text="Artistsdf.mnxcz.vmn.m,naer;h;oisdhflkjdfgkgfdfgdasdfasdfgdfgfdglj"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:layout_weight="1"
                     android:textSize="@dimen/t_size_13" />
 
                 <TextView
