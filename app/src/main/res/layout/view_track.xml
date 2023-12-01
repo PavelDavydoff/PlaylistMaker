@@ -6,7 +6,7 @@
     android:layout_height="@dimen/height_61">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/padding_40">
 
@@ -26,6 +26,7 @@
 
             <TextView
                 android:id="@+id/text_track_name"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -42,6 +43,7 @@
 
                 <TextView
                     android:id="@+id/text_artist"
+                    android:textColor="@color/gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Artist"
@@ -49,6 +51,7 @@
 
                 <TextView
                     android:id="@+id/text_time"
+                    android:textColor="@color/gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5:00"
@@ -67,6 +70,6 @@
         android:layout_gravity="center|end"
         android:layout_marginEnd="@dimen/padding_8"
         android:src="@drawable/arrow_forward"
-        app:tint="@color/black" />
+        app:tint="@color/gray" />
 
 </FrameLayout>
