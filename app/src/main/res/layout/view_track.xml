@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_track"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_61">
@@ -31,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Exampledsaflkasdf;klsjadasdfasdfasdflkljlkjlkjljljlkj"
+                tools:text="Exampledsaflkasdf;klsjadasdfasdfasdflkljlkjlkjljljlkj"
                 android:textSize="@dimen/t_size_16" />
 
             <LinearLayout
@@ -46,7 +47,7 @@
                     android:textColor="@color/gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Artistsdf.mnxcz.vmn.m,naer;h;oisdhflkjdfgkgfdfgdasdfasdfgdfgfdglj"
+                    tools:text="Artistsdf.mnxcz.vmn.m,naer;h;oisdhflkjdfgkgfdfgdasdfasdfgdfgfdglj"
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:layout_weight="1"
@@ -57,7 +58,7 @@
                     android:textColor="@color/gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5:00"
+                    tools:text="5:00"
                     android:textSize="@dimen/t_size_13" />
 
             </LinearLayout>
