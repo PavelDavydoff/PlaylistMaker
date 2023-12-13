@@ -7,28 +7,35 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
     private var editText: EditText? = null
     private var text: String = EMPTY
+    private val baseUrl = "https://itunes.apple.com"
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val iTunesService = retrofit.create(ITunesAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         editText = findViewById(R.id.editText)
-
-        val trackList: ArrayList<Track> = ArrayList()
-        trackList.add(Track("Smells Like Teen Spirit", "Nirvana", "5:01", getString(R.string.smells_like)))
-        trackList.add(Track("Billie Jean", "Michael Jackson", "4:35", getString(R.string.billie_jean)))
-        trackList.add(Track("Stayin' Alive", "Bee Gees", "4:10", getString(R.string.stayin_alive)))
-        trackList.add(Track("Whole Lotta Love", "Led Zeppelin", "5:33", getString(R.string.whole_lotta)))
-        trackList.add(Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", getString(R.string.sweet_child)))
+        val tracksRecycler = findViewById<RecyclerView>(R.id.track_recycler)
 
         val backButton = findViewById<ImageView>(R.id.backArrowImageView)//Кнопка "Назад"
         backButton.setOnClickListener {
@@ -58,10 +65,25 @@ class SearchActivity : AppCompatActivity() {
         }
         editText!!.addTextChangedListener(simpleTextWatcher)
 
-        val tracksRecycler = findViewById<RecyclerView>(R.id.track_recycler)
+        editText!!.setOnEditorActionListener{ _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                iTunesService.getTrack(text)
+                    .enqueue(object : Callback<ResponseTracks>{
+
+                    override fun onResponse(call: Call<ResponseTracks>, response: Response<ResponseTracks>){
+                        val tracks = response.body()?.results
+                        tracksRecycler.adapter = TrackAdapter(tracks!!)
+                    }
+                    override fun onFailure(call: Call<ResponseTracks>, t : Throwable){
+
+                    }
+                })
+                true
+            }
+            false
+            }
 
         tracksRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        tracksRecycler.adapter = TrackAdapter(trackList)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {

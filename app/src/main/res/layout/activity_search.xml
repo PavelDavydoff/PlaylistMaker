@@ -44,6 +44,8 @@
         android:textColor="@color/dn_black"
         android:textColorHint="@color/edit_text_icon"
         android:textCursorDrawable="@drawable/edit_text_cursor"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         app:iconTint="@color/edit_text_icon" />
 
         <ImageView
