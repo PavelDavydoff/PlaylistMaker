@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -35,6 +36,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         editText = findViewById(R.id.editText)
+        val notFound = findViewById<LinearLayout>(R.id.not_found)
         val tracksRecycler = findViewById<RecyclerView>(R.id.track_recycler)
 
         val backButton = findViewById<ImageView>(R.id.backArrowImageView)//Кнопка "Назад"
@@ -47,6 +49,8 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             editText!!.setText(EMPTY)
+            tracksRecycler.adapter = TrackAdapter(listOf())
+            notFound.visibility = View.GONE
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(editText!!.windowToken, 0)
@@ -70,9 +74,21 @@ class SearchActivity : AppCompatActivity() {
                 iTunesService.getTrack(text)
                     .enqueue(object : Callback<ResponseTracks>{
 
-                    override fun onResponse(call: Call<ResponseTracks>, response: Response<ResponseTracks>){
-                        val tracks = response.body()?.results
-                        tracksRecycler.adapter = TrackAdapter(tracks!!)
+                    override fun onResponse(call: Call<ResponseTracks>,
+                                            response: Response<ResponseTracks>){
+                        when(response.code()) {
+                            200 -> {
+                                if (response.body()?.results?.size == 0)
+                                {
+                                    notFound.visibility = View.VISIBLE
+                                }
+                                else {
+                                    val tracks = response.body()?.results
+                                    tracksRecycler.adapter = TrackAdapter(tracks!!)
+                                }
+                            }
+
+                        }
                     }
                     override fun onFailure(call: Call<ResponseTracks>, t : Throwable){
 

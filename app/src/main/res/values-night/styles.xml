@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="notFindPlaceholder">
+        <item name="android:src">@drawable/not_find_dark</item>
+    </style>
+
+    <style name="noInternetPlaceholder">
+        <item name="android:src">@drawable/no_internet_dark</item>
+    </style>
+</resources>

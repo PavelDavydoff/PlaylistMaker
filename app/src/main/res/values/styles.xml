@@ -52,4 +52,12 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/t_size_22</item>
     </style>
+
+    <style name="notFindPlaceholder">
+        <item name="android:src">@drawable/not_find_light</item>
+    </style>
+
+    <style name="noInternetPlaceholder">
+        <item name="android:src">@drawable/no_internet_light</item>
+    </style>
 </resources>
