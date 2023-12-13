@@ -16,7 +16,7 @@
         android:layout_gravity="start"
         android:text="@string/app_name"
         android:textColor="@color/dn_white"
-        android:textSize="@dimen/ma_text_size"
+        android:textSize="@dimen/t_size_22"
         android:paddingTop="@dimen/_16dp"
         android:paddingBottom="@dimen/_16dp"/>
 

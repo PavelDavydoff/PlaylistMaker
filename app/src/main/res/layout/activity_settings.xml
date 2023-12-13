@@ -26,7 +26,7 @@
         android:id="@+id/switchTheme"
         style="@style/SettingsElement"
         android:gravity="center_vertical"
-        android:paddingEnd="@dimen/s_padding"
+        android:paddingEnd="@dimen/padding_8"
         android:saveEnabled="false"
         android:text="@string/black_theme"
         android:thumbTint="@color/switch_Thumb"
