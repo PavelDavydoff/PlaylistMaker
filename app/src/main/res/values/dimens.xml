@@ -24,5 +24,7 @@
     <dimen name="padding_40">40dp</dimen>
     <dimen name="corner_2">2dp</dimen>
     <dimen name="size_19sp">19sp</dimen>
+    <dimen name="size_14sp">14sp</dimen>
+    <dimen name="radius_54dp">54dp</dimen>
 
 </resources>

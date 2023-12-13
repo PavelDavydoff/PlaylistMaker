@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -37,7 +38,11 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         editText = findViewById(R.id.editText)
         val notFound = findViewById<LinearLayout>(R.id.not_found)
+        val noInternet = findViewById<LinearLayout>(R.id.no_internet)
+        val refreshButton = findViewById<Button>(R.id.refresh_button)
         val tracksRecycler = findViewById<RecyclerView>(R.id.track_recycler)
+        tracksRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val backButton = findViewById<ImageView>(R.id.backArrowImageView)//Кнопка "Назад"
         backButton.setOnClickListener {
@@ -51,6 +56,7 @@ class SearchActivity : AppCompatActivity() {
             editText!!.setText(EMPTY)
             tracksRecycler.adapter = TrackAdapter(listOf())
             notFound.visibility = View.GONE
+            noInternet.visibility = View.GONE
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(editText!!.windowToken, 0)
@@ -69,38 +75,52 @@ class SearchActivity : AppCompatActivity() {
         }
         editText!!.addTextChangedListener(simpleTextWatcher)
 
-        editText!!.setOnEditorActionListener{ _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                iTunesService.getTrack(text)
-                    .enqueue(object : Callback<ResponseTracks>{
+        fun apiRequest(text: String){
+            iTunesService.getTrack(text)
+                .enqueue(object : Callback<ResponseTracks> {
 
-                    override fun onResponse(call: Call<ResponseTracks>,
-                                            response: Response<ResponseTracks>){
-                        when(response.code()) {
+                    override fun onResponse(
+                        call: Call<ResponseTracks>,
+                        response: Response<ResponseTracks>
+                    ) {
+                        when (response.code()) {
                             200 -> {
-                                if (response.body()?.results?.size == 0)
-                                {
+                                if (response.body()?.results?.size == 0) {
                                     notFound.visibility = View.VISIBLE
-                                }
-                                else {
+                                } else {
                                     val tracks = response.body()?.results
                                     tracksRecycler.adapter = TrackAdapter(tracks!!)
                                 }
                             }
 
+                            else -> {
+                                noInternet.visibility = View.VISIBLE
+                            }
                         }
                     }
-                    override fun onFailure(call: Call<ResponseTracks>, t : Throwable){
 
+                    override fun onFailure(call: Call<ResponseTracks>, t: Throwable) {
+                        noInternet.visibility = View.VISIBLE
                     }
                 })
+        }
+
+        editText!!.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                apiRequest(text)
                 true
             }
             false
-            }
+        }
 
-        tracksRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        refreshButton.setOnClickListener() {
+            apiRequest(text)
+            noInternet.visibility = View.GONE
+        }
+
     }
+
+
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
