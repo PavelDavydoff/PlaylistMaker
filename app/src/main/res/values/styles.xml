@@ -5,7 +5,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="backgroundTint">@color/dn_white</item>
-        <item name="android:textColor">@color/yp_black</item>
+        <item name="android:textColor">@color/yp_dn_black</item>
         <item name="android:textSize">@dimen/t_size_22</item>
         <item name="android:layout_marginTop">@dimen/ma_button_padding</item>
         <item name="android:layout_marginBottom">@dimen/ma_button_padding</item>
@@ -14,7 +14,7 @@
         <item name="iconGravity">textStart</item>
         <item name="iconPadding">@dimen/ma_icon_padding</item>
         <item name="iconSize">@dimen/ma_icon_size</item>
-        <item name="iconTint">@color/yp_black</item>
+        <item name="iconTint">@color/yp_dn_black</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
 
