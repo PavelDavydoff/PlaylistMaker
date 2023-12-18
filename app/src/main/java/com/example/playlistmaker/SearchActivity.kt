@@ -94,22 +94,25 @@ class SearchActivity : AppCompatActivity() {
                         if (response.isSuccessful && tracksFromResp != null) {
                             if (tracksFromResp.isEmpty()) {
                                 notFound.visibility = View.VISIBLE
+                                noInternet.visibility = View.GONE
                                 tracks.clear()
-
                             } else {
+                                tracks.clear()
                                 tracks.addAll(tracksFromResp.toMutableList())
                                 notFound.visibility = View.GONE
-
+                                noInternet.visibility = View.GONE
                             }
                         } else {
                             tracks.clear()
                             noInternet.visibility = View.VISIBLE
+                            notFound.visibility = View.GONE
                         }
                         adapter.notifyDataSetChanged()
                     }
 
                     override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
                         noInternet.visibility = View.VISIBLE
+                        notFound.visibility = View.GONE
                         tracks.clear()
                         adapter.notifyDataSetChanged()
                     }
