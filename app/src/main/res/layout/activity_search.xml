@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -44,6 +49,8 @@
         android:textColor="@color/dn_black"
         android:textColorHint="@color/edit_text_icon"
         android:textCursorDrawable="@drawable/edit_text_cursor"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
         app:iconTint="@color/edit_text_icon" />
 
         <ImageView
@@ -67,3 +74,72 @@
 
 
 </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/not_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone">
+    <ImageView
+        style="@style/notFindPlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_16dp"
+            android:layout_gravity="center"
+            android:text="@string/notFind"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_19sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/no_internet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:visibility="gone">
+        <ImageView
+            style="@style/noInternetPlaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_16dp"
+            android:layout_gravity="center"
+            android:text="@string/connection_lost"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_19sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_16dp"
+            android:gravity="center"
+            android:text="@string/no_internet"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_19sp"
+            tools:ignore="HardcodedText" />
+        <Button
+            android:id="@+id/refresh_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginTop="@dimen/_16dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/yp_black"
+            app:cornerRadius = "@dimen/radius_54dp"
+            android:text="@string/refresh"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="@dimen/size_14sp"/>
+    </LinearLayout>
+
+</FrameLayout>

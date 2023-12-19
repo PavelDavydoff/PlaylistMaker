@@ -7,30 +7,47 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
     private var editText: EditText? = null
     private var text: String = EMPTY
+    private val baseUrl = "https://itunes.apple.com"
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val iTunesService = retrofit.create(ITunesAPI::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         editText = findViewById(R.id.editText)
+        val notFound = findViewById<LinearLayout>(R.id.not_found)
+        val noInternet = findViewById<LinearLayout>(R.id.no_internet)
+        val refreshButton = findViewById<Button>(R.id.refresh_button)
+        val tracksRecycler = findViewById<RecyclerView>(R.id.track_recycler)
+        val tracks = mutableListOf<Track>()
+        val adapter = TrackAdapter(tracks)
+        tracksRecycler.adapter = adapter
+        tracksRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val trackList: ArrayList<Track> = ArrayList()
-        trackList.add(Track("Smells Like Teen Spirit", "Nirvana", "5:01", getString(R.string.smells_like)))
-        trackList.add(Track("Billie Jean", "Michael Jackson", "4:35", getString(R.string.billie_jean)))
-        trackList.add(Track("Stayin' Alive", "Bee Gees", "4:10", getString(R.string.stayin_alive)))
-        trackList.add(Track("Whole Lotta Love", "Led Zeppelin", "5:33", getString(R.string.whole_lotta)))
-        trackList.add(Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", getString(R.string.sweet_child)))
-
-        val backButton = findViewById<ImageView>(R.id.backArrowImageView)//Кнопка "Назад"
+        val backButton = findViewById<ImageView>(R.id.backArrowImageView)
         backButton.setOnClickListener {
             val backIntent = Intent(this, MainActivity::class.java)
             startActivity(backIntent)
@@ -40,6 +57,10 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             editText!!.setText(EMPTY)
+            tracks.clear()
+            adapter.notifyDataSetChanged()
+            notFound.visibility = View.GONE
+            noInternet.visibility = View.GONE
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(editText!!.windowToken, 0)
@@ -58,11 +79,62 @@ class SearchActivity : AppCompatActivity() {
         }
         editText!!.addTextChangedListener(simpleTextWatcher)
 
-        val tracksRecycler = findViewById<RecyclerView>(R.id.track_recycler)
 
-        tracksRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        tracksRecycler.adapter = TrackAdapter(trackList)
+
+        fun apiRequest(text: String) {
+            iTunesService.getTrack(text)
+                .enqueue(object : Callback<TracksResponse> {
+
+                    override fun onResponse(
+                        call: Call<TracksResponse>,
+                        response: Response<TracksResponse>
+                    ) {
+                        val tracksFromResp = response.body()?.results
+
+                        if (response.isSuccessful && tracksFromResp != null) {
+                            if (tracksFromResp.isEmpty()) {
+                                notFound.visibility = View.VISIBLE
+                                noInternet.visibility = View.GONE
+                                tracks.clear()
+                            } else {
+                                tracks.clear()
+                                tracks.addAll(tracksFromResp.toMutableList())
+                                notFound.visibility = View.GONE
+                                noInternet.visibility = View.GONE
+                            }
+                        } else {
+                            tracks.clear()
+                            noInternet.visibility = View.VISIBLE
+                            notFound.visibility = View.GONE
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
+
+                    override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                        noInternet.visibility = View.VISIBLE
+                        notFound.visibility = View.GONE
+                        tracks.clear()
+                        adapter.notifyDataSetChanged()
+                    }
+                })
+
+        }
+
+        editText!!.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                apiRequest(text)
+                true
+            }
+            false
+        }
+
+        refreshButton.setOnClickListener {
+            apiRequest(text)
+            noInternet.visibility = View.GONE
+        }
+
     }
+
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
