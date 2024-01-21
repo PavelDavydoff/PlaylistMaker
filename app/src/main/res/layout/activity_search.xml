@@ -70,7 +70,40 @@
         android:paddingTop="@dimen/padding_8"
         android:id="@+id/track_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
+
+<LinearLayout
+    android:id="@+id/history_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/t_size_22"
+        android:text="@string/searched"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingTop="@dimen/padding_8"
+        android:id="@+id/history_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/clear_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/black"
+        app:cornerRadius="@dimen/_15dp"
+
+        android:text="@string/history_clear_button"/>
+
+</LinearLayout>
 
 
 </LinearLayout>
