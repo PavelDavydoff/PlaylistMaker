@@ -27,5 +27,6 @@
     <dimen name="size_14sp">14sp</dimen>
     <dimen name="radius_54dp">54dp</dimen>
     <dimen name="_15dp">15dp</dimen>
+    <dimen name="_35dp">35dp</dimen>
 
 </resources>

@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 private const val HISTORY_KEY = "history"
 
 class SearchActivity : AppCompatActivity() {
-
+    private lateinit var searchHistory: SearchHistory
     private lateinit var editText: EditText
     private var text: String = EMPTY
     private val baseUrl = "https://itunes.apple.com"
@@ -37,8 +37,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        val historyPreferences = getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
-        historyPreferences.edit().putString(HISTORY_KEY, SearchHistory.jsonFromList(SearchHistory.historyList)).apply()
+        searchHistory.putTracks()
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,18 +49,17 @@ class SearchActivity : AppCompatActivity() {
         val tracksRecycler = findViewById<RecyclerView>(R.id.track_recycler)
         val historyLayout = findViewById<LinearLayout>(R.id.history_layout)
         val tracks = mutableListOf<Track>()
-        val adapter = TrackAdapter(tracks)
+
+        val historyPrefs = getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
+        searchHistory = SearchHistory(historyPrefs)
+        searchHistory.getTracks()
+        val adapter = TrackAdapter(tracks) { track -> searchHistory.addTrack(track) }
 
         val historyRecycler = findViewById<RecyclerView>(R.id.history_recycler)
 
-        val historyPrefs = getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
+        historyLayout.visibility = if (searchHistory.historyList.isEmpty()) View.GONE else View.VISIBLE
 
-        SearchHistory.historyJson = historyPrefs.getString(HISTORY_KEY, null)
-        SearchHistory.historyList = SearchHistory.listFromJson(SearchHistory.historyJson)
-
-        historyLayout.visibility = if (SearchHistory.historyList.isEmpty()) View.GONE else View.VISIBLE
-
-        val historyAdapter = TrackAdapter(SearchHistory.historyList)
+        val historyAdapter = TrackAdapter(searchHistory.historyList) {track -> searchHistory.addTrack(track) }
         historyRecycler.adapter = historyAdapter
         historyRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -73,7 +71,7 @@ class SearchActivity : AppCompatActivity() {
         val clearHistory = findViewById<Button>(R.id.clear_history)
         clearHistory.setOnClickListener{
             historyPrefs.edit().clear().apply()
-            SearchHistory.historyList.clear()
+            searchHistory.historyList.clear()
             historyLayout.visibility = View.GONE
             historyAdapter.notifyDataSetChanged()
         }
