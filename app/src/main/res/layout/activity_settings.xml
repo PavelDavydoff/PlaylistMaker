@@ -22,16 +22,17 @@
             android:text="@string/settings" />
     </LinearLayout>
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switchTheme"
-        style="@style/SettingsElement"
-        android:gravity="center_vertical"
-        android:paddingEnd="@dimen/padding_8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginHorizontal="@dimen/_16dp"
         android:saveEnabled="false"
         android:text="@string/black_theme"
-        android:thumbTint="@color/switch_Thumb"
-        android:trackTint="@color/switch_Track"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        android:textSize="@dimen/t_size_16"
+        app:thumbTint="@color/switch_Thumb"
+        app:trackTint="@color/switch_Track"/>
 
     <Button
         android:id="@+id/share"
