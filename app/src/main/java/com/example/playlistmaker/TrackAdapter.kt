@@ -3,9 +3,13 @@ package com.example.playlistmaker
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 
 
-class TrackAdapter(private val tracks: MutableList<Track>, private val callback: (Track) -> Unit) :
+class TrackAdapter(
+    private val tracks: MutableList<Track>,
+    private val callback: (Track) -> Unit
+) :
     RecyclerView.Adapter<TrackViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_track, parent, false)

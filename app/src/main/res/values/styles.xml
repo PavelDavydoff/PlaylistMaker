@@ -38,9 +38,9 @@
     </style>
 
     <style name="backButton">
-        <item name="android:layout_height">@dimen/_48dp</item>
-        <item name="android:layout_width">@dimen/_48dp</item>
-        <item name="tint">@color/black</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="tint">@color/yp_black</item>
         <item name="android:src">@drawable/back_arrow</item>
     </style>
 
@@ -59,5 +59,27 @@
 
     <style name="noInternetPlaceholder">
         <item name="android:src">@drawable/no_internet_light</item>
+    </style>
+
+    <style name="player_text">
+        <item name="android:textSize">@dimen/t_size_13</item>
+        <item name="android:textColor">@color/yp_black</item>
+    </style>
+
+    <style name="player_text2">
+        <item name="android:textSize">@dimen/t_size_13</item>
+        <item name="android:textColor">@color/grayDN</item>
+    </style>
+
+    <style name="play_button">
+        <item name="android:src">@drawable/play_button_day</item>
+    </style>
+
+    <style name="add_to_collection_button">
+        <item name="android:src">@drawable/add_to_collection_button</item>
+    </style>
+
+    <style name="add_to_favorites_button">
+        <item name="android:src">@drawable/add_to_favorites_button</item>
     </style>
 </resources>
