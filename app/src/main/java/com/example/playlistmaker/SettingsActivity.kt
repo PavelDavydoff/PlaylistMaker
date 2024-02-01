@@ -17,8 +17,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val backButton = findViewById<ImageView>(R.id.backArrowImageView)
         backButton.setOnClickListener{
-            val backIntent = Intent(this, MainActivity::class.java)
-            startActivity(backIntent)
+            finish()
         }
 
         val switchTheme = findViewById<SwitchMaterial>(R.id.switchTheme)
