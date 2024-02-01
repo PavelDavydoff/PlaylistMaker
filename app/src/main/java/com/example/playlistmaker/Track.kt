@@ -1,6 +1,11 @@
 package com.example.playlistmaker
 
-data class Track(
+import android.icu.text.SimpleDateFormat
+import android.os.Parcelable
+import java.io.Serializable
+import java.util.Locale
+
+data class Track (
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: Long,
@@ -9,5 +14,12 @@ data class Track(
     val releaseDate: String,
     val primaryGenreName: String,
     val country: String
-)
+) : Serializable {
+    val artworkUrl512: String
+        get() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
+    val trackTime: String get() =
+        SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+}
+
+
 

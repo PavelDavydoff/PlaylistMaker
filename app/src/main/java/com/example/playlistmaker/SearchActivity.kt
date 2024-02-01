@@ -23,7 +23,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 private const val HISTORY_KEY = "history"
-private const val INTENT_KEY = "key"
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistory: SearchHistory
@@ -65,12 +64,9 @@ class SearchActivity : AppCompatActivity() {
             callback = { track ->
                 run {
                     searchHistory.addTrack(track)
-                    val gson = Gson()
-                    val json = gson.toJson(track)
-                    startActivity(playerIntent.putExtra(INTENT_KEY, json))
+                    startActivity(playerIntent.putExtra(INTENT_KEY, track))
                 }
             }
-
         )
 
         val historyRecycler = findViewById<RecyclerView>(R.id.history_recycler)
@@ -83,9 +79,7 @@ class SearchActivity : AppCompatActivity() {
             callback = { track ->
                 run {
                     searchHistory.addTrack(track)
-                    val gson = Gson()
-                    val json = gson.toJson(track)
-                    startActivity(playerIntent.putExtra(INTENT_KEY, json))
+                    startActivity(playerIntent.putExtra(INTENT_KEY, track))
                 }
             }
         )
@@ -108,8 +102,7 @@ class SearchActivity : AppCompatActivity() {
 
         val backButton = findViewById<ImageView>(R.id.backArrowImageView)
         backButton.setOnClickListener {
-            val backIntent = Intent(this, MainActivity::class.java)
-            startActivity(backIntent)
+            finish()
         }
 
         val clearButton = findViewById<ImageView>(R.id.clearImageView)
@@ -220,6 +213,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         private const val KEY = "text"
         private const val EMPTY = ""
+        const val INTENT_KEY = "key"
     }
 
 }
