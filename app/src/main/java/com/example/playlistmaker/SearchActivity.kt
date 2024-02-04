@@ -112,6 +112,7 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
             adapter.notifyDataSetChanged()
             historyAdapter.notifyDataSetChanged()
+            if (searchHistory.historyList.isEmpty()) historyLayout.visibility = View.GONE
             notFound.visibility = View.GONE
             noInternet.visibility = View.GONE
             val inputMethodManager =
