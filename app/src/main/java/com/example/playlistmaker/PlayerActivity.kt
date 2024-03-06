@@ -1,13 +1,18 @@
 package com.example.playlistmaker
 
+import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import java.util.Date
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -16,12 +21,17 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+
     }
 
+    private var handler: Handler? = null//
+    private var startTime = 0L//
+    private var currentTime = 0L//
     private lateinit var binding: ActivityPlayerBinding
     private var url: String? = null
     private var mediaPlayer = MediaPlayer()
     private lateinit var playButton: ImageView
+    private lateinit var playTime: TextView//
     private var playerState = STATE_DEFAULT
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +41,7 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(view)
         val track = intent.getSerializableExtra(SearchActivity.INTENT_KEY) as Track
 
-        val backButton = findViewById<ImageView>(R.id.backButton)
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish()
         }
 
@@ -51,21 +60,22 @@ class PlayerActivity : AppCompatActivity() {
         binding.yearV.text = track.releaseDate.substring(0, 4)
         binding.genreV.text = track.primaryGenreName
         binding.countryV.text = track.country
-
-        playButton = findViewById(R.id.playButton)
+        playTime = findViewById(R.id.playTime) //
+        handler = Handler(Looper.getMainLooper())//
+        playButton = binding.playButton
+        playTime.text = "00:00"
 
         if (url != null) {
+            playTime
             preparePlayer()
             playButton.setOnClickListener {
                 playbackControl()
             }
         } else {
             playButton.setOnClickListener {
-                Toast.makeText(applicationContext, "Url = null", Toast.LENGTH_LONG).show()
+                Toast.makeText(applicationContext, "Url = null", Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
     override fun onPause() {
@@ -82,7 +92,6 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            playButton.isEnabled = true
             playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
@@ -95,6 +104,7 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.start()
         playButton.setImageResource(R.drawable.pause_button)
         playerState = STATE_PLAYING
+        startTimer()
     }
 
     private fun pausePlayer() {
@@ -113,5 +123,27 @@ class PlayerActivity : AppCompatActivity() {
                 startPlayer()
             }
         }
+    }
+
+    private fun startTimer() {
+        startTime = System.currentTimeMillis()
+        handler?.post(updateTimer(startTime))
+    }
+
+    private fun updateTimer(start: Long): Runnable {
+        return object : Runnable {
+            override fun run() {
+                if (playerState == STATE_PLAYING) {
+                    val current = System.currentTimeMillis()
+                    val time = current - start
+                    playTime.text = formatMilliseconds(time)
+                    handler?.postDelayed(this, 1000L)
+                }
+            }
+        }
+    }
+    fun formatMilliseconds(milliseconds: Long): String {
+        val format = SimpleDateFormat("mm:ss")
+        return format.format(Date(milliseconds))
     }
 }
