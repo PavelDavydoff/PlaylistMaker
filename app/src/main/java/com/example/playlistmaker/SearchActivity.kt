@@ -2,7 +2,6 @@ package com.example.playlistmaker
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -23,7 +23,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
 
 
 class SearchActivity : AppCompatActivity() {
@@ -79,11 +78,9 @@ class SearchActivity : AppCompatActivity() {
         adapter = TrackAdapter(
             tracks,
             callback = { track ->
-                run {
-                    searchHistory.addTrack(track)
-                    if (clickDebounce()) {
-                        startActivity(playerIntent.putExtra(INTENT_KEY, track))
-                    }
+                searchHistory.addTrack(track)
+                if (clickDebounce()) {
+                    startActivity(playerIntent.putExtra(INTENT_KEY, track))
                 }
             }
         )
@@ -96,11 +93,9 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = TrackAdapter(
             searchHistory.historyList,
             callback = { track ->
-                run {
-                    searchHistory.addTrack(track)
-                    if (clickDebounce()) {
-                        startActivity(playerIntent.putExtra(INTENT_KEY, track))
-                    }
+                searchHistory.addTrack(track)
+                if (clickDebounce()) {
+                    startActivity(playerIntent.putExtra(INTENT_KEY, track))
                 }
             }
         )
@@ -162,8 +157,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         editText.addTextChangedListener(simpleTextWatcher)
-
-
 
         editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
