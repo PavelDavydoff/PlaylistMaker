@@ -8,10 +8,6 @@
         <item name="android:src">@drawable/no_internet_dark</item>
     </style>
 
-    <style name="play_button">
-        <item name="android:src">@drawable/play_button_night</item>
-    </style>
-
     <style name="add_to_collection_button">
         <item name="android:src">@drawable/add_to_collection_button_night</item>
     </style>
