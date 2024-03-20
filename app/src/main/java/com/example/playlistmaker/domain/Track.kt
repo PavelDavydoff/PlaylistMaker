@@ -1,7 +1,6 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.domain
 
 import android.icu.text.SimpleDateFormat
-import android.os.Parcelable
 import java.io.Serializable
 import java.util.Locale
 
