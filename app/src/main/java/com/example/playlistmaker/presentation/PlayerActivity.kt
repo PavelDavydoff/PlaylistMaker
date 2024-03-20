@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation
 
-import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,16 +15,14 @@ import com.example.playlistmaker.data.TrackGetterImpl
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.MediaPlayerInteractor
 import com.example.playlistmaker.domain.TrackGetter
-import java.util.Date
 
 class PlayerActivity : AppCompatActivity() {
 
 
-    private var handler: Handler? = null//
-    private var startTime = 0L//
+    private var handler: Handler? = null
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var playButton: ImageView
-    private lateinit var playTime: TextView//
+    private lateinit var playTime: TextView
     private val player: MediaPlayerInteractor = MediaPlayerInteractorImpl()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,19 +51,29 @@ class PlayerActivity : AppCompatActivity() {
         binding.yearV.text = track.releaseDate.substring(0, 4)
         binding.genreV.text = track.primaryGenreName
         binding.countryV.text = track.country
-        playTime = findViewById(R.id.playTime) //
-        handler = Handler(Looper.getMainLooper())//
+        playTime = findViewById(R.id.playTime)
+        handler = Handler(Looper.getMainLooper())
         playButton = binding.playButton
         playTime.text = "00:00"
         player.url = track.previewUrl
 
+        val timer = TrackTimer { text ->
+            playTime.text = text
+            player.playerState == MediaPlayerInteractorImpl.STATE_PLAYING
+        }
+
 
         if (player.url != null) {
-            player.prepare (callback = {playButton.setImageResource(R.drawable.play_button)})
+            player.prepare { playButton.setImageResource(R.drawable.play_button) }
             playButton.setOnClickListener {
                 player.playbackControl(
-                    callback1 = {playButton.setImageResource(R.drawable.play_button)},
-                    callback2 = {playButton.setImageResource(R.drawable.pause_button)}
+                    {
+                        playButton.setImageResource(R.drawable.play_button)
+                    },
+                    {
+                        playButton.setImageResource(R.drawable.pause_button)
+                        timer.start()
+                    }
                 )
             }
         } else {
@@ -75,37 +82,13 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
     }
-
     override fun onPause() {
         super.onPause()
-        player.pause {playButton.setImageResource(R.drawable.play_button)}
+        player.pause { playButton.setImageResource(R.drawable.play_button) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         player.release()
-    }
-
-    private fun startTimer() {
-        startTime = System.currentTimeMillis()
-        handler?.post(updateTimer(startTime))
-    }
-
-    private fun updateTimer(start: Long): Runnable {
-        return object : Runnable {
-            override fun run() {
-                if (player.playerState == MediaPlayerInteractorImpl.STATE_PLAYING) {
-                    val current = System.currentTimeMillis()
-                    val time = current - start
-                    playTime.text = formatMilliseconds(time)
-                    handler?.postDelayed(this, 1000L)
-                    print(123)
-                }
-            }
-        }
-    }
-    fun formatMilliseconds(milliseconds: Long): String {
-        val format = SimpleDateFormat("mm:ss")
-        return format.format(Date(milliseconds))
     }
 }
