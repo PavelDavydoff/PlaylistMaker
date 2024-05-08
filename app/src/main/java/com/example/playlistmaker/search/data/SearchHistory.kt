@@ -1,14 +1,16 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.search.data
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.domain.Track
+import com.example.playlistmaker.player.domain.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-private const val HISTORY_KEY = "history"
-private const val MAX_SIZE = 10
-private const val LAST_INDEX = 9
-private const val FIRST_INDEX = 0
 class SearchHistory(private val sharedPreferences: SharedPreferences){
+    companion object{
+        private const val HISTORY_KEY = "history"
+        private const val MAX_SIZE = 10
+        private const val LAST_INDEX = 9
+        private const val FIRST_INDEX = 0
+    }
 
     var historyList = mutableListOf<Track>()
     fun getTracks(){

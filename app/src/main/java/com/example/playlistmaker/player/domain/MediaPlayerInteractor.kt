@@ -1,8 +1,10 @@
-package com.example.playlistmaker.domain
+package com.example.playlistmaker.player.domain
+
+import androidx.lifecycle.LiveData
 
 interface MediaPlayerInteractor {
-    var url: String?
     var playerState: Int
+    var url: String?
     fun prepare(callback: () -> Unit)
     fun start(callback: () -> Unit)
     fun pause(callback: () -> Unit)
