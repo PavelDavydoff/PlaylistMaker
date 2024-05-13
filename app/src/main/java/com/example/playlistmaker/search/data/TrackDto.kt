@@ -1,8 +1,8 @@
-package com.example.playlistmaker.player.domain
+package com.example.playlistmaker.search.data
 
 import java.io.Serializable
 
-data class Track (
+data class TrackDto(
     val trackName: String,
     val artistName: String,
     val trackTimeMillis: Long,
@@ -16,6 +16,3 @@ data class Track (
     val artworkUrl512: String
         get() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 }
-
-
-

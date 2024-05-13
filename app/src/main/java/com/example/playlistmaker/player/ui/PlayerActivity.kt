@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.data.TrackGetterImpl
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.TrackGetter
 import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
@@ -47,7 +48,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
         binding.collectionNameV.text = track.collectionName
-        binding.lengthD.text = track.trackTime
+        binding.lengthD.text = TrackTime.get(track)
         binding.yearV.text = track.releaseDate.substring(0, 4)
         binding.genreV.text = track.primaryGenreName
         binding.countryV.text = track.country

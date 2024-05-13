@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.data.TracksResponse
-import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.data.ITunesAPI
+import com.example.playlistmaker.search.data.TrackDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,7 +44,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var refreshButton: Button
     private lateinit var tracksRecycler: RecyclerView
     private lateinit var historyLayout: LinearLayout
-    private lateinit var tracks: MutableList<Track>
+    private lateinit var tracks: MutableList<TrackDto>
     private lateinit var progressBar: ProgressBar
 
     private var text: String = EMPTY

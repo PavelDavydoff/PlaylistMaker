@@ -12,7 +12,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences){
         private const val FIRST_INDEX = 0
     }
 
-    var historyList = mutableListOf<Track>()
+    var historyList = mutableListOf<TrackDto>()
     fun getTracks(){
         val s = sharedPreferences.getString(HISTORY_KEY, null)
         historyList = listFromJson(s)
@@ -23,18 +23,18 @@ class SearchHistory(private val sharedPreferences: SharedPreferences){
         sharedPreferences.edit().putString(HISTORY_KEY, s).apply()
     }
 
-    private fun jsonFromList(list: MutableList<Track>): String{
+    private fun jsonFromList(list: MutableList<TrackDto>): String{
         val gson = Gson()
         return gson.toJson(list)
     }
 
-    private fun listFromJson(json: String?): MutableList<Track>{
+    private fun listFromJson(json: String?): MutableList<TrackDto>{
         val gson = Gson()
-        val listType = object : TypeToken<MutableList<Track>>() {}.type
+        val listType = object : TypeToken<MutableList<TrackDto>>() {}.type
         return gson.fromJson(json, listType) ?: mutableListOf()
     }
 
-    fun addTrack(track: Track){
+    fun addTrack(track: TrackDto){
         if (historyList.contains(track)) {
             historyList.remove(track)
         }
