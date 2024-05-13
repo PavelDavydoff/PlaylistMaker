@@ -1,4 +1,4 @@
-package com.example.playlistmaker.creator
+package com.example.playlistmaker.util
 
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.ui.MediaPlayerInteractorImpl
