@@ -20,10 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.data.SearchHistory
-import com.example.playlistmaker.search.data.TracksResponse
+import com.example.playlistmaker.search.data.dto.TracksResponse
 import com.example.playlistmaker.player.ui.PlayerActivity
-import com.example.playlistmaker.search.data.ITunesAPI
-import com.example.playlistmaker.search.data.TrackDto
+import com.example.playlistmaker.search.data.network.ITunesAPI
+import com.example.playlistmaker.search.data.dto.TrackDto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

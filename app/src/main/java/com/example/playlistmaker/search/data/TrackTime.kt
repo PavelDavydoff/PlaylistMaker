@@ -1,8 +1,7 @@
 package com.example.playlistmaker.search.data
 
 import android.icu.text.SimpleDateFormat
-import com.example.playlistmaker.player.domain.Track
-import com.example.playlistmaker.search.data.TrackDto
+import com.example.playlistmaker.search.data.dto.TrackDto
 import java.util.Locale
 
 object TrackTime {
