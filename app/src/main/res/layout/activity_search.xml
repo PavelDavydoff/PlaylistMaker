@@ -136,7 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingTop="@dimen/_16dp"
-            android:text="@string/notFind"
+            android:text="@string/nothing_found"
             android:textColor="@color/black"
             android:textSize="@dimen/size_19sp" />
     </LinearLayout>
