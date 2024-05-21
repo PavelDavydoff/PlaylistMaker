@@ -2,6 +2,7 @@ package com.example.playlistmaker.search.data
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.search.data.dto.TrackDto
+import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 class SearchHistory(private val sharedPreferences: SharedPreferences){
@@ -12,7 +13,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences){
         private const val FIRST_INDEX = 0
     }
 
-    var historyList = mutableListOf<TrackDto>()
+    var historyList = mutableListOf<Track>()
     fun getTracks(){
         val s = sharedPreferences.getString(HISTORY_KEY, null)
         historyList = listFromJson(s)
@@ -23,18 +24,18 @@ class SearchHistory(private val sharedPreferences: SharedPreferences){
         sharedPreferences.edit().putString(HISTORY_KEY, s).apply()
     }
 
-    private fun jsonFromList(list: MutableList<TrackDto>): String{
+    private fun jsonFromList(list: MutableList<Track>): String{
         val gson = Gson()
         return gson.toJson(list)
     }
 
-    private fun listFromJson(json: String?): MutableList<TrackDto>{
+    private fun listFromJson(json: String?): MutableList<Track>{
         val gson = Gson()
-        val listType = object : TypeToken<MutableList<TrackDto>>() {}.type
+        val listType = object : TypeToken<MutableList<Track>>() {}.type
         return gson.fromJson(json, listType) ?: mutableListOf()
     }
 
-    fun addTrack(track: TrackDto){
+    fun addTrack(track: Track){
         if (historyList.contains(track)) {
             historyList.remove(track)
         }

@@ -3,6 +3,7 @@ package com.example.playlistmaker.player.ui
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.TrackGetter
+import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
 
 class PlayerActivity : AppCompatActivity() {
@@ -31,9 +33,12 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
         val trackGetter: TrackGetter = TrackGetterImpl()
         val track = trackGetter.getTrack(INTENT_KEY, intent)
+
         binding.backButton.setOnClickListener {
+            Log.d("PlayerActivity", "${player.playerState}")
             finish()
         }
 

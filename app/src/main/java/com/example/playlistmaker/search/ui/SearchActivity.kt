@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -15,27 +16,20 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.data.SearchHistory
-import com.example.playlistmaker.search.data.dto.TracksResponse
 import com.example.playlistmaker.player.ui.PlayerActivity
-import com.example.playlistmaker.search.data.network.ITunesAPI
-import com.example.playlistmaker.search.data.dto.TrackDto
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.presentation.SearchViewModel
+import com.example.playlistmaker.search.ui.models.TracksState
 
-
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : ComponentActivity() {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
-
-    private val searchRunnable = Runnable { apiRequest(text) }
 
     private lateinit var notFound: LinearLayout
     private lateinit var searchHistory: SearchHistory
@@ -44,29 +38,49 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var refreshButton: Button
     private lateinit var tracksRecycler: RecyclerView
     private lateinit var historyLayout: LinearLayout
-    private lateinit var tracks: MutableList<TrackDto>
     private lateinit var progressBar: ProgressBar
-
-    private var text: String = EMPTY
-    private val baseUrl = "https://itunes.apple.com"
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val iTunesService = retrofit.create(ITunesAPI::class.java)
+    private lateinit var textWatcher: TextWatcher
 
     private lateinit var adapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
 
+    private lateinit var viewModel: SearchViewModel
+
+    private lateinit var text: String
+
     override fun onStop() {
         super.onStop()
         searchHistory.putTracks()
-        historyAdapter.notifyDataSetChanged()
+        Log.d("SearchActivity", "onStop")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("SearchActivity", "onPause")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (searchHistory.historyList.isNotEmpty()){
+            viewModel.setState(TracksState.History(searchHistory.historyList))
+        }
+        Log.d("SearchActivity", "onResume")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("SearchActivity", "onStart")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        textWatcher.let { editText.removeTextChangedListener(it) }
+        Log.d("SearchActivity", "onDestroy")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("SearchActivity", "onCreate")
         setContentView(R.layout.activity_search)
         editText = findViewById(R.id.editText)
         notFound = findViewById(R.id.not_found)
@@ -74,15 +88,19 @@ class SearchActivity : AppCompatActivity() {
         refreshButton = findViewById(R.id.refresh_button)
         tracksRecycler = findViewById(R.id.track_recycler)
         historyLayout = findViewById(R.id.history_layout)
-        tracks = mutableListOf()
         progressBar = findViewById(R.id.progressBar)
+
+        text = ""
+
+        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
 
         val historyPrefs = getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
         searchHistory = SearchHistory(historyPrefs)
         searchHistory.getTracks()
+
         val playerIntent = Intent(this, PlayerActivity::class.java)
+
         adapter = TrackAdapter(
-            tracks,
             callback = { track ->
                 searchHistory.addTrack(track)
                 if (clickDebounce()) {
@@ -93,11 +111,7 @@ class SearchActivity : AppCompatActivity() {
 
         val historyRecycler = findViewById<RecyclerView>(R.id.history_recycler)
 
-        historyLayout.visibility =
-            if (searchHistory.historyList.isEmpty()) View.GONE else View.VISIBLE
-
         historyAdapter = TrackAdapter(
-            searchHistory.historyList,
             callback = { track ->
                 searchHistory.addTrack(track)
                 if (clickDebounce()) {
@@ -109,6 +123,7 @@ class SearchActivity : AppCompatActivity() {
         historyRecycler.adapter = historyAdapter
         historyRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
 
         tracksRecycler.adapter = adapter
         tracksRecycler.layoutManager =
@@ -131,95 +146,45 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             editText.setText(EMPTY)
-            tracks.clear()
+            showHistory(searchHistory.historyList)
+            /*adapter.tracks.clear()
             adapter.notifyDataSetChanged()
-            historyAdapter.notifyDataSetChanged()
-            if (searchHistory.historyList.isEmpty()) historyLayout.visibility = View.GONE
-            notFound.visibility = View.GONE
-            noInternet.visibility = View.GONE
-            val inputMethodManager =
+            historyAdapter.notifyDataSetChanged()*/
+            //viewModel.clearButtonClicked(historyAdapter.tracks)
+            /*val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(editText.windowToken, 0)
+            inputMethodManager?.hideSoftInputFromWindow(editText.windowToken, 0)*/
         }
 
-        val simpleTextWatcher = object : TextWatcher {
+        textWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 clearButton.visibility = clearButtonVisibility(p0)
-                if (editText.hasFocus() && p0?.isEmpty() == false) historyLayout.visibility =
-                    View.GONE
-                else {
-                    historyLayout.visibility = View.VISIBLE
-                    historyAdapter.notifyDataSetChanged()
-                }
-                if (p0.toString().isNotEmpty()) {
-                    searchDebounce()
-                }
+                viewModel.searchDebounce(p0.toString())
             }
 
             override fun afterTextChanged(p0: Editable?) {
                 text = p0.toString()
             }
         }
-        editText.addTextChangedListener(simpleTextWatcher)
+        textWatcher.let { editText.addTextChangedListener(it) }
 
-        editText.setOnEditorActionListener { _, actionId, _ ->
+       /* editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 apiRequest(text)
             }
             false
+        }*/
+
+        viewModel.observeState().observe(this){
+            render(it)
         }
 
         refreshButton.setOnClickListener {
-            apiRequest(text)
+            viewModel.repeatRequest()
             noInternet.visibility = View.GONE
         }
-
-    }
-
-    private fun apiRequest(text: String) {
-        progressBar.visibility = View.VISIBLE
-        iTunesService.getTrack(text)
-            .enqueue(object : Callback<TracksResponse> {
-
-                override fun onResponse(
-                    call: Call<TracksResponse>,
-                    response: Response<TracksResponse>
-                ) {
-                    val tracksFromResp = response.body()?.results
-
-                    if (response.isSuccessful && tracksFromResp != null) {
-                        if (tracksFromResp.isEmpty()) {
-                            progressBar.visibility = View.GONE
-                            notFound.visibility = View.VISIBLE
-                            noInternet.visibility = View.GONE
-                            tracks.clear()
-                        } else {
-                            progressBar.visibility = View.GONE
-                            tracks.clear()
-                            tracks.addAll(tracksFromResp.toMutableList())
-                            notFound.visibility = View.GONE
-                            noInternet.visibility = View.GONE
-                        }
-                    } else {
-                        progressBar.visibility = View.GONE
-                        tracks.clear()
-                        noInternet.visibility = View.VISIBLE
-                        notFound.visibility = View.GONE
-                    }
-                    adapter.notifyDataSetChanged()
-                }
-
-                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                    progressBar.visibility = View.GONE
-                    noInternet.visibility = View.VISIBLE
-                    notFound.visibility = View.GONE
-                    tracks.clear()
-                    adapter.notifyDataSetChanged()
-                }
-            })
-
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -241,7 +206,69 @@ class SearchActivity : AppCompatActivity() {
         editText.setText(restoredText)
     }
 
-    private fun clickDebounce(): Boolean {
+    private fun render(state:TracksState){//готово
+        when(state){
+            is TracksState.Loading -> showLoading()
+            is TracksState.Content -> showContent(state.tracks)
+            is TracksState.Error -> showError()
+            is TracksState.Empty -> showEmpty()
+            is TracksState.History -> showHistory(searchHistory.historyList)
+        }
+    }
+    private fun showHistory(tracks: List<Track>){//готово
+        Log.d("SearchActivity", "showHistory")
+        historyLayout.visibility =
+            if (searchHistory.historyList.isEmpty()) View.GONE else View.VISIBLE
+        historyAdapter.notifyDataSetChanged()
+
+        tracksRecycler.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        noInternet.visibility = View.GONE
+        notFound.visibility = View.GONE
+
+        historyAdapter.tracks.clear()
+        historyAdapter.tracks.addAll(tracks)
+
+    }
+    private fun showLoading(){//готово
+        Log.d("SearchActivity", "showLoading")
+        tracksRecycler.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+        noInternet.visibility = View.GONE
+        notFound.visibility = View.GONE
+        historyLayout.visibility = View.GONE
+    }
+    private fun showError(){//готово
+        Log.d("SearchActivity", "showError")
+        tracksRecycler.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        noInternet.visibility = View.VISIBLE
+        notFound.visibility = View.GONE
+        historyLayout.visibility = View.GONE
+    }
+    private fun showEmpty(){//готово
+        Log.d("SearchActivity", "showEmpty")
+        tracksRecycler.visibility = View.GONE
+        progressBar.visibility = View.GONE
+        noInternet.visibility = View.GONE
+        notFound.visibility = View.VISIBLE
+        historyLayout.visibility = View.GONE
+    }
+    private fun showContent(tracks: List<Track>){//готово
+        Log.d("SearchActivity", "showContent")
+        tracksRecycler.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+        noInternet.visibility = View.GONE
+        notFound.visibility = View.GONE
+        historyLayout.visibility = View.GONE
+
+        adapter.tracks.clear()
+        adapter.tracks.addAll(tracks)
+        adapter.notifyDataSetChanged()
+    }
+
+
+    private fun clickDebounce(): Boolean {//готово
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -250,18 +277,12 @@ class SearchActivity : AppCompatActivity() {
         return current
     }
 
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
-
     companion object {
         private const val KEY = "text"
         private const val EMPTY = ""
         const val INTENT_KEY = "key"
         private const val HISTORY_KEY = "history"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
 }

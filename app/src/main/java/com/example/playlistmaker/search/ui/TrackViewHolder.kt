@@ -9,6 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.search.data.TrackTime
+import com.example.playlistmaker.search.domain.models.Track
 
 class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val imageTrack = itemView.findViewById<ImageView>(R.id.image_track)
@@ -16,7 +17,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val textArtist = itemView.findViewById<TextView>(R.id.text_artist)
     private val textTime = itemView.findViewById<TextView>(R.id.text_time)
 
-    fun bind(model: TrackDto){
+    fun bind(model: Track){
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .centerCrop()

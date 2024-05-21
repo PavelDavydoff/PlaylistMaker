@@ -7,4 +7,5 @@ sealed interface TracksState {
     data class Content(val tracks: List<Track>) : TracksState
     data class Error(val errorMessage: String) : TracksState
     data class Empty(val message: String) : TracksState
+    data class History(val tracks: List<Track>): TracksState
 }

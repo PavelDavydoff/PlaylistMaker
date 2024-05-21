@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -26,11 +27,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val stateLiveData = MutableLiveData<TracksState>()
     fun observeState(): LiveData<TracksState> = stateLiveData
 
-    private val showToast = SingleLiveEvent<String>()
-    fun observeShowToast(): LiveData<String> = showToast
+    /*private val showToast = SingleLiveEvent<String>()
+    fun observeShowToast(): LiveData<String> = showToast*/
 
-    private val toastState = MutableLiveData<ToastState>(ToastState.None)
-    fun observeToastState(): LiveData<ToastState> = toastState
+    /*private val toastState = MutableLiveData<ToastState>(ToastState.None)
+    fun observeToastState(): LiveData<ToastState> = toastState*/
 
     private var latestSearchText: String? = null
 
@@ -39,7 +40,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun searchDebounce(changedText: String) {
-        if (latestSearchText == changedText) {
+        if (latestSearchText == changedText || changedText.isEmpty()) {
             return
         }
         this.latestSearchText = changedText
@@ -51,7 +52,18 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         handler.postAtTime(searchRunnable, SEARCH_REQUEST_TOKEN, postTime)
     }
 
+    fun repeatRequest(){
+        if (latestSearchText != null) {
+            searchRequest(latestSearchText!!)
+        }
+    }
+
+    fun setState(state: TracksState){
+        stateLiveData.postValue(state)
+    }
+
     private fun searchRequest(newSearchText: String) {
+        Log.d("SearchViewModel", "searchRequest $newSearchText")
         if (newSearchText.isNotEmpty()) {
             renderState(TracksState.Loading)
         }
@@ -65,10 +77,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 when {
                     errorMessage != null -> {
                         renderState(TracksState.Error(getApplication<Application>().getString(R.string.something_went_wrong)))
-                        showToast.postValue(errorMessage)
+                        //showToast.postValue(errorMessage)
                     }
 
                     tracks.isEmpty() -> {
+                        Log.d("SearchViewModel", "trackIsEmpty")
                         renderState(TracksState.Empty(getApplication<Application>().getString(R.string.nothing_found)))
                     }
 
@@ -81,14 +94,19 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun renderState(state: TracksState) {
+        Log.d("SearchViewModle", "redterState: $state")
         stateLiveData.postValue(state)
+    }
+
+    fun clearButtonClicked(tracks: List<Track>) {
+        renderState(TracksState.Content(tracks))
     }
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
 
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory{
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 SearchViewModel(this[APPLICATION_KEY] as Application)
             }
