@@ -146,14 +146,11 @@ class SearchActivity : ComponentActivity() {
 
         clearButton.setOnClickListener {
             editText.setText(EMPTY)
-            showHistory(searchHistory.historyList)
-            /*adapter.tracks.clear()
-            adapter.notifyDataSetChanged()
-            historyAdapter.notifyDataSetChanged()*/
-            //viewModel.clearButtonClicked(historyAdapter.tracks)
-            /*val inputMethodManager =
+            viewModel.setState(TracksState.History(searchHistory.historyList))
+
+            val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(editText.windowToken, 0)*/
+            inputMethodManager?.hideSoftInputFromWindow(editText.windowToken, 0)
         }
 
         textWatcher = object : TextWatcher {
@@ -206,7 +203,7 @@ class SearchActivity : ComponentActivity() {
         editText.setText(restoredText)
     }
 
-    private fun render(state:TracksState){//готово
+    private fun render(state:TracksState){
         when(state){
             is TracksState.Loading -> showLoading()
             is TracksState.Content -> showContent(state.tracks)
@@ -215,7 +212,7 @@ class SearchActivity : ComponentActivity() {
             is TracksState.History -> showHistory(searchHistory.historyList)
         }
     }
-    private fun showHistory(tracks: List<Track>){//готово
+    private fun showHistory(tracks: List<Track>){
         Log.d("SearchActivity", "showHistory")
         historyLayout.visibility =
             if (searchHistory.historyList.isEmpty()) View.GONE else View.VISIBLE
@@ -230,7 +227,7 @@ class SearchActivity : ComponentActivity() {
         historyAdapter.tracks.addAll(tracks)
 
     }
-    private fun showLoading(){//готово
+    private fun showLoading(){
         Log.d("SearchActivity", "showLoading")
         tracksRecycler.visibility = View.GONE
         progressBar.visibility = View.VISIBLE
@@ -238,7 +235,7 @@ class SearchActivity : ComponentActivity() {
         notFound.visibility = View.GONE
         historyLayout.visibility = View.GONE
     }
-    private fun showError(){//готово
+    private fun showError(){
         Log.d("SearchActivity", "showError")
         tracksRecycler.visibility = View.GONE
         progressBar.visibility = View.GONE
@@ -246,7 +243,7 @@ class SearchActivity : ComponentActivity() {
         notFound.visibility = View.GONE
         historyLayout.visibility = View.GONE
     }
-    private fun showEmpty(){//готово
+    private fun showEmpty(){
         Log.d("SearchActivity", "showEmpty")
         tracksRecycler.visibility = View.GONE
         progressBar.visibility = View.GONE
@@ -254,7 +251,7 @@ class SearchActivity : ComponentActivity() {
         notFound.visibility = View.VISIBLE
         historyLayout.visibility = View.GONE
     }
-    private fun showContent(tracks: List<Track>){//готово
+    private fun showContent(tracks: List<Track>){
         Log.d("SearchActivity", "showContent")
         tracksRecycler.visibility = View.VISIBLE
         progressBar.visibility = View.GONE
@@ -268,7 +265,7 @@ class SearchActivity : ComponentActivity() {
     }
 
 
-    private fun clickDebounce(): Boolean {//готово
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false

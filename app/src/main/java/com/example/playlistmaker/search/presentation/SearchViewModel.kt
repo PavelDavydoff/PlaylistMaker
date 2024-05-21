@@ -76,13 +76,12 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
                 }
                 when {
                     errorMessage != null -> {
-                        renderState(TracksState.Error(getApplication<Application>().getString(R.string.something_went_wrong)))
-                        //showToast.postValue(errorMessage)
+                        renderState(TracksState.Error)
                     }
 
                     tracks.isEmpty() -> {
                         Log.d("SearchViewModel", "trackIsEmpty")
-                        renderState(TracksState.Empty(getApplication<Application>().getString(R.string.nothing_found)))
+                        renderState(TracksState.Empty)
                     }
 
                     else -> {
@@ -94,12 +93,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun renderState(state: TracksState) {
-        Log.d("SearchViewModle", "redterState: $state")
+        Log.d("SearchViewModel", "renderState: $state")
         stateLiveData.postValue(state)
-    }
-
-    fun clearButtonClicked(tracks: List<Track>) {
-        renderState(TracksState.Content(tracks))
     }
 
     companion object {
