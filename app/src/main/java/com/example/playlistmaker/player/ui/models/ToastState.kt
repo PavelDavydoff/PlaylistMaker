@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.ui.models
+package com.example.playlistmaker.player.ui.models
 
 sealed interface ToastState {
     data object None : ToastState

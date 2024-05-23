@@ -12,11 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.models.SingleLiveEvent
-import com.example.playlistmaker.search.ui.models.ToastState
 import com.example.playlistmaker.search.ui.models.TracksState
 import com.example.playlistmaker.util.Creator
 

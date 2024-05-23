@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -15,8 +16,8 @@ import com.example.playlistmaker.player.data.TrackGetterImpl
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
+import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.domain.TrackGetter
-import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
 
 class PlayerActivity : AppCompatActivity() {
@@ -26,7 +27,9 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
-    private val player: MediaPlayerInteractor = MediaPlayerInteractorImpl()
+    private lateinit var player: MediaPlayerInteractor
+
+    private lateinit var viewModel: PlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +39,10 @@ class PlayerActivity : AppCompatActivity() {
 
         val trackGetter: TrackGetter = TrackGetterImpl()
         val track = trackGetter.getTrack(INTENT_KEY, intent)
+
+        player = MediaPlayerInteractorImpl()
+
+        viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
 
         binding.backButton.setOnClickListener {
             Log.d("PlayerActivity", "${player.playerState}")
@@ -68,25 +75,48 @@ class PlayerActivity : AppCompatActivity() {
             player.playerState == MediaPlayerInteractorImpl.STATE_PLAYING
         }
 
+        viewModel.observeState().observe(this){
+            render(it)
+        }
+
 
         if (player.url != null) {
             player.prepare { playButton.setImageResource(R.drawable.play_button) }
             playButton.setOnClickListener {
                 player.playbackControl(
                     {
-                        playButton.setImageResource(R.drawable.play_button)
+                        viewModel.pause()
                     },
                     {
-                        playButton.setImageResource(R.drawable.pause_button)
+                        viewModel.play()
                         timer.start()
                     }
                 )
             }
         } else {
             playButton.setOnClickListener {
-                Toast.makeText(applicationContext, "Url = null", Toast.LENGTH_SHORT).show()
+                showToast()
             }
         }
+    }
+
+    private fun render(state: PlayerState){
+        when(state){
+            is PlayerState.Playing -> showPlaying()
+            is PlayerState.Paused -> showPaused()
+        }
+    }
+
+    private fun showToast(){
+        Toast.makeText(applicationContext, "Url = null", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showPlaying(){
+        playButton.setImageResource(R.drawable.pause_button)
+    }
+
+    private fun showPaused(){
+        playButton.setImageResource(R.drawable.play_button)
     }
     override fun onPause() {
         super.onPause()
