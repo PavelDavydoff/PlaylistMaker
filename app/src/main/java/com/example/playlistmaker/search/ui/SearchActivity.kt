@@ -21,8 +21,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.player.ui.PlayerActivity
+import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
@@ -41,12 +41,12 @@ class SearchActivity : ComponentActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var textWatcher: TextWatcher
 
-    private lateinit var adapter: TrackAdapter
+    private lateinit var tracksAdapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
 
     private lateinit var viewModel: SearchViewModel
 
-    private lateinit var text: String
+    private lateinit var queryInput: String
 
     override fun onStop() {
         super.onStop()
@@ -61,9 +61,7 @@ class SearchActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (searchHistory.historyList.isNotEmpty()){
-            viewModel.setState(TracksState.History(searchHistory.historyList))
-        }
+        updateAdapter(historyAdapter, searchHistory.historyList)
         Log.d("SearchActivity", "onResume")
     }
 
@@ -90,7 +88,7 @@ class SearchActivity : ComponentActivity() {
         historyLayout = findViewById(R.id.history_layout)
         progressBar = findViewById(R.id.progressBar)
 
-        text = ""
+        queryInput = ""
 
         viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
 
@@ -100,7 +98,7 @@ class SearchActivity : ComponentActivity() {
 
         val playerIntent = Intent(this, PlayerActivity::class.java)
 
-        adapter = TrackAdapter(
+        tracksAdapter = TrackAdapter(
             callback = { track ->
                 searchHistory.addTrack(track)
                 if (clickDebounce()) {
@@ -125,7 +123,7 @@ class SearchActivity : ComponentActivity() {
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
 
-        tracksRecycler.adapter = adapter
+        tracksRecycler.adapter = tracksAdapter
         tracksRecycler.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -153,6 +151,13 @@ class SearchActivity : ComponentActivity() {
             inputMethodManager?.hideSoftInputFromWindow(editText.windowToken, 0)
         }
 
+        editText.setOnFocusChangeListener { _, hasFocus ->
+            if(hasFocus) {
+                viewModel.setState(TracksState.History(searchHistory.historyList))
+                Log.d("SearchActivity", "editTextHasFocus")
+            }
+        }
+
         textWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
@@ -162,17 +167,17 @@ class SearchActivity : ComponentActivity() {
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                text = p0.toString()
+                queryInput = p0.toString()
             }
         }
         textWatcher.let { editText.addTextChangedListener(it) }
 
-       /* editText.setOnEditorActionListener { _, actionId, _ ->
+        editText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                apiRequest(text)
+                viewModel.forcedRequest(queryInput)
             }
             false
-        }*/
+        }
 
         viewModel.observeState().observe(this){
             render(it)
@@ -194,7 +199,7 @@ class SearchActivity : ComponentActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(KEY, text)
+        outState.putString(KEY, queryInput)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -216,16 +221,13 @@ class SearchActivity : ComponentActivity() {
         Log.d("SearchActivity", "showHistory")
         historyLayout.visibility =
             if (searchHistory.historyList.isEmpty()) View.GONE else View.VISIBLE
-        historyAdapter.notifyDataSetChanged()
 
         tracksRecycler.visibility = View.GONE
         progressBar.visibility = View.GONE
         noInternet.visibility = View.GONE
         notFound.visibility = View.GONE
 
-        historyAdapter.tracks.clear()
-        historyAdapter.tracks.addAll(tracks)
-
+        updateAdapter(historyAdapter, tracks)
     }
     private fun showLoading(){
         Log.d("SearchActivity", "showLoading")
@@ -259,6 +261,10 @@ class SearchActivity : ComponentActivity() {
         notFound.visibility = View.GONE
         historyLayout.visibility = View.GONE
 
+        updateAdapter(tracksAdapter, tracks)
+    }
+
+    private fun updateAdapter(adapter: TrackAdapter, tracks: List<Track>){
         adapter.tracks.clear()
         adapter.tracks.addAll(tracks)
         adapter.notifyDataSetChanged()

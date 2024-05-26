@@ -16,7 +16,7 @@ object Creator {
     fun provideTracksInteractor(context: Context): TracksInteractor{
         return TracksInteractorImpl(getTracksRepository(context))
     }
-    fun mediaPlayerProvider(): MediaPlayerInteractor {
+    fun mediaPlayerInteractorProvider(): MediaPlayerInteractor {
         return MediaPlayerInteractorImpl()
     }
 }

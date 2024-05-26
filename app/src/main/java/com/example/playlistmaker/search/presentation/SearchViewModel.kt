@@ -24,12 +24,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val stateLiveData = MutableLiveData<TracksState>()
     fun observeState(): LiveData<TracksState> = stateLiveData
 
-    /*private val showToast = SingleLiveEvent<String>()
-    fun observeShowToast(): LiveData<String> = showToast*/
-
-    /*private val toastState = MutableLiveData<ToastState>(ToastState.None)
-    fun observeToastState(): LiveData<ToastState> = toastState*/
-
     private var latestSearchText: String? = null
 
     override fun onCleared() {
@@ -53,6 +47,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         if (latestSearchText != null) {
             searchRequest(latestSearchText!!)
         }
+    }
+
+    fun forcedRequest(queryInput: String){
+        searchRequest(queryInput)
     }
 
     fun setState(state: TracksState){

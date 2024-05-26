@@ -44,14 +44,14 @@ class MediaPlayerInteractorImpl : MediaPlayerInteractor {
         player.release()
     }
 
-    override fun playbackControl(callback1: () -> Unit, callback2: () -> Unit) {
+    override fun playbackControl(isPlaying: () -> Unit, isPause: () -> Unit) {
         when (playerState) {
             STATE_PLAYING -> {
-                pause { callback1() }
+                pause { isPlaying() }
             }
 
             STATE_PREPARED, STATE_PAUSED -> {
-                start { callback2() }
+                start { isPause() }
             }
         }
     }

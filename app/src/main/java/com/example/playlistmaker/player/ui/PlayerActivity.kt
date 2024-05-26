@@ -12,13 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.player.data.TrackGetterImpl
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.ui.models.PlayerState
-import com.example.playlistmaker.player.domain.TrackGetter
+import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
+import com.example.playlistmaker.util.Creator
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -37,10 +37,9 @@ class PlayerActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val trackGetter: TrackGetter = TrackGetterImpl()
-        val track = trackGetter.getTrack(INTENT_KEY, intent)
+        val track = intent.getSerializableExtra(INTENT_KEY) as Track
 
-        player = MediaPlayerInteractorImpl()
+        player = Creator.mediaPlayerInteractorProvider()
 
         viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
 
@@ -102,8 +101,8 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun render(state: PlayerState){
         when(state){
-            is PlayerState.Playing -> showPlaying()
-            is PlayerState.Paused -> showPaused()
+            is PlayerState.Playing -> playButton.setImageResource(R.drawable.pause_button)
+            is PlayerState.Paused -> playButton.setImageResource(R.drawable.play_button)
         }
     }
 
@@ -111,13 +110,6 @@ class PlayerActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, "Url = null", Toast.LENGTH_SHORT).show()
     }
 
-    private fun showPlaying(){
-        playButton.setImageResource(R.drawable.pause_button)
-    }
-
-    private fun showPaused(){
-        playButton.setImageResource(R.drawable.play_button)
-    }
     override fun onPause() {
         super.onPause()
         player.pause { playButton.setImageResource(R.drawable.play_button) }
