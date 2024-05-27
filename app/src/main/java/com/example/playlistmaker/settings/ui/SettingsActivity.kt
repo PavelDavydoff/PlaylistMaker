@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.settings.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import com.example.playlistmaker.App
+import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 const val THEME_KEY = "key_for_theme"

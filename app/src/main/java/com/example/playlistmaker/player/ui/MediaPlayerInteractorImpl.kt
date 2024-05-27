@@ -1,7 +1,7 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.player.ui
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.domain.MediaPlayerInteractor
+import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 
 class MediaPlayerInteractorImpl : MediaPlayerInteractor {
     companion object {
@@ -44,14 +44,14 @@ class MediaPlayerInteractorImpl : MediaPlayerInteractor {
         player.release()
     }
 
-    override fun playbackControl(callback1: () -> Unit, callback2: () -> Unit) {
+    override fun playbackControl(isPlaying: () -> Unit, isPause: () -> Unit) {
         when (playerState) {
             STATE_PLAYING -> {
-                pause {callback1()}
+                pause { isPlaying() }
             }
 
             STATE_PREPARED, STATE_PAUSED -> {
-                start{callback2()}
+                start { isPause() }
             }
         }
     }
