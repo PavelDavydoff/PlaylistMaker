@@ -1,63 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/s_medium_padding">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/back"
-            style="@style/backButton" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/s_medium_padding">
 
-        <TextView
-            style="@style/title"
-            android:text="@string/search" />
+            <ImageView
+                android:id="@+id/backArrowImageView"
+                style="@style/backButton" />
+
+            <TextView
+                style="@style/titleTextView"
+                android:text="@string/search" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_36dp"
+                android:layout_marginStart="@dimen/_16dp"
+                android:layout_marginEnd="@dimen/_16dp"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/search"
+                android:drawablePadding="@dimen/padding_8"
+                android:drawableTint="@color/edit_text_icon"
+                android:hint="@string/search"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:lines="1"
+                android:maxLength="30"
+                android:paddingStart="@dimen/padding_12"
+                android:paddingEnd="@dimen/padding_12"
+                android:singleLine="true"
+                android:textColor="@color/dn_black"
+                android:textColorHint="@color/edit_text_icon"
+                android:textCursorDrawable="@drawable/edit_text_cursor"
+                app:iconTint="@color/edit_text_icon" />
+
+            <ImageView
+                android:id="@+id/clearImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingTop="@dimen/_10dp"
+                android:paddingEnd="@dimen/_28dp"
+                android:src="@drawable/cross"
+                android:visibility="gone"
+                app:tint="@color/edit_text_icon" />
+
+        </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/track_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_8"
+            android:visibility="visible" />
+
+
+            <LinearLayout
+                android:id="@+id/history_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingTop="@dimen/_8dp"
+                    android:text="@string/searched"
+                    android:textColor="@color/yp_black"
+                    android:textSize="@dimen/size_19sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/history_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_8"
+                    android:layout_weight="1"/>
+
+
+                <Button
+                    android:id="@+id/clear_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_16dp"
+                    android:backgroundTint="@color/yp_black"
+                    android:paddingHorizontal="@dimen/_16dp"
+                    android:paddingVertical="@dimen/_10dp"
+                    android:text="@string/history_clear_button"
+                    android:textAllCaps="false"
+                    android:textColor="@color/yp_white"
+                    android:textSize="@dimen/size_14sp"
+                    app:cornerRadius="@dimen/radius_54dp" />
+
+            </LinearLayout>
+
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <EditText
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_36dp"
-        android:layout_marginStart="@dimen/padding_16"
-        android:layout_marginEnd="@dimen/padding_16"
-        android:background="@drawable/edit_text_background"
-        android:drawableStart="@drawable/search"
-        android:drawablePadding="@dimen/s_padding"
-        android:drawableTint="@color/edit_text_icon"
-        android:hint="@string/search"
-        android:inputType="text"
-        android:lines="1"
-        android:maxLength="30"
-        android:paddingStart="@dimen/padding_12"
-        android:paddingEnd="@dimen/padding_12"
-        android:textColor="@color/DN_Black"
-        android:textColorHint="@color/edit_text_icon"
-        android:textCursorDrawable="@drawable/edit_text_cursor"
-        app:iconTint="@color/edit_text_icon" />
+    <LinearLayout
+        android:id="@+id/not_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
-            android:id="@+id/clearIcon"
+            style="@style/notFindPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/cross"
-            android:layout_gravity="end"
-            android:paddingEnd="24dp"
-            android:paddingTop="10dp"
-            app:tint="@color/edit_text_icon"
-            android:visibility="gone" />
+            android:layout_gravity="center" />
 
-    </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/_16dp"
+            android:text="@string/nothing_found"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_19sp" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/no_internet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-</LinearLayout>
+        <ImageView
+            style="@style/noInternetPlaceholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingTop="@dimen/_16dp"
+            android:text="@string/connection_lost"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_19sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/_16dp"
+            android:text="@string/no_internet"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_19sp"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/refresh_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_16dp"
+            android:backgroundTint="@color/yp_black"
+            android:text="@string/refresh"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_14sp"
+            app:cornerRadius="@dimen/radius_54dp" />
+    </LinearLayout>
+
+    <ProgressBar android:id="@+id/progressBar"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/dn_blue"
+        android:visibility="gone"/>
+
+</FrameLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="notFindPlaceholder">
+        <item name="android:src">@drawable/not_find_dark</item>
+    </style>
+
+    <style name="noInternetPlaceholder">
+        <item name="android:src">@drawable/no_internet_dark</item>
+    </style>
+
+    <style name="add_to_collection_button">
+        <item name="android:src">@drawable/add_to_collection_button_night</item>
+    </style>
+
+    <style name="add_to_favorites_button">
+        <item name="android:src">@drawable/add_to_favorites_button_night</item>
+    </style>
+</resources>
