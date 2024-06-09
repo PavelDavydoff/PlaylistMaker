@@ -1,8 +1,6 @@
 package com.example.playlistmaker.util
 
 import android.content.Context
-import com.example.playlistmaker.player.domain.MediaPlayerInteractor
-import com.example.playlistmaker.player.ui.MediaPlayerInteractorImpl
 import com.example.playlistmaker.search.data.TracksRepositoryImpl
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.search.domain.api.TracksInteractor
@@ -16,7 +14,7 @@ object Creator {
     fun provideTracksInteractor(context: Context): TracksInteractor{
         return TracksInteractorImpl(getTracksRepository(context))
     }
-    fun mediaPlayerInteractorProvider(): MediaPlayerInteractor {
+    /*fun mediaPlayerInteractorProvider(): MediaPlayerInteractor {
         return MediaPlayerInteractorImpl()
-    }
+    }*/
 }

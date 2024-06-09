@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -19,7 +18,8 @@ import com.example.playlistmaker.player.presentation.PlayerViewModel
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
-import com.example.playlistmaker.util.Creator
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {
 
@@ -28,9 +28,10 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
-    private lateinit var player: MediaPlayerInteractor
-
-    private lateinit var viewModel: PlayerViewModel
+    private val player: MediaPlayerInteractor by inject()
+    //private lateinit var player: MediaPlayerInteractor
+    private val viewModel: PlayerViewModel by viewModel()
+    //private lateinit var viewModel: PlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +41,9 @@ class PlayerActivity : AppCompatActivity() {
 
         val track = intent.getSerializableExtra(INTENT_KEY) as Track
 
-        player = Creator.mediaPlayerInteractorProvider()
+        //player = Creator.mediaPlayerInteractorProvider()
 
-        viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
+        //viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
 
         binding.backButton.setOnClickListener {
             Log.d("PlayerActivity", "${player.playerState}")

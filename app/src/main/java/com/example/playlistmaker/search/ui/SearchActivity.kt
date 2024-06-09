@@ -17,7 +17,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.activity.ComponentActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -26,6 +25,7 @@ import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : ComponentActivity() {
     private var isClickAllowed = true
@@ -44,7 +44,9 @@ class SearchActivity : ComponentActivity() {
     private lateinit var tracksAdapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModel()
+
+    //private lateinit var viewModel: SearchViewModel
 
     private lateinit var queryInput: String
 
@@ -90,7 +92,7 @@ class SearchActivity : ComponentActivity() {
 
         queryInput = ""
 
-        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
+        //viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
 
         val historyPrefs = getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
         searchHistory = SearchHistory(historyPrefs)

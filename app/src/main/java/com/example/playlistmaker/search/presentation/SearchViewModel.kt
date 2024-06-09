@@ -15,11 +15,14 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.models.TracksState
-import com.example.playlistmaker.util.Creator
+import org.koin.java.KoinJavaComponent.inject
+
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
-    private val tracksInteractor = Creator.provideTracksInteractor(getApplication())
+    //private val tracksInteractor = Creator.provideTracksInteractor(getApplication())
     private val handler = Handler(Looper.getMainLooper())
+
+    private val tracksInteractor: TracksInteractor by inject(TracksInteractor::class.java)
 
     private val stateLiveData = MutableLiveData<TracksState>()
     fun observeState(): LiveData<TracksState> = stateLiveData
