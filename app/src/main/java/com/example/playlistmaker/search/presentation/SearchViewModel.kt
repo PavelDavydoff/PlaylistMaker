@@ -19,7 +19,7 @@ import org.koin.java.KoinJavaComponent.inject
 
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
-    //private val tracksInteractor = Creator.provideTracksInteractor(getApplication())
+
     private val handler = Handler(Looper.getMainLooper())
 
     private val tracksInteractor: TracksInteractor by inject(TracksInteractor::class.java)

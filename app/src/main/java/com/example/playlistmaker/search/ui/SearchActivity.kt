@@ -46,8 +46,6 @@ class SearchActivity : ComponentActivity() {
 
     private val viewModel: SearchViewModel by viewModel()
 
-    //private lateinit var viewModel: SearchViewModel
-
     private lateinit var queryInput: String
 
     override fun onStop() {
@@ -91,8 +89,6 @@ class SearchActivity : ComponentActivity() {
         progressBar = findViewById(R.id.progressBar)
 
         queryInput = ""
-
-        //viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
 
         val historyPrefs = getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
         searchHistory = SearchHistory(historyPrefs)
