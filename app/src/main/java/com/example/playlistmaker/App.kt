@@ -13,7 +13,7 @@ import com.example.playlistmaker.settings.ui.THEME_KEY
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class App: Application() {
+class App : Application() {
     private var darkTheme = false
     override fun onCreate() {
         super.onCreate()
@@ -22,11 +22,19 @@ class App: Application() {
         darkTheme = sharedPrefs.getBoolean(THEME_KEY, false)
         switchTheme(darkTheme)
 
-        startKoin{
+        startKoin {
             androidContext(this@App)
-            modules(mediaPlayerModule, playerViewModelModule, tracksInteractorModule, tracksRepositoryModule, networkClientModule, searchViewModelModule)
+            modules(
+                mediaPlayerModule,
+                playerViewModelModule,
+                tracksInteractorModule,
+                tracksRepositoryModule,
+                networkClientModule,
+                searchViewModelModule
+            )
         }
     }
+
     fun switchTheme(darkThemeEnabled: Boolean) {
         darkTheme = darkThemeEnabled
         AppCompatDelegate.setDefaultNightMode(
