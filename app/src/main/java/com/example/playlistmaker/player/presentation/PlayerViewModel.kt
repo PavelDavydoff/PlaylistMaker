@@ -7,11 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
 import com.example.playlistmaker.player.ui.models.ToastState
-import org.koin.java.KoinJavaComponent.inject
 
-class PlayerViewModel : ViewModel() {
-
-    private val player: MediaPlayer by inject(MediaPlayer::class.java)
+class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<PlayerState>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
