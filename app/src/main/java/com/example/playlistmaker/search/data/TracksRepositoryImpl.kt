@@ -15,7 +15,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
             }
 
             200 -> {
-                Resource.Succes((response as TracksResponse).results.map {
+                Resource.Success((response as TracksResponse).results.map {
                     Track(
                         it.trackName,
                         it.artistName,

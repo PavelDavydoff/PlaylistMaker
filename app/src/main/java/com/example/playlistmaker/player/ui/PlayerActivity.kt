@@ -8,28 +8,26 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.player.data.TrackTime
-import com.example.playlistmaker.player.domain.MediaPlayerInteractor
+import com.example.playlistmaker.player.presentation.PlayerViewModel
 import com.example.playlistmaker.player.ui.models.PlayerState
+import com.example.playlistmaker.player.ui.models.ToastState
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
-import com.example.playlistmaker.util.Creator
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {
-
 
     private var handler: Handler? = null
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
-    private lateinit var player: MediaPlayerInteractor
 
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +37,10 @@ class PlayerActivity : AppCompatActivity() {
 
         val track = intent.getSerializableExtra(INTENT_KEY) as Track
 
-        player = Creator.mediaPlayerInteractorProvider()
-
-        viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
+        val previewUrl = track.previewUrl
 
         binding.backButton.setOnClickListener {
-            Log.d("PlayerActivity", "${player.playerState}")
+            Log.d("PlayerActivity", "${viewModel.observeState()}")
             finish()
         }
 
@@ -66,57 +62,67 @@ class PlayerActivity : AppCompatActivity() {
         playTime = findViewById(R.id.playTime)
         handler = Handler(Looper.getMainLooper())
         playButton = binding.playButton
-        playTime.text = "00:00"
-        player.url = track.previewUrl
+        playTime.text = ZERO_TIME
+
+        var isPlaying = false
 
         val timer = TrackTimer { text ->
             playTime.text = text
-            player.playerState == MediaPlayerInteractorImpl.STATE_PLAYING
+            isPlaying
         }
 
-        viewModel.observeState().observe(this){
+        viewModel.observeState().observe(this) {
             render(it)
         }
 
+        viewModel.observeShowToast().observe(this) {
+            showToast(it)
+        }
 
-        if (player.url != null) {
-            player.prepare { playButton.setImageResource(R.drawable.play_button) }
-            playButton.setOnClickListener {
-                player.playbackControl(
-                    {
-                        viewModel.pause()
-                    },
-                    {
-                        viewModel.play()
-                        timer.start()
-                    }
-                )
+        viewModel.observeToastState().observe(this) { toast ->
+            if (toast is ToastState.Show) {
+                showToast(toast.additionalMessage)
             }
-        } else {
-            playButton.setOnClickListener {
-                showToast()
+        }
+
+        viewModel.prepare(previewUrl)
+
+        playButton.setOnClickListener {
+            isPlaying = if (isPlaying) {
+                viewModel.pause()
+                false
+            } else {
+                viewModel.play()
+                timer.start()
+                true
             }
         }
     }
 
-    private fun render(state: PlayerState){
-        when(state){
+    private fun render(state: PlayerState) {
+        when (state) {
+            is PlayerState.Prepare -> playButton.setImageResource(R.drawable.play_button)
+            is PlayerState.Default -> playButton.setImageResource(R.drawable.play_button)
             is PlayerState.Playing -> playButton.setImageResource(R.drawable.pause_button)
             is PlayerState.Paused -> playButton.setImageResource(R.drawable.play_button)
         }
     }
 
-    private fun showToast(){
-        Toast.makeText(applicationContext, "Url = null", Toast.LENGTH_SHORT).show()
+    private fun showToast(message: String) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onPause() {
         super.onPause()
-        player.pause { playButton.setImageResource(R.drawable.play_button) }
+        viewModel.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        player.release()
+        viewModel.release()
+    }
+
+    companion object {
+        private const val ZERO_TIME = "00:00"
     }
 }
