@@ -34,8 +34,8 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
         }
     }
 
-    fun getCurrentTime(): String{
-        return (player.currentPosition/1000).toString()
+    fun getCurrentPosition(): Int{
+        return player.currentPosition
     }
 
     fun play() {

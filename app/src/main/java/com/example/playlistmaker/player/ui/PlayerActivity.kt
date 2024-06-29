@@ -20,13 +20,13 @@ import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class PlayerActivity : AppCompatActivity() {
 
     private var handler: Handler? = null
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
-    private lateinit var timer: TrackTimer
 
     private val viewModel: PlayerViewModel by viewModel()
 
@@ -68,11 +68,6 @@ class PlayerActivity : AppCompatActivity() {
 
         var isPlaying = false
 
-        timer = TrackTimer { text ->
-            playTime.text = text
-            isPlaying
-        }
-
         viewModel.observeState().observe(this) {
             render(it)
         }
@@ -95,7 +90,6 @@ class PlayerActivity : AppCompatActivity() {
                 false
             } else {
                 viewModel.play()
-                timer.start()
                 true
             }
         }
@@ -103,16 +97,43 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun render(state: PlayerState) {
         when (state) {
-            is PlayerState.Prepare -> playButton.setImageResource(R.drawable.play_button)
-            is PlayerState.Default -> playButton.setImageResource(R.drawable.play_button)
+            is PlayerState.Prepare -> {
+                playButton.setImageResource(R.drawable.play_button)
+                handler?.removeCallbacksAndMessages(Any())
+            }
+            is PlayerState.Default -> {
+                playButton.setImageResource(R.drawable.play_button)
+            }
             is PlayerState.Playing -> {
                 playButton.setImageResource(R.drawable.pause_button)
-                playTime.text = viewModel.getCurrentTime()
+                handler?.post(updateTimer())
             }
             is PlayerState.Paused -> {
+                handler?.removeCallbacksAndMessages(Any())
                 playButton.setImageResource(R.drawable.play_button)
             }
         }
+    }
+
+    private fun updateTimer(): Runnable{
+        return object : Runnable {
+            override fun run() {
+                val currentPosition = viewModel.getCurrentPosition()
+                val currentTime = formatMilliseconds(currentPosition)
+                if (currentPosition > 29900) {
+                    playTime.text = ZERO_TIME
+                } else {
+                    Log.d("CurrentPositionString", currentTime)
+                    playTime.text = currentTime
+                }
+                handler?.postDelayed(this, 1000L)
+            }
+        }
+    }
+
+    private fun formatMilliseconds(milliseconds: Int): String {
+        val seconds = milliseconds/1000
+        return String.format("00:%02d", seconds)
     }
 
     private fun showToast(message: String) {
