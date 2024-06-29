@@ -8,6 +8,11 @@ import java.util.Date
 class TrackTimer(val callback: (String) -> Boolean) {
 
     private var handler = Handler(Looper.getMainLooper())
+
+    private var time = 0L
+
+    var text = "00:00"
+
     fun start() {
         val startTime = System.currentTimeMillis()
         handler.post(update(startTime))
@@ -17,10 +22,12 @@ class TrackTimer(val callback: (String) -> Boolean) {
         return object : Runnable {
             override fun run() {
                 val current = System.currentTimeMillis()
-                val time = current - start
-                val text = formatMilliseconds(time)
-                val result = callback(text)
-                if (result) handler.postDelayed(this, 1000L)
+                time = current - start
+                text = formatMilliseconds(time)
+                val isPlaying = callback(text)
+                if (isPlaying) {
+                    handler.postDelayed(this, 1000L)
+                }
             }
         }
     }

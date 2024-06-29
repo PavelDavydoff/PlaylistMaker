@@ -26,6 +26,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
+    private lateinit var timer: TrackTimer
 
     private val viewModel: PlayerViewModel by viewModel()
 
@@ -41,6 +42,7 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             Log.d("PlayerActivity", "${viewModel.observeState()}")
+            viewModel.release()
             finish()
         }
 
@@ -66,7 +68,7 @@ class PlayerActivity : AppCompatActivity() {
 
         var isPlaying = false
 
-        val timer = TrackTimer { text ->
+        timer = TrackTimer { text ->
             playTime.text = text
             isPlaying
         }
@@ -103,8 +105,13 @@ class PlayerActivity : AppCompatActivity() {
         when (state) {
             is PlayerState.Prepare -> playButton.setImageResource(R.drawable.play_button)
             is PlayerState.Default -> playButton.setImageResource(R.drawable.play_button)
-            is PlayerState.Playing -> playButton.setImageResource(R.drawable.pause_button)
-            is PlayerState.Paused -> playButton.setImageResource(R.drawable.play_button)
+            is PlayerState.Playing -> {
+                playButton.setImageResource(R.drawable.pause_button)
+                playTime.text = viewModel.getCurrentTime()
+            }
+            is PlayerState.Paused -> {
+                playButton.setImageResource(R.drawable.play_button)
+            }
         }
     }
 

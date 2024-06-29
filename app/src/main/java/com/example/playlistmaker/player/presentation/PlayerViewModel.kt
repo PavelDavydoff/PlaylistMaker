@@ -34,14 +34,18 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
         }
     }
 
+    fun getCurrentTime(): String{
+        return (player.currentPosition/1000).toString()
+    }
+
     fun play() {
         stateLiveData.postValue(PlayerState.Playing)
         player.start()
     }
 
     fun pause() {
-        stateLiveData.postValue(PlayerState.Paused)
         player.pause()
+        stateLiveData.postValue(PlayerState.Paused)
     }
 
     fun release() {

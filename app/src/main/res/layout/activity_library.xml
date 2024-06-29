@@ -6,32 +6,25 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <LinearLayout
+    <Toolbar
+        android:id="@+id/library_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/backButton"
-            style="@style/backButton" />
-
-        <TextView
-            style="@style/titleTextView"
-            android:text="@string/library" />
-
-</LinearLayout>
+        android:navigationIcon="@drawable/back_arrow"
+        android:title="@string/library"
+        android:titleTextColor="@color/yp_black" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_48dp"
         android:background="@color/white"
+        app:tabIndicatorColor="@color/yp_black"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-        app:tabTextColor="@color/yp_black"
-        app:tabIndicatorColor="@color/yp_black"/>
+        app:tabTextColor="@color/yp_black" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 </LinearLayout>

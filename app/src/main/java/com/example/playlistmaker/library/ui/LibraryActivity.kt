@@ -20,7 +20,7 @@ class LibraryActivity : AppCompatActivity() {
         binding = ActivityLibraryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.backButton.setOnClickListener {
+        binding.libraryToolbar.setNavigationOnClickListener {
             finish()
         }
 
