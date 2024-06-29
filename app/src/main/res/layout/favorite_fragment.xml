@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_106dp"/>
+        android:layout_marginTop="@dimen/_120dp"/>
 
     <TextView
         android:text="@string/empty_library"
