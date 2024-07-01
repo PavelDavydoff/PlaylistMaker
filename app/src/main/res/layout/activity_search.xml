@@ -126,7 +126,7 @@
         android:visibility="gone">
 
         <ImageView
-            style="@style/notFindPlaceholder"
+            style="@style/notFoundPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
@@ -171,8 +171,7 @@
             android:paddingTop="@dimen/_16dp"
             android:text="@string/no_internet"
             android:textColor="@color/black"
-            android:textSize="@dimen/size_19sp"
-            tools:ignore="HardcodedText" />
+            android:textSize="@dimen/size_19sp" />
 
         <Button
             android:id="@+id/refresh_button"

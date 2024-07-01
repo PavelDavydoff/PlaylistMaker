@@ -53,8 +53,8 @@
         <item name="android:textSize">@dimen/t_size_22</item>
     </style>
 
-    <style name="notFindPlaceholder">
-        <item name="android:src">@drawable/not_find_light</item>
+    <style name="notFoundPlaceholder">
+        <item name="android:src">@drawable/not_found_light</item>
     </style>
 
     <style name="noInternetPlaceholder">
