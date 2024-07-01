@@ -26,7 +26,6 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
-    private lateinit var timer: TrackTimer
 
     private val viewModel: PlayerViewModel by viewModel()
 
@@ -42,8 +41,7 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             Log.d("PlayerActivity", "${viewModel.observeState()}")
-            viewModel.release()
-            finish()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         Glide.with(this)
@@ -64,13 +62,12 @@ class PlayerActivity : AppCompatActivity() {
         playTime = findViewById(R.id.playTime)
         handler = Handler(Looper.getMainLooper())
         playButton = binding.playButton
-        playTime.text = ZERO_TIME
+        playTime.text = PlayerViewModel.ZERO_TIME
 
         var isPlaying = false
 
-        timer = TrackTimer { text ->
-            playTime.text = text
-            isPlaying
+        viewModel.observePosition().observe(this){
+            updateTimer(it)
         }
 
         viewModel.observeState().observe(this) {
@@ -95,7 +92,6 @@ class PlayerActivity : AppCompatActivity() {
                 false
             } else {
                 viewModel.play()
-                timer.start()
                 true
             }
         }
@@ -103,16 +99,35 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun render(state: PlayerState) {
         when (state) {
-            is PlayerState.Prepare -> playButton.setImageResource(R.drawable.play_button)
-            is PlayerState.Default -> playButton.setImageResource(R.drawable.play_button)
+            is PlayerState.Prepare -> {
+                playButton.setImageResource(R.drawable.play_button)
+            }
+            is PlayerState.Default -> {
+                playButton.setImageResource(R.drawable.play_button)
+            }
             is PlayerState.Playing -> {
                 playButton.setImageResource(R.drawable.pause_button)
-                playTime.text = viewModel.getCurrentTime()
+                handler?.post(updateTimer())
             }
             is PlayerState.Paused -> {
+                handler?.removeCallbacksAndMessages(null)
                 playButton.setImageResource(R.drawable.play_button)
             }
         }
+    }
+
+    private fun updateTimer(): Runnable{
+        return object : Runnable {
+            override fun run() {
+                viewModel.updatePosition()
+                Log.d("Timer", "work")
+                handler?.postDelayed(this, 1000L)
+            }
+        }
+    }
+
+    private fun updateTimer(value: String){
+        playTime.text = value
     }
 
     private fun showToast(message: String) {
@@ -121,15 +136,13 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        Log.d("PlayerActivity", "onPause")
         viewModel.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("PlayerActivity", "onDestroy")
         viewModel.release()
-    }
-
-    companion object {
-        private const val ZERO_TIME = "00:00"
     }
 }
