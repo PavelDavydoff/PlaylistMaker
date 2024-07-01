@@ -19,6 +19,9 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
     private val toastState = MutableLiveData<ToastState>(ToastState.None)
     fun observeToastState(): LiveData<ToastState> = toastState
 
+    private val currentPositionState = MutableLiveData<String>()
+    fun observePosition(): LiveData<String> = currentPositionState
+
     fun prepare(url: String?) {
         if (url == null) {
             showToast.postValue(ERROR_MESSAGE)
@@ -34,8 +37,10 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
         }
     }
 
-    fun getCurrentPosition(): Int{
-        return player.currentPosition
+    fun updatePosition(){
+        if (player.isPlaying) {
+            currentPositionState.postValue(formatMilliseconds(player.currentPosition))
+        } else (currentPositionState.postValue(ZERO_TIME))
     }
 
     fun play() {
@@ -52,7 +57,13 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
         player.release()
     }
 
+    private fun formatMilliseconds(milliseconds: Int): String {
+        val seconds = milliseconds/1000
+        return String.format("00:%02d", seconds)
+    }
+
     companion object {
         private const val ERROR_MESSAGE = "URL = NULL"
+        const val ZERO_TIME = "00:00"
     }
 }

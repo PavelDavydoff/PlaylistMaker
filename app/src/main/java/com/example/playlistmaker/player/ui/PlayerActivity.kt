@@ -20,7 +20,6 @@ import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class PlayerActivity : AppCompatActivity() {
 
     private var handler: Handler? = null
@@ -42,8 +41,7 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.backButton.setOnClickListener {
             Log.d("PlayerActivity", "${viewModel.observeState()}")
-            viewModel.release()
-            finish()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         Glide.with(this)
@@ -64,9 +62,13 @@ class PlayerActivity : AppCompatActivity() {
         playTime = findViewById(R.id.playTime)
         handler = Handler(Looper.getMainLooper())
         playButton = binding.playButton
-        playTime.text = ZERO_TIME
+        playTime.text = PlayerViewModel.ZERO_TIME
 
         var isPlaying = false
+
+        viewModel.observePosition().observe(this){
+            updateTimer(it)
+        }
 
         viewModel.observeState().observe(this) {
             render(it)
@@ -99,7 +101,6 @@ class PlayerActivity : AppCompatActivity() {
         when (state) {
             is PlayerState.Prepare -> {
                 playButton.setImageResource(R.drawable.play_button)
-                handler?.removeCallbacksAndMessages(Any())
             }
             is PlayerState.Default -> {
                 playButton.setImageResource(R.drawable.play_button)
@@ -109,7 +110,7 @@ class PlayerActivity : AppCompatActivity() {
                 handler?.post(updateTimer())
             }
             is PlayerState.Paused -> {
-                handler?.removeCallbacksAndMessages(Any())
+                handler?.removeCallbacksAndMessages(null)
                 playButton.setImageResource(R.drawable.play_button)
             }
         }
@@ -118,22 +119,15 @@ class PlayerActivity : AppCompatActivity() {
     private fun updateTimer(): Runnable{
         return object : Runnable {
             override fun run() {
-                val currentPosition = viewModel.getCurrentPosition()
-                val currentTime = formatMilliseconds(currentPosition)
-                if (currentPosition > 29900) {
-                    playTime.text = ZERO_TIME
-                } else {
-                    Log.d("CurrentPositionString", currentTime)
-                    playTime.text = currentTime
-                }
+                viewModel.updatePosition()
+                Log.d("Timer", "work")
                 handler?.postDelayed(this, 1000L)
             }
         }
     }
 
-    private fun formatMilliseconds(milliseconds: Int): String {
-        val seconds = milliseconds/1000
-        return String.format("00:%02d", seconds)
+    private fun updateTimer(value: String){
+        playTime.text = value
     }
 
     private fun showToast(message: String) {
@@ -142,15 +136,13 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
+        Log.d("PlayerActivity", "onPause")
         viewModel.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("PlayerActivity", "onDestroy")
         viewModel.release()
-    }
-
-    companion object {
-        private const val ZERO_TIME = "00:00"
     }
 }
