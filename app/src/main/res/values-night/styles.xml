@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="notFindPlaceholder">
-        <item name="android:src">@drawable/not_find_dark</item>
+    <style name="notFoundPlaceholder">
+        <item name="android:src">@drawable/not_found_dark</item>
     </style>
 
     <style name="noInternetPlaceholder">
