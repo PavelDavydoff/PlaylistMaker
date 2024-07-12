@@ -15,7 +15,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class App : Application() {
-    private var darkTheme = false
+
     override fun onCreate() {
         super.onCreate()
 
@@ -37,14 +37,18 @@ class App : Application() {
         }
     }
 
-    fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
-        AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
-        )
+    companion object {
+
+        private var darkTheme = false
+        fun switchTheme(darkThemeEnabled: Boolean) {
+            darkTheme = darkThemeEnabled
+            AppCompatDelegate.setDefaultNightMode(
+                if (darkThemeEnabled) {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                }
+            )
+        }
     }
 }

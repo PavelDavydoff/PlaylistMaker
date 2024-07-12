@@ -1,13 +1,22 @@
 package com.example.playlistmaker.library.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.databinding.ActivityLibraryBinding
 import com.example.playlistmaker.library.ui.presentation.LibraryViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LibraryActivity : AppCompatActivity() {
+class LibraryFragment: Fragment() {
+
+    companion object{
+        fun newInstance(): LibraryFragment {
+            return LibraryFragment()
+        }
+    }
 
     private lateinit var binding: ActivityLibraryBinding
 
@@ -15,16 +24,19 @@ class LibraryActivity : AppCompatActivity() {
 
     private val viewModel: LibraryViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityLibraryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = ActivityLibraryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding.libraryToolbar.setNavigationOnClickListener {
-            finish()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+        binding.viewPager.adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> {

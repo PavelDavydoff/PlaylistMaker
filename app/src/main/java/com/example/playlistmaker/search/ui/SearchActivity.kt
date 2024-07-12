@@ -51,29 +51,18 @@ class SearchActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         searchHistory.putTracks()
-        Log.d("SearchActivity", "onStop")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("SearchActivity", "onPause")
     }
 
     override fun onResume() {
         super.onResume()
         updateAdapter(historyAdapter, searchHistory.historyList)
-        Log.d("SearchActivity", "onResume")
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("SearchActivity", "onStart")
-    }
+
 
     override fun onDestroy() {
         super.onDestroy()
         textWatcher.let { editText.removeTextChangedListener(it) }
-        Log.d("SearchActivity", "onDestroy")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

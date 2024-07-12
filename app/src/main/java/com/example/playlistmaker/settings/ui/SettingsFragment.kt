@@ -2,34 +2,47 @@ package com.example.playlistmaker.settings.ui
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
 
 const val THEME_KEY = "key_for_theme"
 const val THEME = "day_night_theme"
-class SettingsActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+class SettingsFragment: Fragment() {
 
-        val backButton = findViewById<ImageView>(R.id.backArrowImageView)
-        backButton.setOnClickListener{
-            finish()
+    companion object{
+        fun newInstance(): SettingsFragment {
+            return SettingsFragment()
         }
+    }
 
-        val switchTheme = findViewById<SwitchMaterial>(R.id.switchTheme)
-        val sharedPrefs = getSharedPreferences(THEME, MODE_PRIVATE)
+    private lateinit var binding: ActivitySettingsBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = ActivitySettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val sharedPrefs = requireActivity().getSharedPreferences(THEME, AppCompatActivity.MODE_PRIVATE)
         val checked = sharedPrefs.getBoolean(THEME_KEY, false)
-        switchTheme.isChecked = checked
-        (applicationContext as App).switchTheme(checked)
+        binding.switchTheme.isChecked = checked
+        App.switchTheme(checked)
 
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            (applicationContext as App).switchTheme(isChecked)
+        binding.switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            App.switchTheme(isChecked)
             sharedPrefs.edit().putBoolean(THEME_KEY, isChecked).apply()
         }
 
@@ -40,12 +53,10 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(intent, getString(R.string.share)))
         }
 
-        val shareButton = findViewById<Button>(R.id.share)
-        shareButton.setOnClickListener {
+        binding.share.setOnClickListener {
             showShareDialog()
         }
-        val supportButton = findViewById<Button>(R.id.support)
-        supportButton.setOnClickListener{
+        binding.support.setOnClickListener{
             val supportIntent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse(getString(R.string.mail_to))
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.my_email)))
@@ -56,8 +67,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(supportIntent)
         }
 
-        val agreementButton = findViewById<Button>(R.id.agreement)
-        agreementButton.setOnClickListener {
+        binding.agreement.setOnClickListener {
             val browserIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.offer)))
             startActivity(browserIntent)
