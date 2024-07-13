@@ -6,6 +6,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.databinding.ActivityRootBinding
 
+
 class RootActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityRootBinding

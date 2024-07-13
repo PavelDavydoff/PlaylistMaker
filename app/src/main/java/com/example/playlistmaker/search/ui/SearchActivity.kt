@@ -120,11 +120,6 @@ class SearchActivity : AppCompatActivity() {
             historyAdapter.notifyDataSetChanged()
         }
 
-        val backButton = findViewById<ImageView>(R.id.backArrowImageView)
-        backButton.setOnClickListener {
-            finish()
-        }
-
         val clearButton = findViewById<ImageView>(R.id.clearImageView)
 
         clearButton.setOnClickListener {

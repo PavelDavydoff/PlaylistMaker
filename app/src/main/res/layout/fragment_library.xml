@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical"
+    android:backgroundTint="@color/yp_white"
     tools:context=".library.ui.LibraryFragment">
 
     <Toolbar
@@ -19,7 +20,7 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_48dp"
-        android:background="@color/white"
+        android:background="@color/yp_white"
         app:tabIndicatorColor="@color/yp_black"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
         app:tabTextColor="@color/yp_black" />
