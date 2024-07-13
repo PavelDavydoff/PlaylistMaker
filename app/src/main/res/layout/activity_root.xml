@@ -26,8 +26,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_navigation_menu"
-            app:itemIconTint="@color/yp_black"
-            app:itemTextColor="@color/yp_black"
+            app:itemIconTint="@drawable/colors_selector"
+            app:itemTextColor="@drawable/colors_selector"
             android:background="@color/yp_white"
              />
 
