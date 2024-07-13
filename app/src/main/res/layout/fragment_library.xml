@@ -12,7 +12,6 @@
         android:id="@+id/library_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:navigationIcon="@drawable/back_arrow"
         android:title="@string/library"
         android:titleTextColor="@color/yp_black" />
 

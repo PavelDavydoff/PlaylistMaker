@@ -14,10 +14,6 @@
         android:orientation="horizontal"
         android:paddingBottom="@dimen/s_medium_padding">
 
-        <ImageView
-            android:id="@+id/backArrowImageView"
-            style="@style/backButton" />
-
         <TextView
             style="@style/titleTextView"
             android:text="@string/settings" />
