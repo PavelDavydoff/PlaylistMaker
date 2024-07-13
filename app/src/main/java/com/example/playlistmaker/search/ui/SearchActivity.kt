@@ -58,8 +58,6 @@ class SearchActivity : AppCompatActivity() {
         updateAdapter(historyAdapter, searchHistory.historyList)
     }
 
-
-
     override fun onDestroy() {
         super.onDestroy()
         textWatcher.let { editText.removeTextChangedListener(it) }
@@ -68,7 +66,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("SearchActivity", "onCreate")
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.fragment_search)
         editText = findViewById(R.id.editText)
         notFound = findViewById(R.id.not_found)
         noInternet = findViewById(R.id.no_internet)

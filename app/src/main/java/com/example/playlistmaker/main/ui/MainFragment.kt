@@ -5,22 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.ui.SearchFragment
-import com.example.playlistmaker.databinding.ActivityMainBinding
-import com.example.playlistmaker.library.ui.LibraryFragment
-import com.example.playlistmaker.settings.ui.SettingsFragment
+import com.example.playlistmaker.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
-    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ActivityMainBinding.inflate(inflater, container, false)
+        binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -28,24 +26,15 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.search.setOnClickListener {
-            requireActivity().supportFragmentManager.commit {
-                replace(R.id.container_view, SearchFragment.newInstance())
-                addToBackStack("stack")
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_searchFragment)
         }
 
         binding.library.setOnClickListener {
-            requireActivity().supportFragmentManager.commit {
-                replace(R.id.container_view, LibraryFragment.newInstance())
-                addToBackStack("stack")
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_libraryFragment)
         }
 
         binding.settings.setOnClickListener {
-            requireActivity().supportFragmentManager.commit {
-                replace(R.id.container_view, SettingsFragment.newInstance())
-                addToBackStack("stack")
-            }
+            findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
         }
     }
 }

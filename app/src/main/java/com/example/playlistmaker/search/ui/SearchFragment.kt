@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.domain.models.Track
@@ -31,9 +32,6 @@ class SearchFragment : Fragment() {
         const val INTENT_KEY = "key"
         private const val HISTORY_KEY = "history"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        fun newInstance(): SearchFragment {
-            return SearchFragment()
-        }
     }
 
     private var isClickAllowed = true
@@ -45,7 +43,7 @@ class SearchFragment : Fragment() {
     private lateinit var queryInput: String
     private lateinit var textWatcher: TextWatcher
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
 
     private val viewModel by viewModel<SearchViewModel>()
 
@@ -54,7 +52,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ActivitySearchBinding.inflate(inflater, container, false)
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -109,7 +107,7 @@ class SearchFragment : Fragment() {
         }
 
         binding.editText.setOnFocusChangeListener { _, hasFocus ->
-            if(hasFocus) {
+            if (hasFocus) {
                 viewModel.setState(TracksState.History(searchHistory.historyList))
                 updateAdapter(historyAdapter, searchHistory.historyList)
             }
@@ -141,7 +139,7 @@ class SearchFragment : Fragment() {
             binding.noInternet.visibility = View.GONE
         }
 
-        viewModel.observeState().observe(viewLifecycleOwner){
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
     }
@@ -173,8 +171,8 @@ class SearchFragment : Fragment() {
         binding.editText.setText(restoredText)
     }
 
-    private fun render(state:TracksState){
-        when(state){
+    private fun render(state: TracksState) {
+        when (state) {
             is TracksState.Loading -> showLoading()
             is TracksState.Content -> showContent(state.tracks)
             is TracksState.Error -> showError()
@@ -183,7 +181,8 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun showHistory(tracks: List<Track>){
+    private fun showHistory(tracks: List<Track>) {
+        Log.d("SearchFragment", "showHistory")
         updateAdapter(historyAdapter, tracks)
 
         binding.historyLayout.visibility =
@@ -195,28 +194,32 @@ class SearchFragment : Fragment() {
         binding.notFound.visibility = View.GONE
     }
 
-    private fun showLoading(){
+    private fun showLoading() {
         binding.trackRecycler.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
         binding.noInternet.visibility = View.GONE
         binding.notFound.visibility = View.GONE
         binding.historyLayout.visibility = View.GONE
     }
-    private fun showError(){
+
+    private fun showError() {
         binding.trackRecycler.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
         binding.noInternet.visibility = View.VISIBLE
         binding.notFound.visibility = View.GONE
         binding.historyLayout.visibility = View.GONE
     }
-    private fun showEmpty(){
+
+    private fun showEmpty() {
         binding.trackRecycler.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
         binding.noInternet.visibility = View.GONE
         binding.notFound.visibility = View.VISIBLE
         binding.historyLayout.visibility = View.GONE
     }
-    private fun showContent(tracks: List<Track>){
+
+    private fun showContent(tracks: List<Track>) {
+        Log.d("SearchFragment", "showContent")
         binding.trackRecycler.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
         binding.noInternet.visibility = View.GONE
@@ -226,7 +229,7 @@ class SearchFragment : Fragment() {
         updateAdapter(tracksAdapter, tracks)
     }
 
-    private fun updateAdapter(adapter: TrackAdapter, tracks: List<Track>){
+    private fun updateAdapter(adapter: TrackAdapter, tracks: List<Track>) {
         adapter.tracks.clear()
         adapter.tracks.addAll(tracks)
         adapter.notifyDataSetChanged()

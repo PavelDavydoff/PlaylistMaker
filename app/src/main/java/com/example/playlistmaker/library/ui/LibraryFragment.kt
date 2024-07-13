@@ -5,20 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.databinding.ActivityLibraryBinding
+import com.example.playlistmaker.databinding.FragmentLibraryBinding
 import com.example.playlistmaker.library.ui.presentation.LibraryViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LibraryFragment: Fragment() {
 
-    companion object{
-        fun newInstance(): LibraryFragment {
-            return LibraryFragment()
-        }
-    }
-
-    private lateinit var binding: ActivityLibraryBinding
+    private lateinit var binding: FragmentLibraryBinding
 
     private lateinit var tabMediator: TabLayoutMediator
 
@@ -29,7 +23,7 @@ class LibraryFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ActivityLibraryBinding.inflate(inflater, container, false)
+        binding = FragmentLibraryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
