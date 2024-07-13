@@ -85,7 +85,7 @@ class SearchFragment : Fragment() {
         binding.trackRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        binding.historyRecycler.adapter = tracksAdapter
+        binding.historyRecycler.adapter = historyAdapter
         binding.historyRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
