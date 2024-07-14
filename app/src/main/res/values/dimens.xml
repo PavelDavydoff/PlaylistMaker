@@ -34,5 +34,7 @@
     <dimen name="_24dp">24dp</dimen>
     <dimen name="_106dp">106dp</dimen>
     <dimen name="_120dp">120dp</dimen>
+    <dimen name="_0dp">0dp</dimen>
+    <dimen name="_1dp">1dp</dimen>
 
 </resources>

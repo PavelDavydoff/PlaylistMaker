@@ -9,11 +9,12 @@
     <color name="dn_white">#FFFFFF</color>
     <color name="switch_Thumb">#AEAFB4</color>
     <color name="switch_Track">#E6E8EB</color>
-    <color name="edit_text_background">#E6E8EB</color>
+    <color name="background_gray">#E6E8EB</color>
     <color name="edit_text_icon">#AEAFB4</color>
     <color name="yp_dn_blue">#3772E7</color>
     <color name="dn_black">#000000</color>
     <color name="gray">#AEAFB4</color>
     <color name="grayDN">#AEAFB4</color>
+    <color name="dn_background_gray">#E6E8EB</color>
 </resources>
 
