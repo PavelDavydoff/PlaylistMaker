@@ -43,7 +43,9 @@ class SearchFragment : Fragment() {
     private lateinit var textWatcher: TextWatcher
     private lateinit var historyPrefs: SharedPreferences
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+
+    private val binding get() = _binding!!
 
     private val viewModel by viewModel<SearchViewModel>()
 
@@ -52,7 +54,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -156,6 +158,7 @@ class SearchFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         textWatcher.let { binding.editText.removeTextChangedListener(it) }
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

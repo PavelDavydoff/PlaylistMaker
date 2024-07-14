@@ -12,7 +12,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LibraryFragment: Fragment() {
 
-    private lateinit var binding: FragmentLibraryBinding
+    private var _binding: FragmentLibraryBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var tabMediator: TabLayoutMediator
 
@@ -23,14 +24,14 @@ class LibraryFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentLibraryBinding.inflate(inflater, container, false)
+        _binding = FragmentLibraryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = ViewPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
+        binding.viewPager.adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> {
@@ -48,5 +49,6 @@ class LibraryFragment: Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         tabMediator.detach()
+        _binding = null
     }
 }

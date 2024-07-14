@@ -16,14 +16,15 @@ const val THEME_KEY = "key_for_theme"
 const val THEME = "day_night_theme"
 class SettingsFragment: Fragment() {
 
-    private lateinit var binding: FragmentSettingsBinding
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -66,5 +67,10 @@ class SettingsFragment: Fragment() {
                 Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.offer)))
             startActivity(browserIntent)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
