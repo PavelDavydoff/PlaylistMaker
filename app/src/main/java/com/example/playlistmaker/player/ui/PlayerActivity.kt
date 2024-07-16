@@ -17,7 +17,7 @@ import com.example.playlistmaker.player.presentation.PlayerViewModel
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.ToastState
 import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.SearchActivity.Companion.INTENT_KEY
+import com.example.playlistmaker.search.ui.SearchFragment.Companion.INTENT_KEY
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {

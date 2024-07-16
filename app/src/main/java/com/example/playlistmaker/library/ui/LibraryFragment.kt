@@ -1,30 +1,37 @@
 package com.example.playlistmaker.library.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.databinding.ActivityLibraryBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.playlistmaker.databinding.FragmentLibraryBinding
 import com.example.playlistmaker.library.ui.presentation.LibraryViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LibraryActivity : AppCompatActivity() {
+class LibraryFragment: Fragment() {
 
-    private lateinit var binding: ActivityLibraryBinding
+    private var _binding: FragmentLibraryBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var tabMediator: TabLayoutMediator
 
     private val viewModel: LibraryViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityLibraryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentLibraryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding.libraryToolbar.setNavigationOnClickListener {
-            finish()
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
+        binding.viewPager.adapter = ViewPagerAdapter(childFragmentManager, lifecycle)
         tabMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> {
@@ -42,5 +49,6 @@ class LibraryActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         tabMediator.detach()
+        _binding = null
     }
 }
