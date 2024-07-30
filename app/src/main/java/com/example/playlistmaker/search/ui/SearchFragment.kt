@@ -9,7 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -183,7 +182,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showHistory(tracks: List<Track>) {
-        Log.d("SearchFragment", "showHistory")
         updateAdapter(historyAdapter, tracks)
 
         binding.historyLayout.visibility =
@@ -220,7 +218,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showContent(tracks: List<Track>) {
-        Log.d("SearchFragment", "showContent")
         binding.trackRecycler.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
         binding.noInternet.visibility = View.GONE

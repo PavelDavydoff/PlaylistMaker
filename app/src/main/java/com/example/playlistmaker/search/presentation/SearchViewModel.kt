@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -75,7 +74,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     }
 
     private fun searchRequest(newSearchText: String) {
-        Log.d("SearchViewModel", "searchRequest $newSearchText")
         if (newSearchText.isNotEmpty()) {
             renderState(TracksState.Loading)
         }
@@ -92,7 +90,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
                     }
 
                     tracks.isEmpty() -> {
-                        Log.d("SearchViewModel", "trackIsEmpty")
                         renderState(TracksState.Empty)
                     }
 
@@ -105,7 +102,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     }
 
     private fun renderState(state: TracksState) {
-        Log.d("SearchViewModel", "renderState: $state")
         stateLiveData.postValue(state)
     }
 
