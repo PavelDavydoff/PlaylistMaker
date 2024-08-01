@@ -1,7 +1,6 @@
 package com.example.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -39,7 +38,6 @@ class PlayerActivity : AppCompatActivity() {
         val previewUrl = track.previewUrl
 
         binding.backButton.setOnClickListener {
-            Log.d("PlayerActivity", "${viewModel.observeState()}")
             onBackPressedDispatcher.onBackPressed()
         }
 

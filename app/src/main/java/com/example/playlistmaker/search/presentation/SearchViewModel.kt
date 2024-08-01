@@ -3,15 +3,15 @@ package com.example.playlistmaker.search.presentation
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.models.TracksState
-
+import com.example.playlistmaker.util.debounce
 
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
@@ -23,6 +23,10 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
 
     private var latestSearchText: String? = null
 
+    private val sDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, false){
+            searchRequest(it)
+    }
+
     override fun onCleared() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
@@ -32,12 +36,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
             return
         }
         this.latestSearchText = changedText
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
 
-        val searchRunnable = Runnable { searchRequest(changedText) }
-
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(searchRunnable, SEARCH_REQUEST_TOKEN, postTime)
+        sDebounce(changedText)
     }
 
     fun repeatRequest(){

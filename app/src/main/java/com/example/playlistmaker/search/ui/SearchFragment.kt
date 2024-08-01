@@ -5,8 +5,6 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -15,12 +13,16 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -34,13 +36,14 @@ class SearchFragment : Fragment() {
     }
 
     private var isClickAllowed = true
-    private var handler = Handler(Looper.getMainLooper())
 
     private lateinit var tracksAdapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var queryInput: String
     private lateinit var textWatcher: TextWatcher
     private lateinit var historyPrefs: SharedPreferences
+
+    private var job: Job? = null
 
     private var _binding: FragmentSearchBinding? = null
 
@@ -60,11 +63,11 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val playerIntent = Intent(activity, PlayerActivity::class.java)
+
         queryInput = ""
 
         historyPrefs = requireActivity().getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
-
-        val playerIntent = Intent(activity, PlayerActivity::class.java)
 
         tracksAdapter = TrackAdapter { track ->
             viewModel.addToHistory(historyPrefs, track)
@@ -237,7 +240,10 @@ class SearchFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            job = viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
