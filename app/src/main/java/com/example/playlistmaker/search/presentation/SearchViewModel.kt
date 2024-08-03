@@ -102,6 +102,5 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-        //private val SEARCH_REQUEST_TOKEN = Any()
     }
 }

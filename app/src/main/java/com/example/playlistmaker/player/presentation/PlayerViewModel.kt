@@ -57,7 +57,7 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
         stateLiveData.postValue(PlayerState.Paused(getCurrentPosition()))
     }
 
-    private fun releasePlayer() {
+     private fun releasePlayer() {
         player.stop()
         player.release()
         stateLiveData.value = PlayerState.Default()
@@ -66,7 +66,7 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
     private fun startTimer() {
         timerJob = viewModelScope.launch {
             while (player.isPlaying) {
-                delay(300)
+                delay(TIMER_DELAY)
                 stateLiveData.postValue(PlayerState.Playing(getCurrentPosition()))
             }
         }
@@ -83,5 +83,6 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
 
     companion object {
         private const val ERROR_MESSAGE = "URL = NULL"
+        private const val TIMER_DELAY = 300L
     }
 }

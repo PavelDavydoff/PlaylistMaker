@@ -103,4 +103,8 @@ class PlayerActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.pause()
+    }
 }
