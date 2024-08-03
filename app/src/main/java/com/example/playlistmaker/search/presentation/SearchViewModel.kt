@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.presentation
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -47,8 +46,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         stateLiveData.postValue(state)
     }
 
-    fun getHistoryList(prefs: SharedPreferences): List<Track> {
-        val searchHistory = SearchHistory(prefs)
+    fun getHistoryList(searchHistory: SearchHistory): List<Track> {
         return searchHistory.getTracks()
     }
 
@@ -56,13 +54,11 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         SearchHistory.historyList.clear()
     }
 
-    fun putToHistory(prefs: SharedPreferences) {
-        val searchHistory = SearchHistory(prefs)
+    fun putToHistory(searchHistory: SearchHistory) {
         searchHistory.putTracks()
     }
 
-    fun addToHistory(prefs: SharedPreferences, track: Track) {
-        val searchHistory = SearchHistory(prefs)
+    fun addToHistory(searchHistory: SearchHistory, track: Track) {
         searchHistory.addTrack(track)
     }
 
