@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
-import com.example.playlistmaker.search.data.HistoryRepositoryImpl
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
@@ -40,8 +39,6 @@ class SearchFragment : Fragment() {
     private lateinit var queryInput: String
     private lateinit var textWatcher: TextWatcher
 
-    private lateinit var searchHistory: HistoryRepositoryImpl
-
     private var job: Job? = null
 
     private var _binding: FragmentSearchBinding? = null
@@ -62,21 +59,19 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchHistory = HistoryRepositoryImpl(requireContext())
-
         val playerIntent = Intent(activity, PlayerActivity::class.java)
 
         queryInput = ""
 
         tracksAdapter = TrackAdapter { track ->
-            viewModel.addToHistory(searchHistory, track)
+            viewModel.addToHistory(track)
             if (clickDebounce()) {
                 startActivity(playerIntent.putExtra(INTENT_KEY, track))
             }
         }
 
         historyAdapter = TrackAdapter { track ->
-            viewModel.addToHistory(searchHistory, track)
+            viewModel.addToHistory(track)
             if (clickDebounce()) {
                 startActivity(playerIntent.putExtra(INTENT_KEY, track))
             }
@@ -91,7 +86,6 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         binding.clearHistory.setOnClickListener {
-            searchHistory.clearPrefs()
             viewModel.clearHistory()
             binding.historyLayout.visibility = View.GONE
             historyAdapter.notifyDataSetChanged()
@@ -99,8 +93,8 @@ class SearchFragment : Fragment() {
 
         binding.clearImageView.setOnClickListener {
             binding.editText.setText(EMPTY)
-            viewModel.setState(TracksState.History(viewModel.getHistoryList(searchHistory)))
-            updateAdapter(historyAdapter, viewModel.getHistoryList(searchHistory))
+            viewModel.setState(TracksState.History(viewModel.getHistoryList()))
+            updateAdapter(historyAdapter, viewModel.getHistoryList())
 
             val inputMethodManager =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -109,8 +103,8 @@ class SearchFragment : Fragment() {
 
         binding.editText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                viewModel.setState(TracksState.History(viewModel.getHistoryList(searchHistory)))
-                updateAdapter(historyAdapter, viewModel.getHistoryList(searchHistory))
+                viewModel.setState(TracksState.History(viewModel.getHistoryList()))
+                updateAdapter(historyAdapter, viewModel.getHistoryList())
             }
         }
 
@@ -148,12 +142,12 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        updateAdapter(historyAdapter, viewModel.getHistoryList(searchHistory))
+        updateAdapter(historyAdapter, viewModel.getHistoryList())
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.putToHistory(searchHistory)
+        viewModel.putToHistory()
     }
 
     override fun onDestroy() {
@@ -179,7 +173,7 @@ class SearchFragment : Fragment() {
             is TracksState.Content -> showContent(state.tracks)
             is TracksState.Error -> showError()
             is TracksState.Empty -> showEmpty()
-            is TracksState.History -> showHistory(viewModel.getHistoryList(searchHistory))
+            is TracksState.History -> showHistory(viewModel.getHistoryList())
         }
     }
 
@@ -187,7 +181,7 @@ class SearchFragment : Fragment() {
         updateAdapter(historyAdapter, tracks)
 
         binding.historyLayout.visibility =
-            if (viewModel.getHistoryList(searchHistory).isEmpty()) View.GONE else View.VISIBLE
+            if (viewModel.getHistoryList().isEmpty()) View.GONE else View.VISIBLE
 
         binding.trackRecycler.visibility = View.GONE
         binding.progressBar.visibility = View.GONE

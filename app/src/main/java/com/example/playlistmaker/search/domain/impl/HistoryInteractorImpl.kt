@@ -20,4 +20,8 @@ class HistoryInteractorImpl(private val repository: HistoryRepository): HistoryI
     override fun addTrack(track: Track) {
         repository.addTrack(track)
     }
+
+    override fun clearHistory() {
+        repository.clearHistory()
+    }
 }

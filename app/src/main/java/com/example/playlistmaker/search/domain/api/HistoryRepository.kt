@@ -7,4 +7,5 @@ interface HistoryRepository {
     fun getTracks(): List<Track>
     fun putTracks()
     fun addTrack(track: Track)
+    fun clearHistory()
 }

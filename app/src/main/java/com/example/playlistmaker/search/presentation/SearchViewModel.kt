@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.search.data.HistoryRepositoryImpl
 import com.example.playlistmaker.search.domain.api.HistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.models.Track
@@ -50,20 +49,21 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         stateLiveData.postValue(state)
     }
 
-    fun getHistoryList(searchHistory: HistoryRepositoryImpl): List<Track> {
-        return searchHistory.getTracks()
+    fun getHistoryList(): List<Track> {
+        return historyInteractor.getTracks()
     }
 
     fun clearHistory() {
-        HistoryRepositoryImpl.historyList.clear()
+        historyInteractor.clearHistory()
+        historyInteractor.clearPrefs()
     }
 
-    fun putToHistory(searchHistory: HistoryRepositoryImpl) {
-        searchHistory.putTracks()
+    fun putToHistory() {
+        historyInteractor.putTracks()
     }
 
-    fun addToHistory(searchHistory: HistoryRepositoryImpl, track: Track) {
-        searchHistory.addTrack(track)
+    fun addToHistory(track: Track) {
+        historyInteractor.addTrack(track)
     }
 
     private fun searchRequest(newSearchText: String) {

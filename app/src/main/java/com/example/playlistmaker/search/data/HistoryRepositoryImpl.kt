@@ -12,14 +12,17 @@ class HistoryRepositoryImpl(val context: Context): HistoryRepository{
         private const val MAX_SIZE = 10
         private const val LAST_INDEX = 9
         private const val FIRST_INDEX = 0
-
-        var historyList = mutableListOf<Track>()
     }
+    private var historyList = mutableListOf<Track>()
 
     private val prefs = context.getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
 
     override fun clearPrefs(){
         prefs.edit().clear().apply()
+    }
+
+    override fun clearHistory(){
+        historyList.clear()
     }
 
     override fun getTracks(): List<Track>{
