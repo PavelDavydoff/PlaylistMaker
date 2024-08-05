@@ -31,6 +31,7 @@ class SettingsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val sharedPrefs = requireActivity().getSharedPreferences(THEME, AppCompatActivity.MODE_PRIVATE)
         val checked = sharedPrefs.getBoolean(THEME_KEY, false)
         binding.switchTheme.isChecked = checked

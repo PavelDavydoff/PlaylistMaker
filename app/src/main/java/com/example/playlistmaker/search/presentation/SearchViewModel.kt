@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.search.data.SearchHistory
+import com.example.playlistmaker.search.data.HistoryRepositoryImpl
+import com.example.playlistmaker.search.domain.api.HistoryInteractor
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.models.TracksState
 import com.example.playlistmaker.util.debounce
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.inject
 
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
@@ -18,6 +20,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     fun observeState(): LiveData<TracksState> = stateLiveData
 
     private var latestSearchText: String? = null
+
+    private val historyInteractor: HistoryInteractor by inject(HistoryInteractor::class.java)
 
     private val sDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, false) {
         searchRequest(it)
@@ -46,19 +50,19 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         stateLiveData.postValue(state)
     }
 
-    fun getHistoryList(searchHistory: SearchHistory): List<Track> {
+    fun getHistoryList(searchHistory: HistoryRepositoryImpl): List<Track> {
         return searchHistory.getTracks()
     }
 
     fun clearHistory() {
-        SearchHistory.historyList.clear()
+        HistoryRepositoryImpl.historyList.clear()
     }
 
-    fun putToHistory(searchHistory: SearchHistory) {
+    fun putToHistory(searchHistory: HistoryRepositoryImpl) {
         searchHistory.putTracks()
     }
 
-    fun addToHistory(searchHistory: SearchHistory, track: Track) {
+    fun addToHistory(searchHistory: HistoryRepositoryImpl, track: Track) {
         searchHistory.addTrack(track)
     }
 

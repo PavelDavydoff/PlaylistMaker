@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
-import com.example.playlistmaker.search.data.SearchHistory
+import com.example.playlistmaker.search.data.HistoryRepositoryImpl
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
@@ -40,7 +40,7 @@ class SearchFragment : Fragment() {
     private lateinit var queryInput: String
     private lateinit var textWatcher: TextWatcher
 
-    private lateinit var searchHistory: SearchHistory
+    private lateinit var searchHistory: HistoryRepositoryImpl
 
     private var job: Job? = null
 
@@ -62,7 +62,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchHistory = SearchHistory(requireContext())
+        searchHistory = HistoryRepositoryImpl(requireContext())
 
         val playerIntent = Intent(activity, PlayerActivity::class.java)
 
