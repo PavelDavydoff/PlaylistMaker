@@ -2,19 +2,24 @@ package com.example.playlistmaker.settings.data
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.App
 import com.example.playlistmaker.settings.domain.ThemeRepository
 import com.example.playlistmaker.settings.ui.THEME
 import com.example.playlistmaker.settings.ui.THEME_KEY
 
-class ThemeRepositoryImpl(context: Context): ThemeRepository {
+class ThemeRepositoryImpl(context: Context) : ThemeRepository {
 
     private val sharedPrefs = context.getSharedPreferences(THEME, AppCompatActivity.MODE_PRIVATE)
 
-        override fun getThemePrefs(): Boolean{
+    override fun getThemePrefs(): Boolean {
         return sharedPrefs.getBoolean(THEME_KEY, false)
     }
 
     override fun setThemePrefs(isChecked: Boolean) {
         sharedPrefs.edit().putBoolean(THEME_KEY, isChecked).apply()
+    }
+
+    fun switchTheme(isChecked: Boolean){
+        App.switchTheme(isChecked)
     }
 }
