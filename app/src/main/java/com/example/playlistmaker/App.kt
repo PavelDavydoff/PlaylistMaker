@@ -50,6 +50,7 @@ class App : Application() {
     companion object {
 
         private var darkTheme = false
+
         fun switchTheme(darkThemeEnabled: Boolean) {
             darkTheme = darkThemeEnabled
             AppCompatDelegate.setDefaultNightMode(

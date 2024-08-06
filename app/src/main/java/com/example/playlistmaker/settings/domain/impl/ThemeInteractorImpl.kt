@@ -7,6 +7,7 @@ class ThemeInteractorImpl(private val repository: ThemeRepository): ThemeInterac
     override fun getThemePrefs(): Boolean{
         return repository.getThemePrefs()
     }
+
     override fun setThemePrefs(isChecked: Boolean){
         repository.setThemePrefs(isChecked)
     }
