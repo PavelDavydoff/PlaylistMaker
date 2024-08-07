@@ -1,14 +1,23 @@
 package com.example.playlistmaker.player.presentation
 
 import android.media.MediaPlayer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
 import com.example.playlistmaker.player.ui.models.ToastState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
+
+    private var timerJob: Job? = null
 
     private val stateLiveData = MutableLiveData<PlayerState>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
@@ -19,9 +28,6 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
     private val toastState = MutableLiveData<ToastState>(ToastState.None)
     fun observeToastState(): LiveData<ToastState> = toastState
 
-    private val currentPositionState = MutableLiveData<String>()
-    fun observePosition(): LiveData<String> = currentPositionState
-
     fun prepare(url: String?) {
         if (url == null) {
             showToast.postValue(ERROR_MESSAGE)
@@ -30,40 +36,53 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
         player.setDataSource(url)
         player.prepareAsync()
         player.setOnPreparedListener {
-            stateLiveData.postValue(PlayerState.Prepare)
+            stateLiveData.postValue(PlayerState.Prepare())
         }
         player.setOnCompletionListener {
-            stateLiveData.postValue(PlayerState.Prepare)
+            timerJob?.cancel()
+            stateLiveData.postValue(PlayerState.Prepare())
+            Log.d("PlayerState", stateLiveData.value.toString())
         }
-    }
-
-    fun updatePosition(){
-        if (player.isPlaying) {
-            currentPositionState.postValue(formatMilliseconds(player.currentPosition))
-        } else (currentPositionState.postValue(ZERO_TIME))
     }
 
     fun play() {
-        stateLiveData.postValue(PlayerState.Playing)
         player.start()
+        stateLiveData.postValue(PlayerState.Playing(getCurrentPosition()))
+        startTimer()
     }
 
     fun pause() {
         player.pause()
-        stateLiveData.postValue(PlayerState.Paused)
+        timerJob?.cancel()
+        stateLiveData.postValue(PlayerState.Paused(getCurrentPosition()))
     }
 
-    fun release() {
+     private fun releasePlayer() {
+        player.stop()
         player.release()
+        stateLiveData.value = PlayerState.Default()
     }
 
-    private fun formatMilliseconds(milliseconds: Int): String {
-        val seconds = milliseconds/1000
-        return String.format("00:%02d", seconds)
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (player.isPlaying) {
+                delay(TIMER_DELAY)
+                stateLiveData.postValue(PlayerState.Playing(getCurrentPosition()))
+            }
+        }
+    }
+
+    private fun getCurrentPosition(): String {
+        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(player.currentPosition)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        releasePlayer()
     }
 
     companion object {
         private const val ERROR_MESSAGE = "URL = NULL"
-        const val ZERO_TIME = "00:00"
+        private const val TIMER_DELAY = 300L
     }
 }

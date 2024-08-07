@@ -5,10 +5,15 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.library.di.libraryViewModel
 import com.example.playlistmaker.player.di.mediaPlayerModule
 import com.example.playlistmaker.player.di.playerViewModelModule
+import com.example.playlistmaker.search.di.historyInteractorModule
+import com.example.playlistmaker.search.di.historyRepositoryModule
 import com.example.playlistmaker.search.di.networkClientModule
 import com.example.playlistmaker.search.di.searchViewModelModule
 import com.example.playlistmaker.search.di.tracksInteractorModule
 import com.example.playlistmaker.search.di.tracksRepositoryModule
+import com.example.playlistmaker.settings.di.settingsViewModelModule
+import com.example.playlistmaker.settings.di.themeInteractorModule
+import com.example.playlistmaker.settings.di.themeRepositoryModule
 import com.example.playlistmaker.settings.ui.THEME
 import com.example.playlistmaker.settings.ui.THEME_KEY
 import org.koin.android.ext.koin.androidContext
@@ -32,7 +37,12 @@ class App : Application() {
                 tracksInteractorModule,
                 tracksRepositoryModule,
                 networkClientModule,
-                searchViewModelModule
+                searchViewModelModule,
+                settingsViewModelModule,
+                themeInteractorModule,
+                themeRepositoryModule,
+                historyRepositoryModule,
+                historyInteractorModule
             )
         }
     }
@@ -40,6 +50,7 @@ class App : Application() {
     companion object {
 
         private var darkTheme = false
+
         fun switchTheme(darkThemeEnabled: Boolean) {
             darkTheme = darkThemeEnabled
             AppCompatDelegate.setDefaultNightMode(

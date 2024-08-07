@@ -1,9 +1,6 @@
 package com.example.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -22,10 +19,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {
 
-    private var handler: Handler? = null
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
+
+    private var isPlaying: Boolean = false
 
     private val viewModel: PlayerViewModel by viewModel()
 
@@ -40,7 +38,6 @@ class PlayerActivity : AppCompatActivity() {
         val previewUrl = track.previewUrl
 
         binding.backButton.setOnClickListener {
-            Log.d("PlayerActivity", "${viewModel.observeState()}")
             onBackPressedDispatcher.onBackPressed()
         }
 
@@ -60,18 +57,11 @@ class PlayerActivity : AppCompatActivity() {
         binding.genreV.text = track.primaryGenreName
         binding.countryV.text = track.country
         playTime = findViewById(R.id.playTime)
-        handler = Handler(Looper.getMainLooper())
         playButton = binding.playButton
-        playTime.text = PlayerViewModel.ZERO_TIME
-
-        var isPlaying = false
-
-        viewModel.observePosition().observe(this){
-            updateTimer(it)
-        }
 
         viewModel.observeState().observe(this) {
             render(it)
+            isPlaying = it.isPlaying
         }
 
         viewModel.observeShowToast().observe(this) {
@@ -87,6 +77,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.prepare(previewUrl)
 
         playButton.setOnClickListener {
+
             isPlaying = if (isPlaying) {
                 viewModel.pause()
                 false
@@ -98,36 +89,14 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun render(state: PlayerState) {
-        when (state) {
-            is PlayerState.Prepare -> {
-                playButton.setImageResource(R.drawable.play_button)
+        playButton.setImageResource(
+            if (state.isPlaying) {
+                R.drawable.pause_button
+            } else {
+                R.drawable.play_button
             }
-            is PlayerState.Default -> {
-                playButton.setImageResource(R.drawable.play_button)
-            }
-            is PlayerState.Playing -> {
-                playButton.setImageResource(R.drawable.pause_button)
-                handler?.post(updateTimer())
-            }
-            is PlayerState.Paused -> {
-                handler?.removeCallbacksAndMessages(null)
-                playButton.setImageResource(R.drawable.play_button)
-            }
-        }
-    }
-
-    private fun updateTimer(): Runnable{
-        return object : Runnable {
-            override fun run() {
-                viewModel.updatePosition()
-                Log.d("Timer", "work")
-                handler?.postDelayed(this, 1000L)
-            }
-        }
-    }
-
-    private fun updateTimer(value: String){
-        playTime.text = value
+        )
+        playTime.text = state.progress
     }
 
     private fun showToast(message: String) {
@@ -136,13 +105,6 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        Log.d("PlayerActivity", "onPause")
         viewModel.pause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("PlayerActivity", "onDestroy")
-        viewModel.release()
     }
 }

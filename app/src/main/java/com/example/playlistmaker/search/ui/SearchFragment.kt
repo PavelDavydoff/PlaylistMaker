@@ -1,27 +1,26 @@
 package com.example.playlistmaker.search.ui
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -30,18 +29,17 @@ class SearchFragment : Fragment() {
         private const val KEY = "text"
         private const val EMPTY = ""
         const val INTENT_KEY = "key"
-        private const val HISTORY_KEY = "history"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     private var isClickAllowed = true
-    private var handler = Handler(Looper.getMainLooper())
 
     private lateinit var tracksAdapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var queryInput: String
     private lateinit var textWatcher: TextWatcher
-    private lateinit var historyPrefs: SharedPreferences
+
+    private var job: Job? = null
 
     private var _binding: FragmentSearchBinding? = null
 
@@ -61,21 +59,19 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        queryInput = ""
-
-        historyPrefs = requireActivity().getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
-
         val playerIntent = Intent(activity, PlayerActivity::class.java)
 
+        queryInput = ""
+
         tracksAdapter = TrackAdapter { track ->
-            viewModel.addToHistory(historyPrefs, track)
+            viewModel.addToHistory(track)
             if (clickDebounce()) {
                 startActivity(playerIntent.putExtra(INTENT_KEY, track))
             }
         }
 
         historyAdapter = TrackAdapter { track ->
-            viewModel.addToHistory(historyPrefs, track)
+            viewModel.addToHistory(track)
             if (clickDebounce()) {
                 startActivity(playerIntent.putExtra(INTENT_KEY, track))
             }
@@ -90,7 +86,6 @@ class SearchFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         binding.clearHistory.setOnClickListener {
-            historyPrefs.edit().clear().apply()
             viewModel.clearHistory()
             binding.historyLayout.visibility = View.GONE
             historyAdapter.notifyDataSetChanged()
@@ -98,8 +93,8 @@ class SearchFragment : Fragment() {
 
         binding.clearImageView.setOnClickListener {
             binding.editText.setText(EMPTY)
-            viewModel.setState(TracksState.History(viewModel.getHistoryList(historyPrefs)))
-            updateAdapter(historyAdapter, viewModel.getHistoryList(historyPrefs))
+            viewModel.setState(TracksState.History(viewModel.getHistoryList()))
+            updateAdapter(historyAdapter, viewModel.getHistoryList())
 
             val inputMethodManager =
                 requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -108,8 +103,8 @@ class SearchFragment : Fragment() {
 
         binding.editText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                viewModel.setState(TracksState.History(viewModel.getHistoryList(historyPrefs)))
-                updateAdapter(historyAdapter, viewModel.getHistoryList(historyPrefs))
+                viewModel.setState(TracksState.History(viewModel.getHistoryList()))
+                updateAdapter(historyAdapter, viewModel.getHistoryList())
             }
         }
 
@@ -147,12 +142,12 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        updateAdapter(historyAdapter, viewModel.getHistoryList(historyPrefs))
+        updateAdapter(historyAdapter, viewModel.getHistoryList())
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.putToHistory(historyPrefs)
+        viewModel.putToHistory()
     }
 
     override fun onDestroy() {
@@ -178,16 +173,15 @@ class SearchFragment : Fragment() {
             is TracksState.Content -> showContent(state.tracks)
             is TracksState.Error -> showError()
             is TracksState.Empty -> showEmpty()
-            is TracksState.History -> showHistory(viewModel.getHistoryList(historyPrefs))
+            is TracksState.History -> showHistory(viewModel.getHistoryList())
         }
     }
 
     private fun showHistory(tracks: List<Track>) {
-        Log.d("SearchFragment", "showHistory")
         updateAdapter(historyAdapter, tracks)
 
         binding.historyLayout.visibility =
-            if (viewModel.getHistoryList(historyPrefs).isEmpty()) View.GONE else View.VISIBLE
+            if (viewModel.getHistoryList().isEmpty()) View.GONE else View.VISIBLE
 
         binding.trackRecycler.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
@@ -220,7 +214,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showContent(tracks: List<Track>) {
-        Log.d("SearchFragment", "showContent")
         binding.trackRecycler.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
         binding.noInternet.visibility = View.GONE
@@ -240,7 +233,10 @@ class SearchFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            job = viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }
