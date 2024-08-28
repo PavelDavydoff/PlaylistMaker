@@ -35,6 +35,8 @@ class PlayerActivity : AppCompatActivity() {
 
         val track = intent.getSerializableExtra(INTENT_KEY) as Track
 
+        viewModel.checkFavorite(track)//-------------------------
+
         val previewUrl = track.previewUrl
 
         binding.backButton.setOnClickListener {
@@ -74,6 +76,10 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.observeFavorite().observe(this){
+            renderFavorite(it)
+        }
+
         viewModel.prepare(previewUrl)
 
         playButton.setOnClickListener {
@@ -85,6 +91,18 @@ class PlayerActivity : AppCompatActivity() {
                 viewModel.play()
                 true
             }
+        }
+
+        binding.addToFavoritesButton.setOnClickListener {
+            viewModel.onFavoriteClicked(track)
+        }
+    }
+
+    private fun renderFavorite(isFavorite: Boolean){
+        if (isFavorite){
+            binding.addToFavoritesButton.setImageResource(R.drawable.is_favorite)
+        } else {
+            binding.addToFavoritesButton.setImageResource(R.drawable.is_not_favorite)
         }
     }
 

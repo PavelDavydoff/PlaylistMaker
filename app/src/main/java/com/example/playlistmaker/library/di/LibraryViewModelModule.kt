@@ -12,7 +12,7 @@ val libraryViewModel = module {
     }
 
     viewModel {
-        FavoriteViewModel()
+        FavoriteViewModel(get())
     }
 
     viewModel {

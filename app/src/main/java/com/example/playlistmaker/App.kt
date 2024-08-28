@@ -2,6 +2,9 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.library.di.dataModule
+import com.example.playlistmaker.library.di.favoriteInteractorModule
+import com.example.playlistmaker.library.di.favoriteRepositoryModule
 import com.example.playlistmaker.library.di.libraryViewModel
 import com.example.playlistmaker.player.di.mediaPlayerModule
 import com.example.playlistmaker.player.di.playerViewModelModule
@@ -42,7 +45,10 @@ class App : Application() {
                 themeInteractorModule,
                 themeRepositoryModule,
                 historyRepositoryModule,
-                historyInteractorModule
+                historyInteractorModule,
+                dataModule,
+                favoriteInteractorModule,
+                favoriteRepositoryModule
             )
         }
     }

@@ -29,4 +29,13 @@
         android:name="com.example.playlistmaker.player.ui.PlayerActivity"
         android:label="activity_player"
         tools:layout="@layout/activity_player" />
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.playlistmaker.library.ui.FavoriteFragment"
+        android:label="favorite_fragment"
+        tools:layout="@layout/favorite_fragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
+    </fragment>
 </navigation>
