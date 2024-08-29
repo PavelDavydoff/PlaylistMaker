@@ -17,8 +17,6 @@ class FavoriteViewModel(private val favoriteInteractor: FavoriteInteractor) : Vi
         viewModelScope.launch {
             favoriteInteractor.getFavorites().collect { tracks ->
                 val listOfTracks = tracks.toMutableList()
-                listOfTracks.addAll(tracks)
-
                 if (listOfTracks.isEmpty()) {
                     stateLiveData.postValue(FavoriteState.Empty)
                 } else {
