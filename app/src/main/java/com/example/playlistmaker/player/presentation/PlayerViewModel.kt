@@ -80,16 +80,11 @@ class PlayerViewModel(
     }
 
     fun checkFavorite(track: Track) {
-        Log.d("PlayerViewModel", "checkFavorite")
         viewModelScope.launch {
-            Log.d("PlayerViewModel", "viewModelScope.launch")
             val listOfTracks = favoriteInteractor.getFavorites()
             listOfTracks.collect { tracks ->
-                Log.d("PlayerViewModel", "collect")
                 tracks.forEach {
-                    Log.d("PlayerViewModel", "foreach")
                     if (it.trackName == track.trackName) {
-                        Log.d("PlayerViewModel", "trackIsFavorite")
                         track.isFavorite = true
                         favoriteState.postValue(true)
                     }

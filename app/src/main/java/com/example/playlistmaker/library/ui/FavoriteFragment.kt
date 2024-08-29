@@ -2,7 +2,6 @@ package com.example.playlistmaker.library.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +39,8 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getFavorites()
+
         val playerIntent = Intent(activity, PlayerActivity::class.java)
 
         favoriteAdapter = TrackAdapter { track ->
@@ -57,15 +58,12 @@ class FavoriteFragment : Fragment() {
 
     private fun render(state: FavoriteState){
         if (state is FavoriteState.Content){
-            Log.d("Render", "isContent")
             favoriteAdapter.tracks.clear()
             favoriteAdapter.tracks.addAll(state.tracks)
-            Log.d("render", state.tracks.toString())
             favoriteAdapter.notifyDataSetChanged()
             binding.favoriteRecycler.visibility = View.VISIBLE
             binding.placeholder.visibility = View.GONE
         } else {
-            Log.d("Render", "isPlaceholder")
             binding.favoriteRecycler.visibility = View.GONE
             binding.placeholder.visibility = View.VISIBLE
         }
