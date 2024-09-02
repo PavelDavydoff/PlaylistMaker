@@ -76,6 +76,6 @@
     </style>
 
     <style name="add_to_favorites_button">
-        <item name="android:src">@drawable/add_to_favorites_button</item>
+        <item name="android:src">@drawable/is_not_favorite</item>
     </style>
 </resources>

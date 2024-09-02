@@ -22,7 +22,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
 
     private val historyInteractor: HistoryInteractor by inject(HistoryInteractor::class.java)
 
-    private val sDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, false) {
+    private val sDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) {
         searchRequest(it)
     }
 

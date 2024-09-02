@@ -1,6 +1,5 @@
 package com.example.playlistmaker.library.ui
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -13,7 +12,6 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     }
 
     override fun createFragment(position: Int): Fragment {
-        Log.d("Position", "$position")
         return if (position == 0) {
             FavoriteFragment.newInstance()
         } else {

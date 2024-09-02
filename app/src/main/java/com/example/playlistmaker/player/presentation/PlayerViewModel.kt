@@ -6,16 +6,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
 import com.example.playlistmaker.player.ui.models.ToastState
+import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
+class PlayerViewModel(
+    private val player: MediaPlayer,
+    private val favoriteInteractor: FavoriteInteractor
+) : ViewModel() {
 
     private var timerJob: Job? = null
 
@@ -27,6 +32,9 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
 
     private val toastState = MutableLiveData<ToastState>(ToastState.None)
     fun observeToastState(): LiveData<ToastState> = toastState
+
+    private val favoriteState = MutableLiveData<Boolean>()
+    fun observeFavorite(): LiveData<Boolean> = favoriteState
 
     fun prepare(url: String?) {
         if (url == null) {
@@ -57,7 +65,35 @@ class PlayerViewModel(private val player: MediaPlayer) : ViewModel() {
         stateLiveData.postValue(PlayerState.Paused(getCurrentPosition()))
     }
 
-     private fun releasePlayer() {
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
+            if (!track.isFavorite) {
+                track.isFavorite = true
+                favoriteInteractor.addToFavorite(track)
+                favoriteState.postValue(true)
+            } else {
+                track.isFavorite = false
+                favoriteInteractor.removeFromFavorite(track)
+                favoriteState.postValue(false)
+            }
+        }
+    }
+
+    fun checkFavorite(track: Track) {
+        viewModelScope.launch {
+            val listOfTracks = favoriteInteractor.getFavorites()
+            listOfTracks.collect { tracks ->
+                tracks.forEach {
+                    if (it.trackName == track.trackName) {
+                        track.isFavorite = true
+                        favoriteState.postValue(true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun releasePlayer() {
         player.stop()
         player.release()
         stateLiveData.value = PlayerState.Default()
