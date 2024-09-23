@@ -37,5 +37,7 @@
     <dimen name="_0dp">0dp</dimen>
     <dimen name="_1dp">1dp</dimen>
     <dimen name="_200dp">200dp</dimen>
+    <dimen name="_44dp">44dp</dimen>
+    <dimen name="_56dp">56dp</dimen>
 
 </resources>

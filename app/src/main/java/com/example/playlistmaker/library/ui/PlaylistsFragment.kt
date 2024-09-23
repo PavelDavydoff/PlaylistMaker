@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.databinding.PlaylistFragmentBinding
+import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.library.ui.presentation.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -15,7 +15,7 @@ class PlaylistsFragment : Fragment() {
         fun newInstance() = PlaylistsFragment()
     }
 
-    private lateinit var binding: PlaylistFragmentBinding
+    private lateinit var binding: FragmentPlaylistsBinding
 
     private val viewModel: PlaylistsViewModel by viewModel()
 
@@ -24,7 +24,7 @@ class PlaylistsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = PlaylistFragmentBinding.inflate(inflater, container, false)
+        binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
         return binding.root
     }
 }
