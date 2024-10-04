@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.library.ui.presentation.NewPlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,11 +48,11 @@ class NewPlaylistFragment : Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString() == "") {
-                    binding.editName.setBackgroundResource(R.drawable.rounded_rectangle_grey)
+                    //binding.editName.setBackgroundResource(R.drawable.rounded_rectangle_grey)
                     binding.createButton.isEnabled = false
 
                 } else {
-                    binding.editName.setBackgroundResource(R.drawable.rounded_rectangle_blue)
+                    //binding.editName.setBackgroundResource(R.drawable.rounded_rectangle_blue)
                     binding.createButton.isEnabled = true
                 }
             }
@@ -62,7 +61,7 @@ class NewPlaylistFragment : Fragment() {
 
             }
         }
-        nameTextWatcher.let { binding.editName.addTextChangedListener(it) }
+        nameTextWatcher.let { binding.editNameField.addTextChangedListener(it) }
 
         descriptionTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -70,17 +69,13 @@ class NewPlaylistFragment : Fragment() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0.toString() == ""){
-                    binding.editDescription.setBackgroundResource(R.drawable.rounded_rectangle_grey)
-                } else {
-                    binding.editDescription.setBackgroundResource(R.drawable.rounded_rectangle_blue)
-                }
+
             }
 
             override fun afterTextChanged(p0: Editable?) {
 
             }
         }
-        descriptionTextWatcher.let { binding.editDescription.addTextChangedListener(it) }
+        descriptionTextWatcher.let { binding.editDescriptionField.addTextChangedListener(it) }
     }
 }

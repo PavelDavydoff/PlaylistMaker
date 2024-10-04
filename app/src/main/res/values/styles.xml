@@ -77,4 +77,10 @@
     <style name="add_to_favorites_button">
         <item name="android:src">@drawable/is_not_favorite</item>
     </style>
+
+    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@drawable/text_input_color_selector</item>
+        <item name="hintTextColor">@drawable/text_input_color_selector</item>
+
+    </style>
 </resources>
