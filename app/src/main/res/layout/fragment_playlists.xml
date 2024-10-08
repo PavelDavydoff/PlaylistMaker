@@ -24,6 +24,7 @@
         app:cornerRadius="@dimen/radius_54dp" />
 
     <ImageView
+        android:id="@+id/no_playlists_image"
         style="@style/notFoundPlaceholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,6 +32,7 @@
         android:layout_marginTop="@dimen/_46dp" />
 
     <TextView
+        android:id="@+id/no_playlists_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -39,5 +41,10 @@
         android:text="@string/no_playlists"
         android:textColor="@color/black"
         android:textSize="@dimen/size_19sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
