@@ -6,6 +6,8 @@ import com.example.playlistmaker.library.di.dataModule
 import com.example.playlistmaker.library.di.favoriteInteractorModule
 import com.example.playlistmaker.library.di.favoriteRepositoryModule
 import com.example.playlistmaker.library.di.libraryViewModel
+import com.example.playlistmaker.library.di.playlistInteractorModule
+import com.example.playlistmaker.library.di.playlistRepositoryModule
 import com.example.playlistmaker.player.di.mediaPlayerModule
 import com.example.playlistmaker.player.di.playerViewModelModule
 import com.example.playlistmaker.search.di.historyInteractorModule
@@ -48,7 +50,9 @@ class App : Application() {
                 historyInteractorModule,
                 dataModule,
                 favoriteInteractorModule,
-                favoriteRepositoryModule
+                favoriteRepositoryModule,
+                playlistInteractorModule,
+                playlistRepositoryModule
             )
         }
     }
