@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.api.FavoriteInteractor
+import com.example.playlistmaker.library.domain.api.PlaylistInteractor
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
 import com.example.playlistmaker.player.ui.models.ToastState
@@ -19,7 +20,8 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val player: MediaPlayer,
-    private val favoriteInteractor: FavoriteInteractor
+    private val favoriteInteractor: FavoriteInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private var timerJob: Job? = null

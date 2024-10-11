@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -9,12 +10,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
+import com.example.playlistmaker.library.ui.NewPlaylistFragment
 import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.presentation.PlayerViewModel
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.ToastState
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.SearchFragment.Companion.INTENT_KEY
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {
@@ -35,9 +38,47 @@ class PlayerActivity : AppCompatActivity() {
 
         val track = intent.getSerializableExtra(INTENT_KEY) as Track
 
-        viewModel.checkFavorite(track)//-------------------------
+        viewModel.checkFavorite(track)
 
         val previewUrl = track.previewUrl
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+        })
+
+        binding.addToCollectionButton.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        binding.createPlaylist.setOnClickListener {
+
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            binding.overlay.visibility = View.GONE
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container_view, NewPlaylistFragment.newInstance())
+                .addToBackStack(packageName)
+                .commit()
+
+            binding.playerActivity.visibility = View.GONE
+        }
 
         binding.backButton.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
