@@ -12,6 +12,8 @@ import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
 import com.example.playlistmaker.player.ui.models.ToastState
 import com.example.playlistmaker.search.domain.models.Track
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -93,6 +95,12 @@ class PlayerViewModel(
                 }
             }
         }
+    }
+
+    fun jsonToTrack(json: String): Track{
+        val gson = Gson()
+        val track = object : TypeToken<Track>() {}.type
+        return gson.fromJson(json, track)
     }
 
     private fun releasePlayer() {

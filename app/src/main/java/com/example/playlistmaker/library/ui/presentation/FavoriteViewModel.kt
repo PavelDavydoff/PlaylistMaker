@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.library.ui.models.FavoriteState
+import com.example.playlistmaker.search.domain.models.Track
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
 class FavoriteViewModel(private val favoriteInteractor: FavoriteInteractor) : ViewModel() {
@@ -24,5 +26,10 @@ class FavoriteViewModel(private val favoriteInteractor: FavoriteInteractor) : Vi
                 }
             }
         }
+    }
+
+    fun trackToJson(track: Track): String{
+        val gson = Gson()
+        return gson.toJson(track)
     }
 }

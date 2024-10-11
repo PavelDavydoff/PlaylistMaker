@@ -1,28 +1,32 @@
 package com.example.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityPlayerBinding
-import com.example.playlistmaker.library.ui.NewPlaylistFragment
+import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.presentation.PlayerViewModel
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.ToastState
-import com.example.playlistmaker.search.domain.models.Track
-import com.example.playlistmaker.search.ui.SearchFragment.Companion.INTENT_KEY
+import com.example.playlistmaker.util.TrackStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
-    private lateinit var binding: ActivityPlayerBinding
+    private var _binding: FragmentPlayerBinding? = null
+
+    private val binding get() = _binding!!
+
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
 
@@ -30,13 +34,21 @@ class PlayerActivity : AppCompatActivity() {
 
     private val viewModel: PlayerViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPlayerBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentPlayerBinding.inflate(inflater,container,false)
+        return binding.root
+    }
 
-        val track = intent.getSerializableExtra(INTENT_KEY) as Track
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val view = binding.root
+
+        val trackJson = (requireActivity() as TrackStorage).getTrack()
+        val track = viewModel.jsonToTrack(trackJson)
 
         viewModel.checkFavorite(track)
 
@@ -72,16 +84,13 @@ class PlayerActivity : AppCompatActivity() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             binding.overlay.visibility = View.GONE
 
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container_view, NewPlaylistFragment.newInstance())
-                .addToBackStack(packageName)
-                .commit()
+            findNavController().navigate(R.id.action_playerFragment_to_newPlaylistFragment)
 
             binding.playerActivity.visibility = View.GONE
         }
 
         binding.backButton.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         Glide.with(this)
@@ -99,25 +108,25 @@ class PlayerActivity : AppCompatActivity() {
         binding.yearV.text = track.releaseDate.substring(0, 4)
         binding.genreV.text = track.primaryGenreName
         binding.countryV.text = track.country
-        playTime = findViewById(R.id.playTime)
+        playTime = binding.playTime
         playButton = binding.playButton
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
             isPlaying = it.isPlaying
         }
 
-        viewModel.observeShowToast().observe(this) {
+        viewModel.observeShowToast().observe(viewLifecycleOwner) {
             showToast(it)
         }
 
-        viewModel.observeToastState().observe(this) { toast ->
+        viewModel.observeToastState().observe(viewLifecycleOwner) { toast ->
             if (toast is ToastState.Show) {
                 showToast(toast.additionalMessage)
             }
         }
 
-        viewModel.observeFavorite().observe(this){
+        viewModel.observeFavorite().observe(viewLifecycleOwner){
             renderFavorite(it)
         }
 
@@ -159,7 +168,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onPause() {

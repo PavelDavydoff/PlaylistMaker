@@ -1,18 +1,18 @@
 package com.example.playlistmaker.library.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FavoriteFragmentBinding
 import com.example.playlistmaker.library.ui.models.FavoriteState
 import com.example.playlistmaker.library.ui.presentation.FavoriteViewModel
-import com.example.playlistmaker.player.ui.PlayerActivity
-import com.example.playlistmaker.search.ui.SearchFragment
 import com.example.playlistmaker.search.ui.TrackAdapter
+import com.example.playlistmaker.util.TrackStorage
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {
@@ -41,10 +41,9 @@ class FavoriteFragment : Fragment() {
 
         viewModel.getFavorites()
 
-        val playerIntent = Intent(activity, PlayerActivity::class.java)
-
         favoriteAdapter = TrackAdapter { track ->
-            startActivity(playerIntent.putExtra(SearchFragment.INTENT_KEY, track))
+            (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
+            findNavController().navigate(R.id.action_libraryFragment_to_playerFragment)
         }
 
         binding.favoriteRecycler.adapter = favoriteAdapter

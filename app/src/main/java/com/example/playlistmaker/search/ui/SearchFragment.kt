@@ -1,7 +1,6 @@
 package com.example.playlistmaker.search.ui
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,12 +11,14 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
+import com.example.playlistmaker.util.TrackStorage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -59,21 +60,21 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val playerIntent = Intent(activity, PlayerActivity::class.java)
-
         queryInput = ""
 
         tracksAdapter = TrackAdapter { track ->
             viewModel.addToHistory(track)
             if (clickDebounce()) {
-                startActivity(playerIntent.putExtra(INTENT_KEY, track))
+                (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
+                findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
             }
         }
 
         historyAdapter = TrackAdapter { track ->
             viewModel.addToHistory(track)
             if (clickDebounce()) {
-                startActivity(playerIntent.putExtra(INTENT_KEY, track))
+                (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
+                findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
             }
         }
 
