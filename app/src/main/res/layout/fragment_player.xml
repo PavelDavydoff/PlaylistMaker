@@ -281,6 +281,7 @@
             app:cornerRadius="@dimen/radius_54dp" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistInteractor
+import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
 import com.example.playlistmaker.player.ui.models.ToastState
@@ -39,6 +40,9 @@ class PlayerViewModel(
 
     private val favoriteState = MutableLiveData<Boolean>()
     fun observeFavorite(): LiveData<Boolean> = favoriteState
+
+    private val playlistLiveData = MutableLiveData<MutableList<Playlist>>()
+    fun observePlaylist(): LiveData<MutableList<Playlist>> = playlistLiveData
 
     fun prepare(url: String?) {
         if (url == null) {
@@ -101,6 +105,15 @@ class PlayerViewModel(
         val gson = Gson()
         val track = object : TypeToken<Track>() {}.type
         return gson.fromJson(json, track)
+    }
+
+    fun getPlaylists(){
+        viewModelScope.launch {
+            playlistInteractor.getPlaylists().collect {playlists ->
+                val listOfPlaylists = playlists.toMutableList()
+                playlistLiveData.postValue(listOfPlaylists)
+            }
+        }
     }
 
     private fun releasePlayer() {

@@ -9,10 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlayerBinding
+import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.presentation.PlayerViewModel
 import com.example.playlistmaker.player.ui.models.PlayerState
@@ -29,6 +31,8 @@ class PlayerFragment : Fragment() {
 
     private lateinit var playButton: ImageView
     private lateinit var playTime: TextView
+
+    private lateinit var playlistAdapter: PlaylistAdapterPlayer
 
     private var isPlaying: Boolean = false
 
@@ -74,6 +78,16 @@ class PlayerFragment : Fragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
+
+        viewModel.getPlaylists()
+
+        playlistAdapter = PlaylistAdapterPlayer()
+        binding.recyclerViewPlayer.adapter = playlistAdapter
+        binding.recyclerViewPlayer.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        viewModel.observePlaylist().observe(viewLifecycleOwner){
+            renderPlaylists(it)
+        }
 
         binding.addToCollectionButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -165,6 +179,12 @@ class PlayerFragment : Fragment() {
             }
         )
         playTime.text = state.progress
+    }
+
+    private fun renderPlaylists(playlists: MutableList<Playlist>){
+        playlistAdapter.playlists.clear()
+        playlistAdapter.playlists.addAll(playlists)
+        playlistAdapter.notifyDataSetChanged()
     }
 
     private fun showToast(message: String) {

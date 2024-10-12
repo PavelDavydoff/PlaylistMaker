@@ -29,7 +29,6 @@ class SearchFragment : Fragment() {
     companion object {
         private const val KEY = "text"
         private const val EMPTY = ""
-        const val INTENT_KEY = "key"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 

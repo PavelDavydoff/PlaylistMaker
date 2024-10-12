@@ -10,7 +10,7 @@ class PlaylistAdapter: RecyclerView.Adapter<PlaylistViewHolder>() {
 
     var playlists = ArrayList<Playlist>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_playlist, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_playlist_grid, parent, false)
         return PlaylistViewHolder(view)
     }
 

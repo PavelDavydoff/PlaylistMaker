@@ -20,7 +20,7 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 .load(playlist.filePath)
                 .centerCrop()
                 .placeholder(R.drawable.placeholder)
-                .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_2)))
+                .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_8)))
                 .into(playlistImage)
 
         playlistName.text = playlist.name
