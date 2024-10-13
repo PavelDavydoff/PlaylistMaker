@@ -17,7 +17,7 @@ class PlaylistViewHolderPlayer(view: View): RecyclerView.ViewHolder(view) {
     fun bind(playlist: Playlist){
         Glide.with(itemView)
             .load(playlist.filePath)
-            .fitCenter()
+            .centerCrop()
             .placeholder(R.drawable.placeholder)
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_2)))
             .into(playlistImage)

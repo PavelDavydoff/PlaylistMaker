@@ -15,7 +15,6 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val playlistImage: ImageView = itemView.findViewById(R.id.playlist_image)
 
     fun bind(playlist: Playlist){
-
             Glide.with(itemView)
                 .load(playlist.filePath)
                 .centerCrop()

@@ -13,4 +13,12 @@ class PlaylistInteractorImpl(private val repository: PlaylistRepository) : Playl
     override fun getPlaylists(): Flow<List<Playlist>> {
         return repository.getPlaylists()
     }
+
+    override fun updatePlaylist(playlist: Playlist) {
+        repository.updatePlaylist(playlist)
+    }
+
+    override fun getPlaylist(name: String): Playlist {
+        return repository.getPlaylist(name)
+    }
 }

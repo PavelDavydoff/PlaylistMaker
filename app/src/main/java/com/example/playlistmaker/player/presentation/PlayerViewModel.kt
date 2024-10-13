@@ -116,6 +116,26 @@ class PlayerViewModel(
         }
     }
 
+    fun updatePlaylist(playlist: Playlist, track: Track){
+        val tracksList = listFromJson(playlist.tracks)
+        tracksList.add(track.trackName)
+        val tracks = jsonFromList(tracksList)
+        playlist.tracksCount++
+        val playlist2 = Playlist(playlist.name, playlist.description, playlist.filePath, tracks, playlist.tracksCount)
+        playlistInteractor.addNewPlaylist(playlist2)
+    }
+
+    private fun jsonFromList(list: MutableList<String>): String{
+        val gson = Gson()
+        return gson.toJson(list)
+    }
+
+    private fun listFromJson(json: String?): MutableList<String>{
+        val gson = Gson()
+        val listType = object : TypeToken<MutableList<String>>() {}.type
+        return gson.fromJson(json, listType) ?: mutableListOf()
+    }
+
     private fun releasePlayer() {
         player.stop()
         player.release()

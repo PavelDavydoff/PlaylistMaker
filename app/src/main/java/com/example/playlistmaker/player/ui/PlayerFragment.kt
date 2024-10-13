@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,13 +44,12 @@ class PlayerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentPlayerBinding.inflate(inflater,container,false)
+        _binding = FragmentPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val view = binding.root
 
         val trackJson = (requireActivity() as TrackStorage).getTrack()
         val track = viewModel.jsonToTrack(trackJson)
@@ -62,7 +62,8 @@ class PlayerFragment : Fragment() {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
 
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
 
@@ -70,6 +71,7 @@ class PlayerFragment : Fragment() {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         binding.overlay.visibility = View.GONE
                     }
+
                     else -> {
                         binding.overlay.visibility = View.VISIBLE
                     }
@@ -81,11 +83,15 @@ class PlayerFragment : Fragment() {
 
         viewModel.getPlaylists()
 
-        playlistAdapter = PlaylistAdapterPlayer()
+        playlistAdapter = PlaylistAdapterPlayer {
+            viewModel.updatePlaylist(it, track)
+            Log.d("Клик", it.tracks)
+        }
         binding.recyclerViewPlayer.adapter = playlistAdapter
-        binding.recyclerViewPlayer.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerViewPlayer.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        viewModel.observePlaylist().observe(viewLifecycleOwner){
+        viewModel.observePlaylist().observe(viewLifecycleOwner) {
             renderPlaylists(it)
         }
 
@@ -140,7 +146,7 @@ class PlayerFragment : Fragment() {
             }
         }
 
-        viewModel.observeFavorite().observe(viewLifecycleOwner){
+        viewModel.observeFavorite().observe(viewLifecycleOwner) {
             renderFavorite(it)
         }
 
@@ -162,8 +168,8 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun renderFavorite(isFavorite: Boolean){
-        if (isFavorite){
+    private fun renderFavorite(isFavorite: Boolean) {
+        if (isFavorite) {
             binding.addToFavoritesButton.setImageResource(R.drawable.is_favorite)
         } else {
             binding.addToFavoritesButton.setImageResource(R.drawable.is_not_favorite)
@@ -181,7 +187,7 @@ class PlayerFragment : Fragment() {
         playTime.text = state.progress
     }
 
-    private fun renderPlaylists(playlists: MutableList<Playlist>){
+    private fun renderPlaylists(playlists: MutableList<Playlist>) {
         playlistAdapter.playlists.clear()
         playlistAdapter.playlists.addAll(playlists)
         playlistAdapter.notifyDataSetChanged()

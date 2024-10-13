@@ -18,4 +18,12 @@ class PlaylistRepositoryImpl(
     override fun getPlaylists(): Flow<List<Playlist>> =
         database.playlistDao().getPlaylists().map { playlists -> playlists.map { playlistDbConverter.map(it) } }
 
+    override fun updatePlaylist(playlist: Playlist) {
+        database.playlistDao().updatePlaylist(playlistDbConverter.map(playlist))
+    }
+
+    override fun getPlaylist(name: String): Playlist {
+        return playlistDbConverter.map(database.playlistDao().getPlaylistByName(name))
+    }
+
 }

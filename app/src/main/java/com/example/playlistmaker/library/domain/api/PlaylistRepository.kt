@@ -7,4 +7,8 @@ interface PlaylistRepository {
     fun addNewPlaylist(playlist: Playlist)
 
     fun getPlaylists(): Flow<List<Playlist>>
+
+    fun updatePlaylist(playlist: Playlist)
+
+    fun getPlaylist(name: String): Playlist
 }

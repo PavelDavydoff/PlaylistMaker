@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="@id/view_playlist_linear"
         app:layout_constraintStart_toStartOf="@id/view_playlist_linear"
         app:layout_constraintBottom_toBottomOf="@id/view_playlist_linear"
-        android:src="@drawable/placeholder"/>
+        />
 
     <TextView
         android:id="@+id/playlist_name_player"

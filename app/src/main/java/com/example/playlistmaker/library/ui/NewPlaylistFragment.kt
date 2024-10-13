@@ -82,7 +82,6 @@ class NewPlaylistFragment : Fragment() {
         binding.createButton.setOnClickListener {
             viewModel.addNewPlaylist(Playlist(playlistName, playlistDescription, playlistFilePath, "", 0))
             Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT).show()
-            //parentFragmentManager.popBackStack()
             findNavController().navigate(R.id.action_newPlaylistFragment_to_playlistsFragment)
         }
 
