@@ -253,14 +253,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white"
+        android:background="@drawable/rounded_rectangle"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="440dp"
+        app:behavior_peekHeight="505dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8dp"
+            android:src="@drawable/rectangle_1457"
+            android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24dp"
+            android:textSize="@dimen/size_19sp"
+            android:textColor="@color/yp_black"
             android:text="Добавить в плейлист"
             android:layout_gravity="center"/>
 
@@ -283,7 +293,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_player"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_24dp"/>
 
     </LinearLayout>
 

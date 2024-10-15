@@ -73,6 +73,10 @@ class PlayerViewModel(
         stateLiveData.postValue(PlayerState.Paused(getCurrentPosition()))
     }
 
+    fun stop(){
+        player.stop()
+    }
+
     fun onFavoriteClicked(track: Track) {
         viewModelScope.launch {
             if (!track.isFavorite) {
@@ -121,7 +125,7 @@ class PlayerViewModel(
         tracksList.add(track.trackName)
         val tracks = jsonFromList(tracksList)
         playlist.tracksCount++
-        val playlist2 = Playlist(playlist.name, playlist.description, playlist.filePath, tracks, playlist.tracksCount)
+        val playlist2 = Playlist(playlist.playlistId, playlist.name, playlist.description, playlist.filePath, tracks, playlist.tracksCount)
         playlistInteractor.addNewPlaylist(playlist2)
     }
 

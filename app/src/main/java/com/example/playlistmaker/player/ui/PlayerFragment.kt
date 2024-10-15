@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -113,6 +114,13 @@ class PlayerFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(enabled = true) {
+            override fun handleOnBackPressed() {
+                viewModel.stop()
+                parentFragmentManager.popBackStack()
+            }
+        })
+
         Glide.with(this)
             .load(track.artworkUrl512)
             .centerCrop()
@@ -201,4 +209,5 @@ class PlayerFragment : Fragment() {
         super.onPause()
         viewModel.pause()
     }
+
 }

@@ -80,7 +80,7 @@ class NewPlaylistFragment : Fragment() {
         }
 
         binding.createButton.setOnClickListener {
-            viewModel.addNewPlaylist(Playlist(playlistName, playlistDescription, playlistFilePath, "", 0))
+            viewModel.addNewPlaylist(Playlist(0, playlistName, playlistDescription, playlistFilePath, "", 0))
             Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_newPlaylistFragment_to_playlistsFragment)
         }
@@ -103,11 +103,7 @@ class NewPlaylistFragment : Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 playlistName = p0.toString()
-                if (p0.toString() == "") {
-                    binding.createButton.isEnabled = false
-                } else {
-                    binding.createButton.isEnabled = true
-                }
+                binding.createButton.isEnabled = p0.toString() != ""
             }
 
             override fun afterTextChanged(p0: Editable?) {

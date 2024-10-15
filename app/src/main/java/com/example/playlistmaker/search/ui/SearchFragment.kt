@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +67,7 @@ class SearchFragment : Fragment() {
             if (clickDebounce()) {
                 (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
                 findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
+                Log.d("SearchFragment","На песню клик")
             }
         }
 
@@ -74,6 +76,7 @@ class SearchFragment : Fragment() {
             if (clickDebounce()) {
                 (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
                 findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
+                Log.d("SearchFragment","На песню клик")
             }
         }
 
