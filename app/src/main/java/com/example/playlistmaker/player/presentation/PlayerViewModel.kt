@@ -137,6 +137,7 @@ class PlayerViewModel(
         playlist.tracksCount++
         val playlist2 = Playlist(playlist.playlistId, playlist.name, playlist.description, playlist.filePath, tracks, playlist.tracksCount)
         playlistInteractor.addNewPlaylist(playlist2)
+        favoriteInteractor.addToPlaylists(track)
         addTrackToast.postValue(AddTrackToastState.IsAdded("Трек добавлен в плейлист ${playlist.name}"))
     }
 

@@ -17,4 +17,8 @@ class FavoriteInteractorImpl(private val favoriteRepository: FavoriteRepository)
     override fun getFavorites(): Flow<List<Track>> {
         return favoriteRepository.getFavorites()
     }
+
+    override fun addToPlaylists(track: Track){
+        favoriteRepository.addToPlaylists(track)
+    }
 }
