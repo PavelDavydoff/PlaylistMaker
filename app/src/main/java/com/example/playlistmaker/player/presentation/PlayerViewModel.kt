@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
+import com.example.playlistmaker.player.ui.models.AddTrackToastState
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
 import com.example.playlistmaker.player.ui.models.ToastState
@@ -43,6 +44,9 @@ class PlayerViewModel(
 
     private val playlistLiveData = MutableLiveData<MutableList<Playlist>>()
     fun observePlaylist(): LiveData<MutableList<Playlist>> = playlistLiveData
+
+    private val addTrackToast = MutableLiveData<AddTrackToastState>()
+    fun observeAddTrack(): LiveData<AddTrackToastState> = addTrackToast
 
     fun prepare(url: String?) {
         if (url == null) {
@@ -122,11 +126,18 @@ class PlayerViewModel(
 
     fun updatePlaylist(playlist: Playlist, track: Track){
         val tracksList = listFromJson(playlist.tracks)
+        for (trackName in tracksList){
+            if (trackName == track.trackName ) {
+                addTrackToast.postValue(AddTrackToastState.IsNotAdded("Трек уже добавлен в плейлист ${playlist.name}"))
+                return
+            }
+        }
         tracksList.add(track.trackName)
         val tracks = jsonFromList(tracksList)
         playlist.tracksCount++
         val playlist2 = Playlist(playlist.playlistId, playlist.name, playlist.description, playlist.filePath, tracks, playlist.tracksCount)
         playlistInteractor.addNewPlaylist(playlist2)
+        addTrackToast.postValue(AddTrackToastState.IsAdded("Трек добавлен в плейлист ${playlist.name}"))
     }
 
     private fun jsonFromList(list: MutableList<String>): String{

@@ -19,6 +19,7 @@ import com.example.playlistmaker.databinding.FragmentPlayerBinding
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.presentation.PlayerViewModel
+import com.example.playlistmaker.player.ui.models.AddTrackToastState
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.ToastState
 import com.example.playlistmaker.util.TrackStorage
@@ -148,6 +149,10 @@ class PlayerFragment : Fragment() {
             showToast(it)
         }
 
+        viewModel.observeAddTrack().observe(viewLifecycleOwner){
+            showAddTrackToast(it)
+        }
+
         viewModel.observeToastState().observe(viewLifecycleOwner) { toast ->
             if (toast is ToastState.Show) {
                 showToast(toast.additionalMessage)
@@ -205,9 +210,20 @@ class PlayerFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+    private fun showAddTrackToast(state: AddTrackToastState) {
+        when (state) {
+            is AddTrackToastState.IsAdded -> {
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+            }
+
+            is AddTrackToastState.IsNotAdded -> {
+                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     override fun onPause() {
         super.onPause()
         viewModel.pause()
     }
-
 }

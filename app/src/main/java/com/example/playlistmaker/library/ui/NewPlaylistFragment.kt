@@ -16,8 +16,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.library.ui.presentation.NewPlaylistViewModel
@@ -82,16 +80,16 @@ class NewPlaylistFragment : Fragment() {
         binding.createButton.setOnClickListener {
             viewModel.addNewPlaylist(Playlist(0, playlistName, playlistDescription, playlistFilePath, "", 0))
             Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_newPlaylistFragment_to_playlistsFragment)
+            parentFragmentManager.popBackStack()
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("Завершить создание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны")
-            .setNegativeButton("Отмена"){dialog, which ->
+            .setNegativeButton("Отмена"){_, _ ->
 
             }
-            .setPositiveButton("Завершить"){dialog, which ->
+            .setPositiveButton("Завершить"){_, _ ->
                 parentFragmentManager.popBackStack()
             }
 
