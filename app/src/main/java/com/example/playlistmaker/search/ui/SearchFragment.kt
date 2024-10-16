@@ -233,7 +233,7 @@ class SearchFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
+            lifecycleScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY)
                 Log.d("SearchFragment","Клик")
                 isClickAllowed = true
@@ -248,10 +248,5 @@ class SearchFragment : Fragment() {
         } else {
             View.VISIBLE
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        isClickAllowed = true
     }
 }
