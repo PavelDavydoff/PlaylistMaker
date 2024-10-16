@@ -20,7 +20,6 @@ import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
 import com.example.playlistmaker.util.TrackStorage
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,7 +39,7 @@ class SearchFragment : Fragment() {
     private lateinit var queryInput: String
     private lateinit var textWatcher: TextWatcher
 
-    private var job: Job? = null
+    //private var job: Job? = null
 
     private var _binding: FragmentSearchBinding? = null
 
@@ -63,20 +62,18 @@ class SearchFragment : Fragment() {
         queryInput = ""
 
         tracksAdapter = TrackAdapter { track ->
-            viewModel.addToHistory(track)
             if (clickDebounce()) {
+                viewModel.addToHistory(track)
                 (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
                 findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
-                Log.d("SearchFragment","На песню клик")
             }
         }
 
         historyAdapter = TrackAdapter { track ->
-            viewModel.addToHistory(track)
             if (clickDebounce()) {
+                viewModel.addToHistory(track)
                 (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
                 findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
-                Log.d("SearchFragment","На песню клик")
             }
         }
 
@@ -236,8 +233,9 @@ class SearchFragment : Fragment() {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            job = viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY)
+                Log.d("SearchFragment","Клик")
                 isClickAllowed = true
             }
         }
@@ -250,5 +248,10 @@ class SearchFragment : Fragment() {
         } else {
             View.VISIBLE
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isClickAllowed = true
     }
 }
