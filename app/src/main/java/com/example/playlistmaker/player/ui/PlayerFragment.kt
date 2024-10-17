@@ -1,7 +1,6 @@
 package com.example.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -87,7 +86,6 @@ class PlayerFragment : Fragment() {
 
         playlistAdapter = PlaylistAdapterPlayer {
             viewModel.updatePlaylist(it, track)
-            Log.d("Клик", it.tracks)
         }
         binding.recyclerViewPlayer.adapter = playlistAdapter
         binding.recyclerViewPlayer.layoutManager =

@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.library.ui.presentation.NewPlaylistViewModel
@@ -19,10 +20,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NewPlaylistFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = NewPlaylistFragment()
-    }
 
     private var _binding: FragmentNewPlaylistBinding? = null
     private val binding get() = _binding!!
@@ -73,17 +70,18 @@ class NewPlaylistFragment : Fragment() {
 
         binding.createButton.setOnClickListener {
             viewModel.addNewPlaylist(Playlist(0, playlistName, playlistDescription, playlistFilePath, "", 0))
-            Toast.makeText(requireContext(), "Плейлист $playlistName создан", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(),
+                getString(R.string.playlist_created, playlistName), Toast.LENGTH_SHORT).show()
             parentFragmentManager.popBackStack()
         }
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны")
-            .setNegativeButton("Отмена"){_, _ ->
+            .setTitle(getString(R.string.ending_create_playlist))
+            .setMessage(getString(R.string.all_data_lost))
+            .setNegativeButton(getString(R.string.cancel)){ _, _ ->
 
             }
-            .setPositiveButton("Завершить"){_, _ ->
+            .setPositiveButton(getString(R.string.finish)){ _, _ ->
                 parentFragmentManager.popBackStack()
             }
 
