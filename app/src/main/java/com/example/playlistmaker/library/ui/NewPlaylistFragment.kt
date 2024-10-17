@@ -1,10 +1,6 @@
 package com.example.playlistmaker.library.ui
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -21,8 +17,6 @@ import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.library.ui.presentation.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 class NewPlaylistFragment : Fragment() {
 
@@ -62,7 +56,7 @@ class NewPlaylistFragment : Fragment() {
             if (uri != null){
                 binding.placeholder.setImageURI(uri)
                 hasPicture = true
-                saveImageToPrivateStorage(uri)
+                viewModel.saveImage(uri)
                 playlistFilePath = uri.toString()
             } else {
                 Log.d("PhotoPicker","No media selected")
@@ -134,21 +128,5 @@ class NewPlaylistFragment : Fragment() {
                 }
             }
         })
-    }
-
-    private fun saveImageToPrivateStorage(uri: Uri){
-        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myAlbum")
-
-        if (!filePath.exists()){
-            filePath.mkdirs()
-        }
-
-        val file = File(filePath, "PlaylistPicture.jpg")
-
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-
-        val outputStream = FileOutputStream(file)
-
-        BitmapFactory.decodeStream(inputStream).compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 }
