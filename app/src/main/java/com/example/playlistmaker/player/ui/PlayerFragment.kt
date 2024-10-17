@@ -21,7 +21,6 @@ import com.example.playlistmaker.player.presentation.PlayerViewModel
 import com.example.playlistmaker.player.ui.models.AddTrackToastState
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.ToastState
-import com.example.playlistmaker.util.TrackStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -52,7 +51,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val trackJson = (requireActivity() as TrackStorage).getTrack()
+        val trackJson = requireArguments().getString("track")!!
         val track = viewModel.jsonToTrack(trackJson)
 
         viewModel.checkFavorite(track)

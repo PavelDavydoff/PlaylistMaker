@@ -6,12 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.databinding.ActivityRootBinding
-import com.example.playlistmaker.util.TrackStorage
 
 
-class RootActivity: AppCompatActivity(), TrackStorage {
-
-    private var track: String = ""
+class RootActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityRootBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,13 +31,5 @@ class RootActivity: AppCompatActivity(), TrackStorage {
                 }
             }
         }
-    }
-
-    override fun getTrack(): String {
-        return track
-    }
-
-    override fun setTrack(track: String) {
-        this.track = track
     }
 }

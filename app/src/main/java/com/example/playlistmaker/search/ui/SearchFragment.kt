@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,7 +20,6 @@ import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
-import com.example.playlistmaker.util.TrackStorage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -64,16 +64,16 @@ class SearchFragment : Fragment() {
         tracksAdapter = TrackAdapter { track ->
             if (clickDebounce()) {
                 viewModel.addToHistory(track)
-                (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
-                findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
+                val bundle = bundleOf("track" to viewModel.trackToJson(track))
+                findNavController().navigate(R.id.action_searchFragment_to_playerFragment, bundle)
             }
         }
 
         historyAdapter = TrackAdapter { track ->
             if (clickDebounce()) {
                 viewModel.addToHistory(track)
-                (requireActivity() as TrackStorage).setTrack(viewModel.trackToJson(track))
-                findNavController().navigate(R.id.action_searchFragment_to_playerFragment)
+                val bundle = bundleOf("track" to viewModel.trackToJson(track))
+                findNavController().navigate(R.id.action_searchFragment_to_playerFragment, bundle)
             }
         }
 
