@@ -149,7 +149,7 @@ class PlayerFragment : Fragment() {
             showToast(it)
         }
 
-        viewModel.observeAddTrack().observe(viewLifecycleOwner){
+        viewModel.observeTrackToast().observe(viewLifecycleOwner){
             showAddTrackToast(it)
         }
 
@@ -213,11 +213,12 @@ class PlayerFragment : Fragment() {
     private fun showAddTrackToast(state: AddTrackToastState) {
         when (state) {
             is AddTrackToastState.IsAdded -> {
-                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.track_added) + " ${state.playlistName}", Toast.LENGTH_SHORT).show()
             }
 
             is AddTrackToastState.IsNotAdded -> {
-                Toast.makeText(requireContext(), state.message, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.track_already_added) + " ${state.playlistName}", Toast.LENGTH_SHORT).show()
             }
         }
     }

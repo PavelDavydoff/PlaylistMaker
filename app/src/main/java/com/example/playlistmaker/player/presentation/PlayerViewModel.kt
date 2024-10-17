@@ -1,7 +1,6 @@
 package com.example.playlistmaker.player.presentation
 
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -45,8 +44,8 @@ class PlayerViewModel(
     private val playlistLiveData = MutableLiveData<MutableList<Playlist>>()
     fun observePlaylist(): LiveData<MutableList<Playlist>> = playlistLiveData
 
-    private val addTrackToast = MutableLiveData<AddTrackToastState>()
-    fun observeAddTrack(): LiveData<AddTrackToastState> = addTrackToast
+    private val trackToastState = SingleLiveEvent<AddTrackToastState>()
+    fun observeTrackToast(): LiveData<AddTrackToastState> = trackToastState
 
     fun prepare(url: String?) {
         if (url == null) {
@@ -61,7 +60,6 @@ class PlayerViewModel(
         player.setOnCompletionListener {
             timerJob?.cancel()
             stateLiveData.postValue(PlayerState.Prepare())
-            Log.d("PlayerState", stateLiveData.value.toString())
         }
     }
 
@@ -128,7 +126,7 @@ class PlayerViewModel(
         val tracksList = listFromJson(playlist.tracks)
         for (trackName in tracksList){
             if (trackName == track.trackName ) {
-                addTrackToast.postValue(AddTrackToastState.IsNotAdded("Трек уже добавлен в плейлист ${playlist.name}"))
+                trackToastState.postValue(AddTrackToastState.IsNotAdded(playlist.name))
                 return
             }
         }
@@ -138,7 +136,7 @@ class PlayerViewModel(
         val playlist2 = Playlist(playlist.playlistId, playlist.name, playlist.description, playlist.filePath, tracks, playlist.tracksCount)
         playlistInteractor.addNewPlaylist(playlist2)
         favoriteInteractor.addToPlaylists(track)
-        addTrackToast.postValue(AddTrackToastState.IsAdded("Трек добавлен в плейлист ${playlist.name}"))
+        trackToastState.postValue(AddTrackToastState.IsAdded(playlist.name))
     }
 
     private fun jsonFromList(list: MutableList<String>): String{
