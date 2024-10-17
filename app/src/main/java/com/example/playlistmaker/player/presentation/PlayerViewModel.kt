@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
+import com.example.playlistmaker.player.domain.api.TrackPlaylistInteractor
 import com.example.playlistmaker.player.ui.models.AddTrackToastState
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
@@ -24,7 +25,8 @@ import java.util.Locale
 class PlayerViewModel(
     private val player: MediaPlayer,
     private val favoriteInteractor: FavoriteInteractor,
-    private val playlistInteractor: PlaylistInteractor
+    private val playlistInteractor: PlaylistInteractor,
+    private val trackPlaylistInteractor: TrackPlaylistInteractor
 ) : ViewModel() {
 
     private var timerJob: Job? = null
@@ -75,7 +77,7 @@ class PlayerViewModel(
         stateLiveData.postValue(PlayerState.Paused(getCurrentPosition()))
     }
 
-    fun stop(){
+    fun stop() {
         player.stop()
     }
 
@@ -107,47 +109,28 @@ class PlayerViewModel(
         }
     }
 
-    fun jsonToTrack(json: String): Track{
+    fun jsonToTrack(json: String): Track {
         val gson = Gson()
         val track = object : TypeToken<Track>() {}.type
         return gson.fromJson(json, track)
     }
 
-    fun getPlaylists(){
+    fun getPlaylists() {
         viewModelScope.launch {
-            playlistInteractor.getPlaylists().collect {playlists ->
+            playlistInteractor.getPlaylists().collect { playlists ->
                 val listOfPlaylists = playlists.toMutableList()
                 playlistLiveData.postValue(listOfPlaylists)
             }
         }
     }
 
-    fun updatePlaylist(playlist: Playlist, track: Track){
-        val tracksList = listFromJson(playlist.tracks)
-        for (trackName in tracksList){
-            if (trackName == track.trackName ) {
-                trackToastState.postValue(AddTrackToastState.IsNotAdded(playlist.name))
-                return
-            }
+    fun addTrackToPlaylist(playlist: Playlist, track: Track) {
+        val isTrackAdded = trackPlaylistInteractor.addTrack(track, playlist)
+        if (isTrackAdded) {
+            trackToastState.postValue(AddTrackToastState.IsAdded(playlist.name))
+        } else {
+            trackToastState.postValue(AddTrackToastState.IsNotAdded(playlist.name))
         }
-        tracksList.add(track.trackName)
-        val tracks = jsonFromList(tracksList)
-        playlist.tracksCount++
-        val playlist2 = Playlist(playlist.playlistId, playlist.name, playlist.description, playlist.filePath, tracks, playlist.tracksCount)
-        playlistInteractor.addNewPlaylist(playlist2)
-        favoriteInteractor.addToPlaylists(track)
-        trackToastState.postValue(AddTrackToastState.IsAdded(playlist.name))
-    }
-
-    private fun jsonFromList(list: MutableList<String>): String{
-        val gson = Gson()
-        return gson.toJson(list)
-    }
-
-    private fun listFromJson(json: String?): MutableList<String>{
-        val gson = Gson()
-        val listType = object : TypeToken<MutableList<String>>() {}.type
-        return gson.fromJson(json, listType) ?: mutableListOf()
     }
 
     private fun releasePlayer() {

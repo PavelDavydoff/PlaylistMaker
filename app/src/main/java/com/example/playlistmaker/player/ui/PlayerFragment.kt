@@ -85,7 +85,7 @@ class PlayerFragment : Fragment() {
         viewModel.getPlaylists()
 
         playlistAdapter = PlaylistAdapterPlayer {
-            viewModel.updatePlaylist(it, track)
+            viewModel.addTrackToPlaylist(it, track)
         }
         binding.recyclerViewPlayer.adapter = playlistAdapter
         binding.recyclerViewPlayer.layoutManager =
