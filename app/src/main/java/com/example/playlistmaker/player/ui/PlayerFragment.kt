@@ -84,7 +84,7 @@ class PlayerFragment : Fragment() {
 
         viewModel.getPlaylists()
 
-        playlistAdapter = PlaylistAdapterPlayer {
+        playlistAdapter = PlaylistAdapterPlayer(requireContext()) {
             viewModel.addTrackToPlaylist(it, track)
         }
         binding.recyclerViewPlayer.adapter = playlistAdapter
