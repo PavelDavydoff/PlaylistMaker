@@ -12,9 +12,9 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FavoriteFragmentBinding
 import com.example.playlistmaker.library.ui.models.FavoriteState
 import com.example.playlistmaker.library.ui.presentation.FavoriteViewModel
+import com.example.playlistmaker.player.ui.PlayerFragment
 import com.example.playlistmaker.search.ui.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 class FavoriteFragment : Fragment() {
 
     companion object {
@@ -42,7 +42,7 @@ class FavoriteFragment : Fragment() {
         viewModel.getFavorites()
 
         favoriteAdapter = TrackAdapter { track ->
-            val bundle = bundleOf("track" to viewModel.trackToJson(track))
+            val bundle = bundleOf(PlayerFragment.PLAYER_BUNDLE_KEY to viewModel.trackToJson(track))
             findNavController().navigate(R.id.action_libraryFragment_to_playerFragment, bundle)
         }
 

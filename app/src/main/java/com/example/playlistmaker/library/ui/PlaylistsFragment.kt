@@ -39,7 +39,7 @@ class PlaylistsFragment : Fragment() {
 
         viewModel.getPlaylists()
 
-        adapter = PlaylistAdapter(requireContext())
+        adapter = PlaylistAdapter()
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(context, 2)

@@ -1,18 +1,17 @@
 package com.example.playlistmaker.player.ui
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.models.Playlist
 
-class PlaylistAdapterPlayer(val context: Context, private val addTrack: (Playlist) -> Unit): RecyclerView.Adapter<PlaylistViewHolderPlayer>() {
+class PlaylistAdapterPlayer(private val addTrack: (Playlist) -> Unit): RecyclerView.Adapter<PlaylistViewHolderPlayer>() {
     var playlists = ArrayList<Playlist>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolderPlayer {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_playlist_linear, parent, false)
-        return PlaylistViewHolderPlayer(view, context)
+        return PlaylistViewHolderPlayer(view)
     }
 
     override fun getItemCount(): Int {

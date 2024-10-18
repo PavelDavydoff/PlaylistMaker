@@ -17,13 +17,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
+import com.example.playlistmaker.player.ui.PlayerFragment
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.presentation.SearchViewModel
 import com.example.playlistmaker.search.ui.models.TracksState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 class SearchFragment : Fragment() {
 
     companion object {
@@ -64,7 +64,7 @@ class SearchFragment : Fragment() {
         tracksAdapter = TrackAdapter { track ->
             if (clickDebounce()) {
                 viewModel.addToHistory(track)
-                val bundle = bundleOf("track" to viewModel.trackToJson(track))
+                val bundle = bundleOf(PlayerFragment.PLAYER_BUNDLE_KEY to viewModel.trackToJson(track))
                 findNavController().navigate(R.id.action_searchFragment_to_playerFragment, bundle)
             }
         }
@@ -72,7 +72,7 @@ class SearchFragment : Fragment() {
         historyAdapter = TrackAdapter { track ->
             if (clickDebounce()) {
                 viewModel.addToHistory(track)
-                val bundle = bundleOf("track" to viewModel.trackToJson(track))
+                val bundle = bundleOf(PlayerFragment.PLAYER_BUNDLE_KEY to viewModel.trackToJson(track))
                 findNavController().navigate(R.id.action_searchFragment_to_playerFragment, bundle)
             }
         }

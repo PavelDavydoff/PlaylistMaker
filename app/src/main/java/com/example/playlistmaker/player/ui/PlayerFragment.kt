@@ -23,8 +23,11 @@ import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.ToastState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 class PlayerFragment : Fragment() {
+
+    companion object{
+        const val PLAYER_BUNDLE_KEY = "track"
+    }
 
     private var _binding: FragmentPlayerBinding? = null
 
@@ -51,7 +54,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val trackJson = requireArguments().getString("track")!!
+        val trackJson = requireArguments().getString(PLAYER_BUNDLE_KEY)!!
         val track = viewModel.jsonToTrack(trackJson)
 
         viewModel.checkFavorite(track)
@@ -83,7 +86,7 @@ class PlayerFragment : Fragment() {
 
         viewModel.getPlaylists()
 
-        playlistAdapter = PlaylistAdapterPlayer(requireContext()) {
+        playlistAdapter = PlaylistAdapterPlayer() {
             viewModel.addTrackToPlaylist(it, track)
         }
         binding.recyclerViewPlayer.adapter = playlistAdapter
