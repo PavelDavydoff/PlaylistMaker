@@ -3,10 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".library.ui.PlaylistsFragment">
 
     <Button
-        android:id="@+id/make_playlist"
+        android:id="@+id/create_playlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -22,6 +24,7 @@
         app:cornerRadius="@dimen/radius_54dp" />
 
     <ImageView
+        android:id="@+id/no_playlists_image"
         style="@style/notFoundPlaceholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,12 +32,20 @@
         android:layout_marginTop="@dimen/_46dp" />
 
     <TextView
+        android:id="@+id/no_playlists_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginTop="@dimen/_16dp"
         android:text="@string/no_playlists"
         android:textColor="@color/black"
         android:textSize="@dimen/size_19sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_8dp"/>
 
 </LinearLayout>

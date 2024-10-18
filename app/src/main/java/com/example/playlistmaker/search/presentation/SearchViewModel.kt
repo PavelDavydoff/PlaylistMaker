@@ -9,6 +9,7 @@ import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.models.TracksState
 import com.example.playlistmaker.util.debounce
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.inject
 
@@ -64,6 +65,11 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
 
     fun addToHistory(track: Track) {
         historyInteractor.addTrack(track)
+    }
+
+    fun trackToJson(track: Track): String{
+        val gson = Gson()
+        return gson.toJson(track)
     }
 
     private fun searchRequest(newSearchText: String) {

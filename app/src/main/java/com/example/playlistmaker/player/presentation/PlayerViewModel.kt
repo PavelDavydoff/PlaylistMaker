@@ -1,16 +1,21 @@
 package com.example.playlistmaker.player.presentation
 
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.api.FavoriteInteractor
+import com.example.playlistmaker.library.domain.api.PlaylistInteractor
+import com.example.playlistmaker.library.domain.models.Playlist
+import com.example.playlistmaker.player.domain.api.TrackPlaylistInteractor
+import com.example.playlistmaker.player.ui.models.AddTrackToastState
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.example.playlistmaker.player.ui.models.SingleLiveEvent
 import com.example.playlistmaker.player.ui.models.ToastState
 import com.example.playlistmaker.search.domain.models.Track
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,7 +24,9 @@ import java.util.Locale
 
 class PlayerViewModel(
     private val player: MediaPlayer,
-    private val favoriteInteractor: FavoriteInteractor
+    private val favoriteInteractor: FavoriteInteractor,
+    private val playlistInteractor: PlaylistInteractor,
+    private val trackPlaylistInteractor: TrackPlaylistInteractor
 ) : ViewModel() {
 
     private var timerJob: Job? = null
@@ -36,6 +43,12 @@ class PlayerViewModel(
     private val favoriteState = MutableLiveData<Boolean>()
     fun observeFavorite(): LiveData<Boolean> = favoriteState
 
+    private val playlistLiveData = MutableLiveData<MutableList<Playlist>>()
+    fun observePlaylist(): LiveData<MutableList<Playlist>> = playlistLiveData
+
+    private val trackToastState = SingleLiveEvent<AddTrackToastState>()
+    fun observeTrackToast(): LiveData<AddTrackToastState> = trackToastState
+
     fun prepare(url: String?) {
         if (url == null) {
             showToast.postValue(ERROR_MESSAGE)
@@ -49,7 +62,6 @@ class PlayerViewModel(
         player.setOnCompletionListener {
             timerJob?.cancel()
             stateLiveData.postValue(PlayerState.Prepare())
-            Log.d("PlayerState", stateLiveData.value.toString())
         }
     }
 
@@ -63,6 +75,10 @@ class PlayerViewModel(
         player.pause()
         timerJob?.cancel()
         stateLiveData.postValue(PlayerState.Paused(getCurrentPosition()))
+    }
+
+    fun stop() {
+        player.stop()
     }
 
     fun onFavoriteClicked(track: Track) {
@@ -90,6 +106,30 @@ class PlayerViewModel(
                     }
                 }
             }
+        }
+    }
+
+    fun jsonToTrack(json: String): Track {
+        val gson = Gson()
+        val track = object : TypeToken<Track>() {}.type
+        return gson.fromJson(json, track)
+    }
+
+    fun getPlaylists() {
+        viewModelScope.launch {
+            playlistInteractor.getPlaylists().collect { playlists ->
+                val listOfPlaylists = playlists.toMutableList()
+                playlistLiveData.postValue(listOfPlaylists)
+            }
+        }
+    }
+
+    fun addTrackToPlaylist(playlist: Playlist, track: Track) {
+        val isTrackAdded = trackPlaylistInteractor.addTrack(track, playlist)
+        if (isTrackAdded) {
+            trackToastState.postValue(AddTrackToastState.IsAdded(playlist.name))
+        } else {
+            trackToastState.postValue(AddTrackToastState.IsNotAdded(playlist.name))
         }
     }
 

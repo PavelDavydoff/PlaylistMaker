@@ -10,4 +10,6 @@ interface FavoriteRepository {
     fun removeFromFavorite(track: Track)
 
     fun getFavorites(): Flow<List<Track>>
+
+    fun addToPlaylists(track: Track)
 }

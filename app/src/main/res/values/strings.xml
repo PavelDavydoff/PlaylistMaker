@@ -33,5 +33,25 @@
     <string name="track_country">Страна</string>
     <string name="empty_library">Ваша медиатека пуста</string>
     <string name="new_playlist">Новый плейлист</string>
-    <string name="no_playlists">Вы не создали ни одного плейлиста</string>
+    <string name="no_playlists">Вы не создали\nни одного плейлиста</string>
+    <string name="to_create">Создать</string>
+    <string name="new_playlist_description">Описание</string>
+    <string name="new_playlist_name">Название*</string>
+    <string name="track_added">Трек добавлен в плейлист</string>
+    <string name="track_already_added">Трек уже добавлен в плейлист</string>
+    <string name="myalbum">myAlbum</string>
+    <string name="playlistpicture_jpg">PlaylistPicture.jpg</string>
+    <string name="ending_create_playlist">Завершить создание плейлиста?</string>
+    <string name="all_data_lost">Все несохраненные данные будут потеряны</string>
+    <string name="cancel">Отмена</string>
+    <string name="finish">Завершить</string>
+    <string name="playlist_created">Плейлист %1$s создан</string>
+    
+    <plurals name="track_postfix">
+        <item quantity="zero">%d треков</item>
+        <item quantity="one">%d трек</item>
+        <item quantity="few">%d трека</item>
+        <item quantity="many">%d треков</item>
+        <item quantity="other">%d треков</item>
+    </plurals>
 </resources>

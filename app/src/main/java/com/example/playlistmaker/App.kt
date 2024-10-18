@@ -5,9 +5,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.library.di.dataModule
 import com.example.playlistmaker.library.di.favoriteInteractorModule
 import com.example.playlistmaker.library.di.favoriteRepositoryModule
+import com.example.playlistmaker.library.di.imageFileInteractorModule
+import com.example.playlistmaker.library.di.imageFileRepositoryModule
 import com.example.playlistmaker.library.di.libraryViewModel
+import com.example.playlistmaker.library.di.playlistInteractorModule
+import com.example.playlistmaker.library.di.playlistRepositoryModule
 import com.example.playlistmaker.player.di.mediaPlayerModule
 import com.example.playlistmaker.player.di.playerViewModelModule
+import com.example.playlistmaker.player.di.trackPlaylistModule
 import com.example.playlistmaker.search.di.historyInteractorModule
 import com.example.playlistmaker.search.di.historyRepositoryModule
 import com.example.playlistmaker.search.di.networkClientModule
@@ -48,7 +53,12 @@ class App : Application() {
                 historyInteractorModule,
                 dataModule,
                 favoriteInteractorModule,
-                favoriteRepositoryModule
+                favoriteRepositoryModule,
+                playlistInteractorModule,
+                playlistRepositoryModule,
+                imageFileInteractorModule,
+                imageFileRepositoryModule,
+                trackPlaylistModule
             )
         }
     }
