@@ -52,16 +52,16 @@ class PlayerViewModel(
     fun prepare(url: String?) {
         if (url == null) {
             showToast.postValue(ERROR_MESSAGE)
-        }
-
-        player.setDataSource(url)
-        player.prepareAsync()
-        player.setOnPreparedListener {
-            stateLiveData.postValue(PlayerState.Prepare())
-        }
-        player.setOnCompletionListener {
-            timerJob?.cancel()
-            stateLiveData.postValue(PlayerState.Prepare())
+        } else {
+            player.setDataSource(url)
+            player.prepareAsync()
+            player.setOnPreparedListener {
+                stateLiveData.postValue(PlayerState.Prepare())
+            }
+            player.setOnCompletionListener {
+                timerJob?.cancel()
+                stateLiveData.postValue(PlayerState.Prepare())
+            }
         }
     }
 
