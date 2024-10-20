@@ -27,7 +27,7 @@
             style="@style/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:height="48dp"
+            android:height="@dimen/_48dp"
             android:gravity="center_vertical"
             android:text="@string/new_playlist" />
 
@@ -35,8 +35,8 @@
 
     <ImageView
         android:id="@+id/placeholder"
-        android:layout_width="0dp"
-        android:layout_height="312dp"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="@dimen/_312dp"
         android:layout_margin="@dimen/_16dp"
         android:background="@drawable/rounded_stroke_rectangle"
         app:layout_constraintBottom_toTopOf="@id/edit_name"
