@@ -12,4 +12,6 @@ interface FavoriteRepository {
     fun getFavorites(): Flow<List<Track>>
 
     fun addToPlaylists(track: Track)
+
+    fun getTracksFromPlaylist(): Flow<List<Track>>
 }

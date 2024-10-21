@@ -31,4 +31,7 @@ class FavoriteRepositoryImpl(
         database.trackPlDao().insertTrack(trackPlEntity)
     }
 
+    override fun getTracksFromPlaylist(): Flow<List<Track>> =
+        database.trackPlDao().getTracks().map { tracks -> tracks.map {trackDbConverter.convertToTrack(it)} }
+
 }
