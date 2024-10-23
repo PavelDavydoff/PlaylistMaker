@@ -39,8 +39,6 @@ class SearchFragment : Fragment() {
     private lateinit var queryInput: String
     private lateinit var textWatcher: TextWatcher
 
-    //private var job: Job? = null
-
     private var _binding: FragmentSearchBinding? = null
 
     private val binding get() = _binding!!
