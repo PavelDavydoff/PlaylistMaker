@@ -11,7 +11,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 class ImageFileRepositoryImpl(private val context: Context) : ImageFileRepository {
-    override fun saveImageToPrivateStorage(uri: String, fileName: String): File {
+    override fun saveImageToPrivateStorage(uri: String, fileName: String): String {
 
         val url = uri.toUri()
 
@@ -35,6 +35,6 @@ class ImageFileRepositoryImpl(private val context: Context) : ImageFileRepositor
         BitmapFactory.decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
 
-        return file
+        return file.toString()
     }
 }

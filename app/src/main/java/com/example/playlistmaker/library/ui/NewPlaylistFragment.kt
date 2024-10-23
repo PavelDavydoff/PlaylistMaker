@@ -70,7 +70,7 @@ class NewPlaylistFragment : Fragment() {
         }
 
         binding.createButton.setOnClickListener {
-            playlistFilePath = viewModel.saveImage(imageFilePath.toUri(), playlistName).toString()
+            playlistFilePath = viewModel.saveImage(imageFilePath.toUri(), playlistName)
             viewModel.addNewPlaylist(Playlist(0, playlistName, playlistDescription, playlistFilePath, "", 0))
             Toast.makeText(requireContext(),
                 getString(R.string.playlist_created, playlistName), Toast.LENGTH_SHORT).show()
