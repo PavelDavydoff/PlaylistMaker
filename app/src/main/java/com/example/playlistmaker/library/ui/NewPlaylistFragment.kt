@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
@@ -34,6 +35,7 @@ class NewPlaylistFragment : Fragment() {
     private var hasPicture = false
     private var playlistName = ""
     private var playlistFilePath = ""
+    private var imageFilePath = ""
 
     private val viewModel by viewModel<NewPlaylistViewModel>()
 
@@ -53,8 +55,7 @@ class NewPlaylistFragment : Fragment() {
             if (uri != null){
                 binding.placeholder.setImageURI(uri)
                 hasPicture = true
-                viewModel.saveImage(uri)
-                playlistFilePath = uri.toString()
+                imageFilePath = uri.toString()
             } else {
                 Log.d("PhotoPicker","No media selected")
             }
@@ -69,6 +70,7 @@ class NewPlaylistFragment : Fragment() {
         }
 
         binding.createButton.setOnClickListener {
+            playlistFilePath = viewModel.saveImage(imageFilePath.toUri(), playlistName).toString()
             viewModel.addNewPlaylist(Playlist(0, playlistName, playlistDescription, playlistFilePath, "", 0))
             Toast.makeText(requireContext(),
                 getString(R.string.playlist_created, playlistName), Toast.LENGTH_SHORT).show()
