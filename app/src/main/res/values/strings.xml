@@ -46,7 +46,10 @@
     <string name="cancel">Отмена</string>
     <string name="finish">Завершить</string>
     <string name="playlist_created">Плейлист %1$s создан</string>
-    
+    <string name="delete_track">Удалить трек</string>
+    <string name="shure_to_delete">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="delete">Удалить</string>
+
     <plurals name="track_postfix">
         <item quantity="zero">%d треков</item>
         <item quantity="one">%d трек</item>

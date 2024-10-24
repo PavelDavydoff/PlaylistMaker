@@ -18,6 +18,7 @@ import com.example.playlistmaker.library.ui.presentation.DetailsPlaylistViewMode
 import com.example.playlistmaker.library.ui.presentation.DetailsTrackAdapter
 import com.example.playlistmaker.player.ui.PlayerFragment
 import com.example.playlistmaker.search.domain.models.Track
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
 
@@ -29,6 +30,7 @@ class DetailsPlaylistFragment : Fragment() {
     private var _binding: FragmentDetailsPlaylistBinding? = null
 
     private lateinit var tracksAdapter: DetailsTrackAdapter
+    private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private val binding get() = _binding!!
 
     private val viewModel: DetailsPlaylistViewModel by viewModel()
@@ -55,6 +57,10 @@ class DetailsPlaylistFragment : Fragment() {
             renderTracksDuration(it)
         }
 
+        binding.backButton.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+
         Glide.with(this)
             .load(playlist.filePath)
             .centerCrop()
@@ -79,13 +85,23 @@ class DetailsPlaylistFragment : Fragment() {
                 )
             },
             {
-
+                confirmDialog.show()
             }
         )
 
         binding.recyclerViewDetails.adapter = tracksAdapter
         binding.recyclerViewDetails.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_track))
+            .setMessage(getString(R.string.shure_to_delete))
+            .setNegativeButton(getString(R.string.cancel)) { _, _ ->
+
+            }
+            .setPositiveButton(getString(R.string.delete)) { _, _ ->
+
+            }
     }
 
     private fun renderTracksDuration(state: DetailsState) {
