@@ -49,4 +49,9 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
             }
         }
     }
+
+    fun trackToJson(track: Track): String{
+        val gson = Gson()
+        return gson.toJson(track)
+    }
 }

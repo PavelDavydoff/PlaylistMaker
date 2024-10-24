@@ -74,5 +74,8 @@
         <argument
             android:name="playlist"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailsPlaylistFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
 </navigation>
