@@ -23,6 +23,6 @@ interface PlaylistDao {
     @Update(entity = PlaylistEntity::class, onConflict = OnConflictStrategy.REPLACE)
     fun updatePlaylist(playlistEntity: PlaylistEntity)
 
-    @Query("SELECT * FROM playlist_table WHERE name =:playlistName")
-    fun getPlaylistByName(playlistName: String): PlaylistEntity
+    @Query("SELECT * FROM playlist_table WHERE playlistId =:playlistId")
+    fun getPlaylistById(playlistId: Int): PlaylistEntity
 }

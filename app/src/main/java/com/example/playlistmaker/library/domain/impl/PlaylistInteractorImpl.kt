@@ -18,7 +18,7 @@ class PlaylistInteractorImpl(private val repository: PlaylistRepository) : Playl
         repository.updatePlaylist(playlist)
     }
 
-    override fun getPlaylist(name: String): Playlist {
-        return repository.getPlaylist(name)
+    override fun getPlaylist(id: Int): Playlist {
+        return repository.getPlaylist(id)
     }
 }

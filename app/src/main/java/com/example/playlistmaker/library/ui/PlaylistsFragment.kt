@@ -41,7 +41,7 @@ class PlaylistsFragment : Fragment() {
         viewModel.getPlaylists()
 
         adapter = PlaylistAdapter { playlist ->
-            val bundle = bundleOf(DetailsPlaylistFragment.DETAILS_BUNDLE_KEY to viewModel.playlistToJson(playlist))
+            val bundle = bundleOf(DetailsPlaylistFragment.DETAILS_BUNDLE_KEY to playlist.playlistId.toString())
             findNavController().navigate(R.id.action_libraryFragment_to_detailsPlaylistFragment, bundle)
         }
 

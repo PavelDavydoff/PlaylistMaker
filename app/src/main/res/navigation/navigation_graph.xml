@@ -24,7 +24,10 @@
             app:destination="@id/playerFragment" />
         <action
             android:id="@+id/action_libraryFragment_to_detailsPlaylistFragment"
-            app:destination="@id/detailsPlaylistFragment" />
+            app:destination="@id/detailsPlaylistFragment" >
+            <argument
+                android:name="playlistId" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -71,11 +74,11 @@
         android:name="com.example.playlistmaker.library.ui.DetailsPlaylistFragment"
         android:label="fragment_details_playlist"
         tools:layout="@layout/fragment_details_playlist" >
-        <argument
-            android:name="playlist"
-            app:argType="string" />
         <action
             android:id="@+id/action_detailsPlaylistFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+        <argument
+            android:name="id"
+            app:argType="string" />
     </fragment>
 </navigation>

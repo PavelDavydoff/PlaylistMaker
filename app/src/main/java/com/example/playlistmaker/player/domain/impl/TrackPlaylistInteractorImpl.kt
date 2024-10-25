@@ -9,4 +9,8 @@ class TrackPlaylistInteractorImpl(private val trackPlaylistRepository: TrackPlay
     override fun addTrack(track: Track, playlist: Playlist): Boolean {
         return trackPlaylistRepository.addTrack(track, playlist)
     }
+
+    override fun removeTrack(track: Track, playlist: Playlist){
+        trackPlaylistRepository.removeTrack(track, playlist)
+    }
 }
