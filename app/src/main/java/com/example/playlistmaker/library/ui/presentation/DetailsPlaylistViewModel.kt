@@ -23,6 +23,12 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
         return tracksString.split(",").map { it }
     }
 
+    /*private fun playlistToMessage(playlist: Playlist, tracks: List<Track>): String {
+        var result = "${playlist.name}\n${playlist.description}"
+        result+=
+        return result
+    }*/
+
     fun getTracks(id: Int) {
 
         viewModelScope.launch {

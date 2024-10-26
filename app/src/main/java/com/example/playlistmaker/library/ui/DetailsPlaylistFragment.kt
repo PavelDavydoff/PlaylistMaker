@@ -1,11 +1,13 @@
 package com.example.playlistmaker.library.ui
 
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -18,6 +20,7 @@ import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.library.ui.models.DetailsState
 import com.example.playlistmaker.library.ui.presentation.DetailsPlaylistViewModel
 import com.example.playlistmaker.library.ui.presentation.DetailsTrackAdapter
+import com.example.playlistmaker.player.data.TrackTime
 import com.example.playlistmaker.player.ui.PlayerFragment
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -33,6 +36,7 @@ class DetailsPlaylistFragment : Fragment() {
 
     private lateinit var tracksAdapter: DetailsTrackAdapter
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
+    private lateinit var message: String
     private val binding get() = _binding!!
 
     private val viewModel: DetailsPlaylistViewModel by viewModel()
@@ -55,11 +59,45 @@ class DetailsPlaylistFragment : Fragment() {
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
+            message = getMessage(it)
         }
 
         binding.backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
+        binding.shareButton.setOnClickListener {
+            showShareDialog()
+        }
+    }
+
+    private fun showShareDialog(){
+        if (tracksAdapter.tracks.isEmpty()){
+            Toast.makeText(requireContext(), "В этом плейлисте нет списка треков, которым можно поделиться", Toast.LENGTH_SHORT).show()
+        } else {
+            sharePlaylist()
+        }
+    }
+
+    private fun sharePlaylist(){
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = getString(R.string.text_plain)
+        intent.putExtra(Intent.EXTRA_TEXT, message)
+        startActivity(Intent.createChooser(intent, "Поделиться плейлистом"))
+    }
+
+    private fun getMessage(state: DetailsState): String{
+        val playlist = state.playlist
+        val tracks = state.tracks
+        var count = 0
+        var result = "${playlist.name}\n${playlist.description}"
+        result += "\n${plurals(playlist.tracksCount)}"
+        for (track in tracks){
+            count++
+            result += "\n$count. ${track.artistName} - ${track.trackName}(${TrackTime.get(track)}) "
+        }
+
+        return result
     }
 
     private fun deleteTrack(track: Track, playlist: Playlist) {
@@ -110,11 +148,7 @@ class DetailsPlaylistFragment : Fragment() {
 
         binding.playlistName.text = state.playlist.name
         binding.playlistDescription.text = state.playlist.description
-        binding.tracksAmount.text = requireContext().resources.getQuantityString(
-            R.plurals.track_postfix,
-            state.playlist.tracksCount,
-            state.playlist.tracksCount
-        )
+        binding.tracksAmount.text = plurals(state.playlist.tracksCount)
 
         tracksAdapter = DetailsTrackAdapter(
             {
@@ -135,5 +169,13 @@ class DetailsPlaylistFragment : Fragment() {
 
         renderTracks(state)
         renderTracksDuration(state)
+    }
+
+    private fun plurals(value: Int): String {
+        return requireContext().resources.getQuantityString(
+            R.plurals.track_postfix,
+            value,
+            value
+        )
     }
 }
