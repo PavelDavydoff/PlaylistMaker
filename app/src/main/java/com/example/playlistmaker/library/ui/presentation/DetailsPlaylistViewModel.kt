@@ -23,12 +23,6 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
         return tracksString.split(",").map { it }
     }
 
-    /*private fun playlistToMessage(playlist: Playlist, tracks: List<Track>): String {
-        var result = "${playlist.name}\n${playlist.description}"
-        result+=
-        return result
-    }*/
-
     fun getTracks(id: Int) {
 
         viewModelScope.launch {
@@ -41,13 +35,12 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
 
             favoriteInteractor.getTracksFromPlaylist().collect { tracks ->
                 globalListOfTracks = tracks.toMutableList()
-                //Баг где-то тут. Два раза добавляется список треков в resultList
                 for (trackA in currentTracksList) {
                     for (trackB in globalListOfTracks) {
                         if (trackA == trackB.trackName) {
-                            //Наверняка здесь добавляется лишний раз
                             Log.d("ViewModelCycle", "add ${trackB.trackName}")
                             resultList.add(trackB)
+                            break
                         }
                     }
                 }
@@ -56,8 +49,6 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
             }
         }
     }
-
-
 
     fun removeTrack(track: Track, playlist: Playlist){
         trackPlaylistRepository.removeTrack(track, playlist)
