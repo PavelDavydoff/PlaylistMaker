@@ -41,6 +41,7 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
 
             favoriteInteractor.getTracksFromPlaylist().collect { tracks ->
                 globalListOfTracks = tracks.toMutableList()
+                //Баг где-то тут. Два раза добавляется список треков в resultList
                 for (trackA in currentTracksList) {
                     for (trackB in globalListOfTracks) {
                         if (trackA == trackB.trackName) {
