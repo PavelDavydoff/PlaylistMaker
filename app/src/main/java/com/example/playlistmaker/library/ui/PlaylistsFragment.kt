@@ -71,4 +71,9 @@ class PlaylistsFragment : Fragment() {
             binding.noPlaylistsText.visibility = View.VISIBLE
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getPlaylists()
+    }
 }

@@ -52,7 +52,7 @@ class SettingsFragment : Fragment() {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = getString(R.string.text_plain)
             intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.android_developer))
-            startActivity(Intent.createChooser(intent, getString(R.string.share)))
+            startActivity(Intent.createChooser(intent, getString(R.string.share_app)))
         }
 
         binding.share.setOnClickListener {

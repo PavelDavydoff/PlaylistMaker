@@ -22,12 +22,16 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
         return tracksString.split(",").map { it }
     }
 
+    /*fun getPlaylist(id: Int): Playlist{
+        val playlist = playlistInteractor.getPlaylist(id)
+        getTracks(playlist)
+        return playlist
+    }*/
+
     fun getTracks(id: Int) {
 
         viewModelScope.launch {
-
             val playlist = playlistInteractor.getPlaylist(id)
-
             favoriteInteractor.getTracksFromPlaylist().collect { tracks ->
                 val currentTracksList = toTracksList(playlist.tracks)
                 val resultList = mutableListOf<Track>()
@@ -48,6 +52,7 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
 
     fun removeTrack(track: Track, playlist: Playlist){
         trackPlaylistInteractor.removeTrack(track, playlist)
+
     }
 
     fun deletePlaylist(playlist: Playlist, tracks: List<Track>){

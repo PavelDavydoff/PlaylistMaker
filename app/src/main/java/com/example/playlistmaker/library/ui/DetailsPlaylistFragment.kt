@@ -3,6 +3,7 @@ package com.example.playlistmaker.library.ui
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +56,40 @@ class DetailsPlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        isClickable = true
+
         val playlistId = requireArguments().getString(DETAILS_BUNDLE_KEY)!!.toInt()
+
+        viewModel.getTracks(playlistId)
+
+        viewModel.observeState().observe(viewLifecycleOwner) {
+            render(it)
+            message = getMessage(it)
+            playlist = it.playlist
+        }
+
+        tracksAdapter = DetailsTrackAdapter(
+            {
+                if (isClickable) {
+                    val bundle =
+                        bundleOf(PlayerFragment.PLAYER_BUNDLE_KEY to viewModel.trackToJson(it))
+                    findNavController().navigate(
+                        R.id.action_detailsPlaylistFragment_to_playerFragment,
+                        bundle
+                    )
+                }
+            },
+            {
+                if (isClickable) {
+                    deleteTrack(it, playlist)
+                    viewModel.getTracks(playlistId)
+                }
+            }
+        )
+
+        binding.recyclerViewDetails.adapter = tracksAdapter
+        binding.recyclerViewDetails.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.menuBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -87,13 +121,6 @@ class DetailsPlaylistFragment : Fragment() {
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
-
-        viewModel.getTracks(playlistId)
-
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
-            message = getMessage(it)
-        }
 
         binding.backButton.setOnClickListener {
             parentFragmentManager.popBackStack()
@@ -164,6 +191,7 @@ class DetailsPlaylistFragment : Fragment() {
             }
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
                 tracksAdapter.tracks.clear()
+                Log.d("DetailsFragment", playlist.tracks)
                 viewModel.removeTrack(track, playlist)
             }
 
@@ -212,28 +240,6 @@ class DetailsPlaylistFragment : Fragment() {
 
         binding.playlistInMenuName.text = state.playlist.name
         binding.playlistInMenuCount.text = plurals(state.playlist.tracksCount)
-
-        tracksAdapter = DetailsTrackAdapter(
-            {
-                if (isClickable) {
-                    val bundle =
-                        bundleOf(PlayerFragment.PLAYER_BUNDLE_KEY to viewModel.trackToJson(it))
-                    findNavController().navigate(
-                        R.id.action_detailsPlaylistFragment_to_playerFragment,
-                        bundle
-                    )
-                }
-            },
-            {
-                if (isClickable) {
-                    deleteTrack(it, state.playlist)
-                }
-            }
-        )
-
-        binding.recyclerViewDetails.adapter = tracksAdapter
-        binding.recyclerViewDetails.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         renderTracks(state)
         renderTracksDuration(state)

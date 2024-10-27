@@ -1,5 +1,6 @@
 package com.example.playlistmaker.player.data
 
+import android.util.Log
 import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
@@ -19,9 +20,11 @@ class TrackPlaylistRepositoryImpl(
         tracksList.addAll(toTracksList(playlist.tracks))
         for (trackName in tracksList) {
             if (trackName == track.trackName) {
+                Log.d("addTrack", "if")
                 return false
             }
         }
+        Log.d("addTrack", tracksList.toString())
         tracksList.add(track.trackName)
         val tracks = fromTracksList(tracksList)
         playlist.tracksCount++
@@ -39,10 +42,15 @@ class TrackPlaylistRepositoryImpl(
     }
 
     override fun removeTrack(track: Track, playlist: Playlist) {
-        val trackList = mutableListOf<String>()
-        trackList.addAll(toTracksList(playlist.tracks))
-        trackList.remove(track.trackName)
-        val tracks = fromTracksList(trackList)
+        Log.d("removeTrack0", playlist.toString())
+        val tracksList = mutableListOf<String>()
+        Log.d("removeTrack1", tracksList.toString())
+        tracksList.addAll(toTracksList(playlist.tracks))
+        Log.d("removeTrack2", tracksList.toString())
+        tracksList.remove(track.trackName)
+        Log.d("removeTrack3", tracksList.toString())
+        val tracks = fromTracksList(tracksList)
+        Log.d("removeTrack4", tracks)
         playlist.tracksCount--
         val playlist2 = Playlist(
             playlist.playlistId,
@@ -53,6 +61,7 @@ class TrackPlaylistRepositoryImpl(
             playlist.tracksCount
         )
         playlistInteractor.addNewPlaylist(playlist2)
+        Log.d("removeTrack5", playlist2.toString())
         removeFromPlaylists(track)
     }
 
