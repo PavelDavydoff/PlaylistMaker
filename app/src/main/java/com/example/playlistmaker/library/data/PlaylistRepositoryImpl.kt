@@ -1,6 +1,5 @@
 package com.example.playlistmaker.library.data
 
-import android.util.Log
 import com.example.playlistmaker.library.data.converters.PlaylistDbConverter
 import com.example.playlistmaker.library.db.PlaylistsDatabase
 import com.example.playlistmaker.library.domain.api.PlaylistRepository
@@ -13,7 +12,6 @@ class PlaylistRepositoryImpl(
     private val playlistDbConverter: PlaylistDbConverter
 ) : PlaylistRepository {
     override fun addNewPlaylist(playlist: Playlist) {
-        Log.d("PlaylistRepository", playlist.toString())
         database.playlistDao().insertPlaylist(playlistDbConverter.map(playlist))
     }
 

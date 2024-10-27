@@ -42,15 +42,14 @@ class TrackPlaylistRepositoryImpl(
     }
 
     override fun removeTrack(track: Track, playlist: Playlist) {
-        Log.d("removeTrack0", playlist.toString())
+
         val tracksList = mutableListOf<String>()
-        Log.d("removeTrack1", tracksList.toString())
+
         tracksList.addAll(toTracksList(playlist.tracks))
-        Log.d("removeTrack2", tracksList.toString())
+
         tracksList.remove(track.trackName)
-        Log.d("removeTrack3", tracksList.toString())
+
         val tracks = fromTracksList(tracksList)
-        Log.d("removeTrack4", tracks)
         playlist.tracksCount--
         val playlist2 = Playlist(
             playlist.playlistId,
@@ -61,7 +60,6 @@ class TrackPlaylistRepositoryImpl(
             playlist.tracksCount
         )
         playlistInteractor.addNewPlaylist(playlist2)
-        Log.d("removeTrack5", playlist2.toString())
         removeFromPlaylists(track)
     }
 

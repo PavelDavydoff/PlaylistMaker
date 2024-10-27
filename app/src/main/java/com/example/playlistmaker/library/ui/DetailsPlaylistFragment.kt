@@ -63,9 +63,10 @@ class DetailsPlaylistFragment : Fragment() {
         viewModel.getTracks(playlistId)
 
         viewModel.observeState().observe(viewLifecycleOwner) {
+            playlist = it.playlist
+            Log.d("DetailsFragment0", it.playlist.toString())
             render(it)
             message = getMessage(it)
-            playlist = it.playlist
         }
 
         tracksAdapter = DetailsTrackAdapter(
@@ -82,7 +83,6 @@ class DetailsPlaylistFragment : Fragment() {
             {
                 if (isClickable) {
                     deleteTrack(it, playlist)
-                    viewModel.getTracks(playlistId)
                 }
             }
         )
@@ -190,8 +190,7 @@ class DetailsPlaylistFragment : Fragment() {
 
             }
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                tracksAdapter.tracks.clear()
-                Log.d("DetailsFragment", playlist.tracks)
+                Log.d("DetailsFragment1", playlist.tracks)
                 viewModel.removeTrack(track, playlist)
             }
 

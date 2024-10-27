@@ -1,5 +1,6 @@
 package com.example.playlistmaker.library.ui.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,17 +23,13 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
         return tracksString.split(",").map { it }
     }
 
-    /*fun getPlaylist(id: Int): Playlist{
-        val playlist = playlistInteractor.getPlaylist(id)
-        getTracks(playlist)
-        return playlist
-    }*/
-
     fun getTracks(id: Int) {
 
         viewModelScope.launch {
-            val playlist = playlistInteractor.getPlaylist(id)
+
             favoriteInteractor.getTracksFromPlaylist().collect { tracks ->
+                val playlist = playlistInteractor.getPlaylist(id)
+                Log.d("ViewModel1", playlist.toString())
                 val currentTracksList = toTracksList(playlist.tracks)
                 val resultList = mutableListOf<Track>()
                 val globalListOfTracks = tracks.toMutableList()
@@ -44,7 +41,7 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
                         }
                     }
                 }
-
+                Log.d("ViewModel0", playlist.toString())
                 stateLiveData.postValue(DetailsState(playlist, resultList))
             }
         }
