@@ -1,6 +1,5 @@
 package com.example.playlistmaker.library.ui.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,28 +22,37 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
         return tracksString.split(",").map { it }
     }
 
+    private fun getPlaylist(id: Int): Playlist{
+        return playlistInteractor.getPlaylist(id)
+    }
+
+    private fun getTracksFromGlobal(){
+        viewModelScope.launch {
+            favoriteInteractor.getTracksFromPlaylist().collect { tracks ->
+                val result = tracks.toMutableList()
+            }
+        }
+    }
+
     fun getTracks(id: Int) {
 
         viewModelScope.launch {
 
             val playlist = playlistInteractor.getPlaylist(id)
-            val currentTracksList = toTracksList(playlist.tracks)
-            val resultList = mutableListOf<Track>()
-            var globalListOfTracks: MutableList<Track>
-            Log.d("Треки", currentTracksList.toString())
 
             favoriteInteractor.getTracksFromPlaylist().collect { tracks ->
-                globalListOfTracks = tracks.toMutableList()
+                val currentTracksList = toTracksList(playlist.tracks)
+                val resultList = mutableListOf<Track>()
+                val globalListOfTracks = tracks.toMutableList()
+
                 for (trackA in currentTracksList) {
                     for (trackB in globalListOfTracks) {
                         if (trackA == trackB.trackName) {
-                            Log.d("ViewModelCycle", "add ${trackB.trackName}")
                             resultList.add(trackB)
-                            break
                         }
                     }
                 }
-                Log.d("DetailsViewModel", resultList.map { track -> track.trackName  }.toString())
+
                 stateLiveData.postValue(DetailsState(playlist, resultList))
             }
         }
@@ -52,6 +60,10 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
 
     fun removeTrack(track: Track, playlist: Playlist){
         trackPlaylistRepository.removeTrack(track, playlist)
+    }
+
+    fun deletePlaylist(playlist: Playlist){
+        playlistInteractor.deletePlaylist(playlist)
     }
 
     fun trackToJson(track: Track): String{

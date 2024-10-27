@@ -26,4 +26,8 @@ class PlaylistRepositoryImpl(
         return playlistDbConverter.map(database.playlistDao().getPlaylistById(id))
     }
 
+    override fun deletePlaylist(playlist: Playlist) {
+        database.playlistDao().deletePlaylist(playlist)
+    }
+
 }

@@ -39,6 +39,7 @@ class DetailsPlaylistFragment : Fragment() {
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private lateinit var message: String
     private var isClickable = true
+    private lateinit var playlist: Playlist
     private val binding get() = _binding!!
 
     private val viewModel: DetailsPlaylistViewModel by viewModel()
@@ -110,6 +111,11 @@ class DetailsPlaylistFragment : Fragment() {
         binding.menuShare.setOnClickListener {
             showShareDialog()
         }
+
+        binding.menuDelete.setOnClickListener {
+            viewModel.deletePlaylist(playlist)
+            parentFragmentManager.popBackStack()
+        }
     }
 
     private fun showShareDialog() {
@@ -154,6 +160,7 @@ class DetailsPlaylistFragment : Fragment() {
             }
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
                 Log.d("DetailsFragment", "launch")
+                tracksAdapter.tracks.clear()
                 viewModel.removeTrack(track, playlist)
             }
 
@@ -184,6 +191,7 @@ class DetailsPlaylistFragment : Fragment() {
     }
 
     private fun render(state: DetailsState) {
+        playlist = state.playlist
         Glide.with(this)
             .load(state.playlist.filePath)
             .centerCrop()
