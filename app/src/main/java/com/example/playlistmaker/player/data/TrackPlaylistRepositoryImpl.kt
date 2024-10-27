@@ -56,7 +56,7 @@ class TrackPlaylistRepositoryImpl(
         removeFromPlaylists(track)
     }
 
-    private fun removeFromPlaylists(track: Track) {
+    override fun removeFromPlaylists(track: Track) {
         var isMatch = false
         CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
             playlistInteractor.getPlaylists().collect { playlists ->

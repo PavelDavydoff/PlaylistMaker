@@ -8,30 +8,18 @@ import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.library.ui.models.DetailsState
-import com.example.playlistmaker.player.domain.api.TrackPlaylistRepository
+import com.example.playlistmaker.player.domain.api.TrackPlaylistInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
-class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteractor, private val trackPlaylistRepository: TrackPlaylistRepository, private val playlistInteractor: PlaylistInteractor) : ViewModel() {
+class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteractor, private val trackPlaylistInteractor: TrackPlaylistInteractor, private val playlistInteractor: PlaylistInteractor) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<DetailsState>()
     fun observeState(): LiveData<DetailsState> = stateLiveData
 
     private fun toTracksList(tracksString: String): List<String> {
         return tracksString.split(",").map { it }
-    }
-
-    private fun getPlaylist(id: Int): Playlist{
-        return playlistInteractor.getPlaylist(id)
-    }
-
-    private fun getTracksFromGlobal(){
-        viewModelScope.launch {
-            favoriteInteractor.getTracksFromPlaylist().collect { tracks ->
-                val result = tracks.toMutableList()
-            }
-        }
     }
 
     fun getTracks(id: Int) {
@@ -59,11 +47,16 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
     }
 
     fun removeTrack(track: Track, playlist: Playlist){
-        trackPlaylistRepository.removeTrack(track, playlist)
+        trackPlaylistInteractor.removeTrack(track, playlist)
     }
 
-    fun deletePlaylist(playlist: Playlist){
+    fun deletePlaylist(playlist: Playlist, tracks: List<Track>){
+
         playlistInteractor.deletePlaylist(playlist)
+
+        for (track in  tracks){
+            trackPlaylistInteractor.removeFromPlaylists(track)
+        }
     }
 
     fun trackToJson(track: Track): String{

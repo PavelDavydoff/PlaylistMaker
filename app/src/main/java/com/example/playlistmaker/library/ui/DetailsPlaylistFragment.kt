@@ -3,7 +3,6 @@ package com.example.playlistmaker.library.ui
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -113,7 +112,7 @@ class DetailsPlaylistFragment : Fragment() {
         }
 
         binding.menuDelete.setOnClickListener {
-            viewModel.deletePlaylist(playlist)
+            viewModel.deletePlaylist(playlist, tracksAdapter.tracks)
             parentFragmentManager.popBackStack()
         }
     }
@@ -122,7 +121,7 @@ class DetailsPlaylistFragment : Fragment() {
         if (tracksAdapter.tracks.isEmpty()) {
             Toast.makeText(
                 requireContext(),
-                "В этом плейлисте нет списка треков, которым можно поделиться",
+                getString(R.string.no_tracks_to_share),
                 Toast.LENGTH_SHORT
             ).show()
         } else {
@@ -134,7 +133,7 @@ class DetailsPlaylistFragment : Fragment() {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = getString(R.string.text_plain)
         intent.putExtra(Intent.EXTRA_TEXT, message)
-        startActivity(Intent.createChooser(intent, "Поделиться плейлистом"))
+        startActivity(Intent.createChooser(intent, getString(R.string.share_playlist)))
     }
 
     private fun getMessage(state: DetailsState): String {
@@ -159,7 +158,6 @@ class DetailsPlaylistFragment : Fragment() {
 
             }
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                Log.d("DetailsFragment", "launch")
                 tracksAdapter.tracks.clear()
                 viewModel.removeTrack(track, playlist)
             }
@@ -182,12 +180,9 @@ class DetailsPlaylistFragment : Fragment() {
     }
 
     private fun renderTracks(state: DetailsState) {
-        Log.d("DetailsFragment", "RenderTracks")
         tracksAdapter.tracks.clear()
-        Log.d("State", state.tracks.map { track -> track.trackName }.toString())
         tracksAdapter.tracks.addAll(state.tracks)
         tracksAdapter.notifyDataSetChanged()
-        Log.d("Adapter", tracksAdapter.tracks.map { track -> track.trackName }.toString())
     }
 
     private fun render(state: DetailsState) {

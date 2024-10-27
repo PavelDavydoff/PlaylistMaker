@@ -6,4 +6,5 @@ import com.example.playlistmaker.search.domain.models.Track
 interface TrackPlaylistRepository {
     fun addTrack(track: Track, playlist: Playlist): Boolean
     fun removeTrack(track: Track, playlist: Playlist)
+    fun removeFromPlaylists(track: Track)
 }
