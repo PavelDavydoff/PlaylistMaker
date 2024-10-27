@@ -24,6 +24,7 @@
             android:src="@drawable/back_arrow" />
 
         <TextView
+            android:id="@+id/title"
             style="@style/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

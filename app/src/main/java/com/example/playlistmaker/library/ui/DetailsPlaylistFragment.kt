@@ -115,6 +115,11 @@ class DetailsPlaylistFragment : Fragment() {
             viewModel.deletePlaylist(playlist, tracksAdapter.tracks)
             parentFragmentManager.popBackStack()
         }
+
+        binding.menuEdit.setOnClickListener {
+            val bundle = bundleOf(NewPlaylistFragment.BUNDLE_KEY to playlistId)
+            findNavController().navigate(R.id.action_detailsPlaylistFragment_to_newPlaylistFragment, bundle)
+        }
     }
 
     private fun showShareDialog() {
