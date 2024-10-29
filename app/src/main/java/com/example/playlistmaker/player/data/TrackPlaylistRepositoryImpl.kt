@@ -1,6 +1,5 @@
 package com.example.playlistmaker.player.data
 
-import android.util.Log
 import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
@@ -20,11 +19,9 @@ class TrackPlaylistRepositoryImpl(
         tracksList.addAll(toTracksList(playlist.tracks))
         for (trackName in tracksList) {
             if (trackName == track.trackName) {
-                Log.d("addTrack", "if")
                 return false
             }
         }
-        Log.d("addTrack", tracksList.toString())
         tracksList.add(track.trackName)
         val tracks = fromTracksList(tracksList)
         playlist.tracksCount++

@@ -3,7 +3,6 @@ package com.example.playlistmaker.library.ui
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,8 @@ class DetailsPlaylistFragment : Fragment() {
     private var _binding: FragmentDetailsPlaylistBinding? = null
 
     private lateinit var tracksAdapter: DetailsTrackAdapter
-    private lateinit var confirmDialog: MaterialAlertDialogBuilder
+    private lateinit var deleteTrackConfirmDialog: MaterialAlertDialogBuilder
+    private lateinit var deletePlaylistConfirmDialog: MaterialAlertDialogBuilder
     private lateinit var message: String
     private var isClickable = true
     private lateinit var playlist: Playlist
@@ -64,7 +64,6 @@ class DetailsPlaylistFragment : Fragment() {
 
         viewModel.observeState().observe(viewLifecycleOwner) {
             playlist = it.playlist
-            Log.d("DetailsFragment0", it.playlist.toString())
             render(it)
             message = getMessage(it)
         }
@@ -89,7 +88,7 @@ class DetailsPlaylistFragment : Fragment() {
 
         binding.recyclerViewDetails.adapter = tracksAdapter
         binding.recyclerViewDetails.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.menuBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -139,8 +138,19 @@ class DetailsPlaylistFragment : Fragment() {
         }
 
         binding.menuDelete.setOnClickListener {
-            viewModel.deletePlaylist(playlist, tracksAdapter.tracks)
-            parentFragmentManager.popBackStack()
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            deletePlaylistConfirmDialog = MaterialAlertDialogBuilder(requireContext())
+                .setTitle(getString(R.string.delete_playlist))
+                .setMessage(getString(R.string.want_to_delete_playlist, playlist.name))
+                .setNegativeButton(getString(R.string.no)) { _, _ ->
+
+                }
+                .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                    viewModel.deletePlaylist(playlist, tracksAdapter.tracks)
+                    parentFragmentManager.popBackStack()
+                }
+
+            deletePlaylistConfirmDialog.show()
         }
 
         binding.menuEdit.setOnClickListener {
@@ -183,18 +193,17 @@ class DetailsPlaylistFragment : Fragment() {
     }
 
     private fun deleteTrack(track: Track, playlist: Playlist) {
-        confirmDialog = MaterialAlertDialogBuilder(requireContext())
+        deleteTrackConfirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.delete_track))
             .setMessage(getString(R.string.shure_to_delete))
             .setNegativeButton(getString(R.string.cancel)) { _, _ ->
 
             }
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                Log.d("DetailsFragment1", playlist.tracks)
                 viewModel.removeTrack(track, playlist)
             }
 
-        confirmDialog.show()
+        deleteTrackConfirmDialog.show()
     }
 
     private fun renderTracksDuration(state: DetailsState) {

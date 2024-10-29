@@ -71,6 +71,7 @@ class NewPlaylistFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.placeholder.setImageURI(uri)
+                    binding.placeholder.setBackgroundResource(0)
                     hasPicture = true
                     imageFilePath = uri.toString()
                 } else {
@@ -142,10 +143,11 @@ class NewPlaylistFragment : Fragment() {
                 .transform(RoundedCorners(this.resources.getDimensionPixelSize(R.dimen.corner_8)))
                 .into(binding.placeholder)
 
-            binding.title.text = "Редактировать плейлист"
-            binding.createButton.text = "Сохранить"
+            binding.title.text = getString(R.string.to_edit_playlist)
+            binding.createButton.text = getString(R.string.save)
             playlistName = state.playlist.name
             binding.editNameField.setText(state.playlist.name)
+            binding.placeholder.setBackgroundResource(0)
 
             binding.editDescriptionField.setText(state.playlist.description)
 
@@ -153,7 +155,7 @@ class NewPlaylistFragment : Fragment() {
             if (binding.editNameField.text!!.isNotEmpty()) {
                 binding.createButton.isEnabled = true
             }
-        }//Конец if редактирования-----------------------------------------
+        }
 
         binding.createButton.setOnClickListener {
 
