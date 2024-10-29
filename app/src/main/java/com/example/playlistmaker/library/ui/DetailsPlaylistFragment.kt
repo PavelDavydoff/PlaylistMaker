@@ -180,16 +180,19 @@ class DetailsPlaylistFragment : Fragment() {
 
     private fun getMessage(state: DetailsState): String {
         val playlist = state.playlist
-        val tracks = state.tracks
-        var count = 0
-        var result = "${playlist.name}\n${playlist.description}"
-        result += "\n${plurals(playlist.tracksCount)}"
-        for (track in tracks) {
-            count++
-            result += "\n$count. ${track.artistName} - ${track.trackName}(${TrackTime.get(track)}) "
+        return if (state is DetailsState.Content) {
+            val tracks = state.tracks
+            var count = 0
+            var result = "${playlist.name}\n${playlist.description}"
+            result += "\n${plurals(playlist.tracksCount)}"
+            for (track in tracks) {
+                count++
+                result += "\n$count. ${track.artistName} - ${track.trackName}(${TrackTime.get(track)}) "
+            }
+            result
+        } else {
+            ""
         }
-
-        return result
     }
 
     private fun deleteTrack(track: Track, playlist: Playlist) {
@@ -208,7 +211,9 @@ class DetailsPlaylistFragment : Fragment() {
 
     private fun renderTracksDuration(state: DetailsState) {
         val tracksList = mutableListOf<Track>()
-        tracksList.addAll(state.tracks)
+        if (state is DetailsState.Content) {
+            tracksList.addAll(state.tracks)
+        }
 
         var duration1 = 0L
         for (track in tracksList) {
@@ -221,9 +226,16 @@ class DetailsPlaylistFragment : Fragment() {
     }
 
     private fun renderTracks(state: DetailsState) {
-        tracksAdapter.tracks.clear()
-        tracksAdapter.tracks.addAll(state.tracks)
-        tracksAdapter.notifyDataSetChanged()
+        if (state is DetailsState.Content) {
+            binding.placeholderEmpty.visibility = View.GONE
+            binding.textEmpty.visibility = View.GONE
+            tracksAdapter.tracks.clear()
+            tracksAdapter.tracks.addAll(state.tracks)
+            tracksAdapter.notifyDataSetChanged()
+        } else {
+            binding.placeholderEmpty.visibility = View.VISIBLE
+            binding.textEmpty.visibility = View.VISIBLE
+        }
     }
 
     private fun render(state: DetailsState) {
