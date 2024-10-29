@@ -1,6 +1,5 @@
 package com.example.playlistmaker.library.ui.presentation
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -44,10 +43,8 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
                 }
                 if (resultList.isEmpty()){
                     stateLiveData.postValue(DetailsState.Empty(playlist))
-                    Log.d("ViewModelD", "Empty")
                 } else {
                     stateLiveData.postValue(DetailsState.Content(playlist, resultList))
-                    Log.d("ViewModelD", "Content")
                 }
             }
         }

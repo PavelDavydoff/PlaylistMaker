@@ -203,6 +203,7 @@ class DetailsPlaylistFragment : Fragment() {
 
             }
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
+                tracksAdapter.tracks.clear()
                 viewModel.removeTrack(track, playlist)
             }
 
