@@ -203,8 +203,7 @@ class DetailsPlaylistFragment : Fragment() {
 
             }
             .setPositiveButton(getString(R.string.delete)) { _, _ ->
-                tracksAdapter.tracks.clear()
-                viewModel.removeTrack(track, playlist)
+                viewModel.deleteTrack(track, playlist)
             }
 
         deleteTrackConfirmDialog.show()
@@ -228,12 +227,14 @@ class DetailsPlaylistFragment : Fragment() {
 
     private fun renderTracks(state: DetailsState) {
         if (state is DetailsState.Content) {
-            binding.placeholderEmpty.visibility = View.GONE
-            binding.textEmpty.visibility = View.GONE
             tracksAdapter.tracks.clear()
             tracksAdapter.tracks.addAll(state.tracks)
             tracksAdapter.notifyDataSetChanged()
+            binding.placeholderEmpty.visibility = View.GONE
+            binding.textEmpty.visibility = View.GONE
         } else {
+            tracksAdapter.tracks.clear()
+            tracksAdapter.notifyDataSetChanged()
             binding.placeholderEmpty.visibility = View.VISIBLE
             binding.textEmpty.visibility = View.VISIBLE
         }

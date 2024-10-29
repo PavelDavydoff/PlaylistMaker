@@ -12,7 +12,6 @@ import com.example.playlistmaker.library.di.playlistInteractorModule
 import com.example.playlistmaker.library.di.playlistRepositoryModule
 import com.example.playlistmaker.player.di.mediaPlayerModule
 import com.example.playlistmaker.player.di.playerViewModelModule
-import com.example.playlistmaker.player.di.trackPlaylistModule
 import com.example.playlistmaker.search.di.historyInteractorModule
 import com.example.playlistmaker.search.di.historyRepositoryModule
 import com.example.playlistmaker.search.di.networkClientModule
@@ -57,8 +56,7 @@ class App : Application() {
                 playlistInteractorModule,
                 playlistRepositoryModule,
                 imageFileInteractorModule,
-                imageFileRepositoryModule,
-                trackPlaylistModule
+                imageFileRepositoryModule
             )
         }
     }

@@ -25,6 +25,6 @@ val libraryViewModel = module {
         NewPlaylistViewModel(get(), get())
     }
     viewModel {
-        DetailsPlaylistViewModel(get(), get(), get())
+        DetailsPlaylistViewModel(get(), get())
     }
 }

@@ -8,18 +8,66 @@ import com.example.playlistmaker.library.domain.api.FavoriteInteractor
 import com.example.playlistmaker.library.domain.api.PlaylistInteractor
 import com.example.playlistmaker.library.domain.models.Playlist
 import com.example.playlistmaker.library.ui.models.DetailsState
-import com.example.playlistmaker.player.domain.api.TrackPlaylistInteractor
 import com.example.playlistmaker.search.domain.models.Track
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteractor, private val trackPlaylistInteractor: TrackPlaylistInteractor, private val playlistInteractor: PlaylistInteractor) : ViewModel() {
+class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteractor, private val playlistInteractor: PlaylistInteractor) : ViewModel() {
 
     private val stateLiveData = MutableLiveData<DetailsState>()
     fun observeState(): LiveData<DetailsState> = stateLiveData
 
     private fun toTracksList(tracksString: String): List<String> {
         return tracksString.split(",").map { it }
+    }
+
+    private fun removeTrack(track: Track, playlist: Playlist) {
+
+        val tracksList = mutableListOf<String>()
+
+        tracksList.addAll(toTracksList(playlist.tracks))
+
+        tracksList.remove(track.trackName)
+
+        val tracks = tracksList.joinToString(",")
+        playlist.tracksCount--
+        val playlist2 = Playlist(
+            playlist.playlistId,
+            playlist.name,
+            playlist.description,
+            playlist.filePath,
+            tracks,
+            playlist.tracksCount
+        )
+        playlistInteractor.addNewPlaylist(playlist2)
+        removeFromPlaylists(track)
+    }
+
+    private fun removeFromPlaylists(track: Track) {
+        var isMatch = false
+        CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+            playlistInteractor.getPlaylists().collect { playlists ->
+                val listOfPlaylists = playlists.toMutableList()
+                for (playlist in listOfPlaylists){
+                    if (isMatch) {
+                        break
+                    }
+                    val tracks = toTracksList(playlist.tracks)
+                    for (trackName in tracks){
+                        if (track.trackName == trackName){
+                            isMatch = true
+                            break
+                        }
+                    }
+                }
+                if (!isMatch){
+                    favoriteInteractor.deleteFromPlaylists(track)
+                }
+            }
+        }
     }
 
     fun getTracks(id: Int) {
@@ -50,9 +98,9 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
         }
     }
 
-    fun removeTrack(track: Track, playlist: Playlist){
-        trackPlaylistInteractor.removeTrack(track, playlist)
-
+    fun deleteTrack(track: Track, playlist: Playlist){
+        removeTrack(track, playlist)
+        getTracks(playlist.playlistId)
     }
 
     fun deletePlaylist(playlist: Playlist, tracks: List<Track>){
@@ -60,7 +108,7 @@ class DetailsPlaylistViewModel(private val favoriteInteractor: FavoriteInteracto
         playlistInteractor.deletePlaylist(playlist)
 
         for (track in  tracks){
-            trackPlaylistInteractor.removeFromPlaylists(track)
+            removeFromPlaylists(track)
         }
     }
 
