@@ -10,5 +10,7 @@ interface PlaylistRepository {
 
     fun updatePlaylist(playlist: Playlist)
 
-    fun getPlaylist(name: String): Playlist
+    fun getPlaylist(id: Int): Playlist
+
+    fun deletePlaylist(playlist: Playlist)
 }

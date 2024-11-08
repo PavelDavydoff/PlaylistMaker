@@ -34,7 +34,7 @@
         <item name="android:paddingEnd">@dimen/_16dp</item>
         <item name="iconSize">@dimen/s_icon_size</item>
         <item name="iconGravity">end</item>
-        <item name="iconTint">@color/black</item>
+        <item name="iconTint">@color/gray</item>
     </style>
 
     <style name="backButton">
@@ -62,6 +62,11 @@
 
     <style name="player_text">
         <item name="android:textSize">@dimen/t_size_13</item>
+        <item name="android:textColor">@color/yp_black</item>
+    </style>
+
+    <style name="menu_text">
+        <item name="android:textSize">@dimen/t_size_16</item>
         <item name="android:textColor">@color/yp_black</item>
     </style>
 

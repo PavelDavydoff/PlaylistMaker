@@ -40,5 +40,6 @@
     <dimen name="_44dp">44dp</dimen>
     <dimen name="_56dp">56dp</dimen>
     <dimen name="corner_8">8dp</dimen>
+    <dimen name="_312dp">312dp</dimen>
 
 </resources>

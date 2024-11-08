@@ -12,4 +12,8 @@ interface FavoriteInteractor {
     fun getFavorites(): Flow<List<Track>>
 
     fun addToPlaylists(track: Track)
+
+    fun deleteFromPlaylists(track: Track)
+
+    fun getTracksFromPlaylist(): Flow<List<Track>>
 }

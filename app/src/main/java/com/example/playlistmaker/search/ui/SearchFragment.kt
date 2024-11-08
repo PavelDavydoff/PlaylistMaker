@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment() {
 
     companion object {
-        private const val KEY = "text"
         private const val EMPTY = ""
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
@@ -38,8 +36,6 @@ class SearchFragment : Fragment() {
     private lateinit var historyAdapter: TrackAdapter
     private lateinit var queryInput: String
     private lateinit var textWatcher: TextWatcher
-
-    //private var job: Job? = null
 
     private var _binding: FragmentSearchBinding? = null
 
@@ -59,7 +55,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        queryInput = ""
+        queryInput = EMPTY
 
         tracksAdapter = TrackAdapter { track ->
             if (clickDebounce()) {
@@ -156,17 +152,6 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(KEY, queryInput)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        val restoredText = savedInstanceState?.getString(KEY)
-        binding.editText.setText(restoredText)
-    }
-
     private fun render(state: TracksState) {
         when (state) {
             is TracksState.Loading -> showLoading()
@@ -235,7 +220,6 @@ class SearchFragment : Fragment() {
             isClickAllowed = false
             lifecycleScope.launch {
                 delay(CLICK_DEBOUNCE_DELAY)
-                Log.d("SearchFragment","Клик")
                 isClickAllowed = true
             }
         }

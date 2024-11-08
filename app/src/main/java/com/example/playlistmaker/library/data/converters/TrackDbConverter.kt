@@ -46,4 +46,18 @@ class TrackDbConverter {
             track.previewUrl,
             track.country,)
     }
+
+    fun convertToTrack(track: TrackPlEntity): Track {
+        return Track(
+            track.trackName,
+            track.artistName,
+            track.trackTimeMillis,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.previewUrl,
+            track.country,
+        )
+    }
 }

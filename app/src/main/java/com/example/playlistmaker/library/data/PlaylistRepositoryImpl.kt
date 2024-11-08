@@ -22,8 +22,12 @@ class PlaylistRepositoryImpl(
         database.playlistDao().updatePlaylist(playlistDbConverter.map(playlist))
     }
 
-    override fun getPlaylist(name: String): Playlist {
-        return playlistDbConverter.map(database.playlistDao().getPlaylistByName(name))
+    override fun getPlaylist(id: Int): Playlist {
+        return playlistDbConverter.map(database.playlistDao().getPlaylistById(id))
+    }
+
+    override fun deletePlaylist(playlist: Playlist) {
+        database.playlistDao().deletePlaylist(playlist)
     }
 
 }
