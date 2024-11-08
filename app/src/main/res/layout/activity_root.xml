@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/container_view"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
-        android:background="@color/dn_background_gray"/>
+        android:background="@color/background_gray"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"

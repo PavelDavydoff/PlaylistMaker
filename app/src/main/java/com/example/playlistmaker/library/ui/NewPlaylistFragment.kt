@@ -22,6 +22,7 @@ import com.example.playlistmaker.library.ui.models.NewPlaylistState
 import com.example.playlistmaker.library.ui.presentation.NewPlaylistViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.random.Random
 
 class NewPlaylistFragment : Fragment() {
     companion object {
@@ -112,7 +113,7 @@ class NewPlaylistFragment : Fragment() {
                 playlistName,
                 playlistDescription,
                 playlistFilePath,
-                "",
+                NO_VALUE,
                 0
             )
         )
@@ -124,7 +125,7 @@ class NewPlaylistFragment : Fragment() {
 
     private fun editPlaylist(playlist: Playlist) {
         if (imageFilePath != "") {
-            playlistFilePath = viewModel.saveImage(imageFilePath.toUri(), playlistName)
+            playlistFilePath = viewModel.saveImage(imageFilePath.toUri(), playlistName + Random(1000).toString())
         }
         playlist.filePath = playlistFilePath
         viewModel.addNewPlaylist(playlist)

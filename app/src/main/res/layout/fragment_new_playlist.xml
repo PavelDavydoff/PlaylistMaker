@@ -55,6 +55,7 @@
         android:layout_margin="@dimen/_16dp"
         app:layout_constraintBottom_toTopOf="@id/edit_description"
         app:layout_constraintTop_toBottomOf="@id/placeholder"
+        app:boxStrokeColor="@color/yp_blue"
 
         >
 
