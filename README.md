@@ -4,15 +4,15 @@
 <div style="display: flex; justify-content: space-between;">
   <div style="text-align: center;">
     <img src="https://github.com/user-attachments/assets/6f9b9e04-236b-4115-ae24-0a3141553014" width="200" alt="Скриншот 1" />
-    <p>Главный экран</p>
-  </div>
-  <div style="text-align: center;">
-    <img src="https://github.com/user-attachments/assets/4eb04226-1d2c-4448-906f-c3a3264bd04f" width="200" alt="Скриншот 2" />
     <p>Поиск треков</p>
   </div>
   <div style="text-align: center;">
+    <img src="https://github.com/user-attachments/assets/4eb04226-1d2c-4448-906f-c3a3264bd04f" width="200" alt="Скриншот 2" />
+    <p>Плеер</p>
+  </div>
+  <div style="text-align: center;">
     <img src="https://github.com/user-attachments/assets/6d7d91d5-af01-4d65-bac3-258959be99a7" width="200" alt="Скриншот 3" />
-    <p>Плейлист</p>
+    <p>Избранное и плейлисты</p>
   </div>
 </div>
 
