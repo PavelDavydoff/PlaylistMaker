@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:backgroundTint="@color/yp_white"
+    tools:context=".settings.ui.SettingsFragment">
+
+    <Toolbar
+        android:id="@+id/library_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="@string/settings"
+        android:titleTextColor="@color/yp_black" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginHorizontal="@dimen/_16dp"
+        android:saveEnabled="false"
+        android:text="@string/black_theme"
+        android:textSize="@dimen/t_size_16"
+        app:thumbTint="@color/switch_Thumb"
+        app:trackTint="@color/switch_Track"/>
+
+    <Button
+        android:id="@+id/share"
+        style="@style/SettingsButton"
+        android:text="@string/share_app"
+        app:icon="@drawable/share"
+        android:backgroundTint="@color/yp_white"/>
+
+    <Button
+        android:id="@+id/support"
+        style="@style/SettingsButton"
+        android:text="@string/support"
+        app:icon="@drawable/support"
+        android:backgroundTint="@color/yp_white"/>
+
+    <Button
+        android:id="@+id/agreement"
+        style="@style/SettingsButton"
+        android:text="@string/agreement"
+        app:icon="@drawable/arrow_forward"
+        android:backgroundTint="@color/yp_white"/>
+
+</LinearLayout>
+

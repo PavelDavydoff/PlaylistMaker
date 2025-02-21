@@ -10,7 +10,8 @@ data class Track(val trackName: String,
                  val releaseDate: String,
                  val primaryGenreName: String,
                  val country: String,
-                 val previewUrl: String,): Serializable{
+                 val previewUrl: String,
+                 var isFavorite: Boolean = false): Serializable{
     val artworkUrl512: String
         get() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
                  }

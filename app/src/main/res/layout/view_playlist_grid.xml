@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_playlist_grid">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/_16dp"
+        android:layout_marginLeft="@dimen/_8dp">
+
+        <ImageView
+            android:id="@+id/playlist_image"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/placeholder"/>
+
+        <TextView
+            android:id="@+id/playlist_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="Просто невероятно длинное название плейлиста"/>
+
+        <TextView
+            android:id="@+id/tracks_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="100500 треков"/>
+
+    </LinearLayout>
+
+</FrameLayout>
